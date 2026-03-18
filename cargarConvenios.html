@@ -1,0 +1,579 @@
+<!----------cargarConvenios.html---->
+<div class="container mt-4 animate__animated animate__fadeIn">
+    <div class="card shadow-lg border-0" style="border-radius: 20px;">
+        <div class="card-header bg-white text-center py-4 border-0">
+            <h4 class="fw-bold" style="color: #A813B7;">GENERADOR DE CONVENIO DE HONORARIOS</h4>
+            <hr class="mx-auto w-25" style="border-top: 3px solid #ED6AFF;">
+        </div>
+       <div class="card-body p-5 text-justify shadow-inner">
+<!---COMIENZO CARDS TIPO CONVENIO--->
+            <div class="row g-4 mt-2"> 
+              <div class="col-md-6">
+                  <div class="card card-data-premium h-100 shadow-sm" style="background-color: #FAE8FF;">
+                    <div class="card-body d-flex flex-column align-items-center p-4"> 
+                      <div class="icon-circle bg-fucsia-light mb-3">
+                        <i class="fi fi-tr-legal" style="color: #A813B7; font-size: 2.5rem;"></i>
+                      </div>
+                          <h5 class="fw-bold" style="color: #A813B7;">Convenio Cuota Litis</h5>
+                          <p class="mb-4" style="color: #A813B7; max-width: 80%;">
+                                Cargar convenios de honorarios por procesos judiciales.
+                          </p>
+                        <button class="btn-menu rounded-pill px-4" onclick="abrirModalCuoLitis()"> - Cargar Cuota Litis -
+                          </button>
+                    </div>
+                  </div>
+              </div>
+
+                <div class="col-md-6">
+                    <div class="card card-data-premium h-100" style="background-color: #FAE8FF;">
+                        <div class="card-body d-flex flex-column align-items-center p-4">
+                            <div class="icon-circle bg-green-light mb-3">
+                                <i class="fi fi-tr-money-check-edit" style="color: #9AE630; font-size: 2.5rem;"></i>
+                            </div>
+                            <h5 class="fw-bold" style="color: #A813B7;">Convenio de Pago</h5>
+                            <p class="mb-4" style="color: #A813B7; max-width: 80%;">
+                                Generación de convenios de pago por honorarios.
+                            </p>
+                            <button class="btn-menu rounded-pill px-4" onclick="abrirModalConvPago()"> - Cargar Convenio de Pago - </button>
+                        </div>
+                    </div>
+                </div>
+              </div> 
+<!---FIN CARDS DE TIPO--->
+        </div>
+        <div class="card-footer bg-light text-end p-4">
+        </div>
+    </div>
+</div>
+
+
+<!---MODAL CUOTA LITIS-->
+  <div class="modal fade" id="modalCuoLitis" tabindex="-1" aria-labelledby="modalCuoLitisLabel" aria-hidden="true" style="line-height: 2; font-family: 'Times New Roman', Times, serif; color: #333; background: #fdfdfd;">
+
+    <div class="modal-dialog modal-xl"> 
+      <div class="modal-content shadow-lg">
+            <div class="modal-header text-white">
+                <h5 class="modal-title" id="modalCuoLitisLabel"><i class="bi bi-pencil-square me-2"></i>Cuota Litis</h5>
+            </div>
+            <div class="modal-body p-4">
+        <form id="formCuoLitis">
+                    <input type="hidden" id="cuotaLitisId" value=""> 
+        <div id="cuerpoCuoLitis" style="font-size: 1.1rem;">
+          <!-----logo----->
+                <div style="text-align: center; width: 100%; padding-top: 20px; padding-bottom: 3px; margin-bottom: 3px;">
+                    <img id="logoEstudioLitis" class="logo-estudio-dinamico" style="display:none; width:150px;">
+                </div>
+          <p class="text-center fw-bold text-decoration-underline mb-4">CONVENIO DE HONORARIOS PROFESIONALES</p>
+
+          <p>Entre la <strong>Dra. MARCELA BEATRIZ PERALTA</strong>, inscripta al Tomo X Fº 248 CALM, con domicilio laboral en la calle Luis Viale 1470 de la Localidad de Haedo, Provincia de Buenos Aires, por una parte denominada en adelante como “LETRADO” y el Sr./a: <span class="badge bg-light text-dark border-0"><select class="form-select border-warning rounded-pill px-4" disabled id="selectClienteLitis" onchange="autocompletarClienteConvenio(this.value)"><option value="" disabled selected>-- SELECCIONE CLIENTE --</option></select></span>, con DNI N° <span id="txtDniCliente" class="fw-bold">__________</span>, y con domicilio real en la calle <span id="txtDomicilioCliente">______________________________________________</span>, de la Provincia de Buenos Aires, por otra parte denominada en adelante como “CLIENTE”, se celebra el presente Convenio de Honorarios Profesionales, sujeto a las declaraciones y estipulaciones siguientes:</p>
+          
+          <p><strong>-PRIMERA:</strong> El CLIENTE encomienda al Letrado y éste acepta, la labor profesional como abogada/o patrocinante en la acción correspondiente a la materia <input class="labelInputFormNew text-dark border-bottom: 1px solid #000; rounded-pill px-4" id="materiaInputLit"></input>, en favor de la citada, radicados por ante el fuero de <span class="badge bg-light text-dark border-0"><select class="form-select border-success rounded-pill px-4" disabled id="fueroSelector"><option value="">--SELECCIONE FUERO--</option></select></span>, radicados en el departamento judicial de <span class="badge bg-light text-dark border-0"><select class="form-select border bs-info-border-subtle rounded-pill px-4" disabled id="deptoSelector"><option value="">--SELECCIONE DPTO JUDICIAL--</option></select></span>, de la Provincia de Buenos Aires.-----------------------------------------------------------------------------------------------</p>
+
+          <p><strong>-SEGUNDA:</strong> Los honorarios del Letrado por sus gestiones y labores profesionales, se convienen abonar de la siguiente manera, para el inicio del expediente, presentación de documentación, redacción de demanda y posterior radicación ante el juzgado competente se conviene el pago del total de 15JUS en concepto de "Adelanto" por las gestiones a llevar adelante. El cual será descontado del monto final a abonar, conforme desgloce a realizar en líneas subsiguientes. Del pago del citado "adelanto", quedan excluídos los importes de los bonos de ley obligatorios a abonar al momento de presentar la demandad por ante el juzgado, los cuales serán debidamente informados al cliente, conforme el valor que publique la Caja de Abogados de la Provincia de Buenos Aires en su portal web oficial,a los mismos fines.----------------------------------------------------------------------------------</p>
+          
+          <p><strong>-TERCERA:</strong>
+          </p>
+
+          <p><strong>-CUARTA:</strong>
+          </p>
+
+          <p><strong>-QUINTA:</strong>
+          </p>
+
+          <p><strong>-SEXTA:</strong>
+          </p>
+
+          <p>
+            <strong>SÉPTIMA:</strong> En prueba de conformidad se firman 2 juegos del mismo tenor del presente convenio, 
+            recibiendo en este mismo acto, una copia el CLIENTE, y otra copia quedando en poder del letrado, 
+            debidamente signada por el CLIENTE. En la ciudad de Haedo, a los  <span id="resDia" class="fw-bold" style="border-bottom: 1px solid #000; min-width: 30px; display: inline-block; text-align: center;">___</span> 
+            días del mes de <span id="resMes" class="fw-bold" style="border-bottom: 1px solid #000; min-width: 80px; display: inline-block; text-align: center;">__________</span> 
+            del año <span id="resAnio" class="fw-bold" style="border-bottom: 1px solid #000; min-width: 50px; display: inline-block; text-align: center;">_______</span>.
+          
+            <p class="text-muted small mt-2 no-pdf" style="user-select: none;">
+                <i class="bi bi-info-circle me-1"></i> 
+                Nota: Para cambiar la fecha del convenio seleccione en el calendario:
+                <input type="date" id="fechaConvenioLitis" class="no-pdf d-inline-block shadow-sm" onchange="formatearFechaLegal(this.value)" style="width: 140px; height: 30px; font-size: 0.85rem; color: #666; border: 1px solid #ddd; border-radius: 5px; padding: 2px 5px; background-color: #f9f9f9; cursor: pointer;">
+            </p>
+
+          <div style="margin-top: 80px; display: flex; justify-content: space-around; text-align: center; width: 100%;">
+              <div style="width: 40%; border-top: 1px solid #000; padding-top: 5px;">
+                  Firma Cliente
+              </div>
+              <div style="width: 40%; border-top: 1px solid #000; padding-top: 5px;">
+                  Dra. Marcela Peralta
+              </div>
+          </div>
+        </div>
+        </form>
+          </div>
+            <div class="modal-footer bg-light">
+               <button class="btn btn-secondary me-2" onclick="cerrarModalYRegresar()">CANCELAR</button>
+               <button class="btn btn-primary px-5" style="background: #A813B7; border: none;" onclick="guardarConvenio()">
+                  <i class="fi fi-rr-disk"></i> GUARDAR Y GENERAR PDF</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!---FIN MODAL LITIS---------------------------------------------------------->
+
+<!---MODAL CONVENIO PAGO----------------------------------------------------------->
+<div class="modal fade" id="modalConvPago" tabindex="-1" aria-labelledby="modalConvPagoLabel" aria-hidden="true" style="line-height: 2; font-family: 'Times New Roman', Times, serif; color: #333; background: #fdfdfd;">
+    <div class="modal-dialog modal-xl"> 
+      <div class="modal-content shadow-lg">
+            <div class="modal-header text-white">
+                <h5 class="modal-title" id="modalConvPagoLabel"><i class="bi bi-pencil-square me-2"></i>Convenios de Pagos</h5>
+            </div>
+            <div class="modal-body p-4">
+                <form id="formConvPago">
+                    <input type="hidden" id="convenioPagoId" value=""> 
+  <div id="cuerpoConvenioPago" style="font-size: 1.1rem;">
+                    <!-----logo----->
+                                <div style="text-align: center; width: 100%; padding-top: 20px; padding-bottom: 3px; margin-bottom: 3px;">
+                                    <img id="logoEstudioPago" class="logo-estudio-dinamico" style="display:none; width:150px;">
+                                </div>
+  <p class="text-center fw-bold text-decoration-underline mb-4">CONVENIO DE PAGO DE HONORARIOS PROFESIONALES</p>
+
+    <p>
+    Entre la <strong>Dra. MARCELA BEATRIZ PERALTA</strong>, inscripta al Tomo X Fº 248 CALM, con domicilio laboral en la calle Luis Viale 1470 de la Localidad de Haedo, Provincia de Buenos Aires, por una parte denominada en adelante como “LETRADO” y el Sr./a <span class="badge bg-light text-dark border-0"><select class="form-select border-warning rounded-pill px-4" disabled id="selectClienteConvenio" onchange="autocompletarClienteConvenio(this.value)"><option value="" disabled selected>-- SELECCIONE CLIENTE --</option></select></span>, con DNI N° <span id="txtDniCliente"class="fw-bold">__________</span>, y con domicilio real en la calle <span id="txtDomicilioCliente">____________________________________________</span>, Provincia de Buenos Aires, por otra parte denominada en adelante como “DEUDOR”. Se celebra el presente Convenio de Honorarios Profesionales, sujeto a las declaraciones y estipulaciones siguientes:</p>
+    
+    <p>
+      <strong>PRIMERA:</strong> El <strong>DEUDOR</strong> de común acuerdo conviene con la <strong>LETRADA</strong> y éste acepta, celebrar el presente convenio de pago conforme los honorarios regulados por el patrocinio como abogada <span class="badge bg-light text-dark border-0"><select class="form-select select-auto border-success rounded-pill px-4" id="pago_tipoSelector" onchange="pago_cargarFueros(this.value)"><option value="" disabled selected>--SELECCIONE TIPO--</option><option value="PARTICULAR">PARTICULAR</option><option value="ANNYA">ANNYA</option></select></span>, en el expediente, del fuero de <span class="badge bg-light text-dark border-0"><select class="form-select select-auto border-success rounded-pill px-4"  id="pago_fueroSelector" disabled onchange="pago_cargarDeptos(this.value)">
+        <option value=""><option value="">--SELECCIONE FUERO--</option></select></span>, radicado en el Departamento Judicial de <span class="badge bg-light text-dark border-0"><select class="form-select select-auto border-info rounded-pill px-4" id="pago_deptoSelector"disabled onchange="pago_cargarJuzgados(this.value)">
+        <option value=""><option value="">--SELECCIONE DPTO JUDICIAL--</option></select></span>, por ante el juzgado n° <span class="badge bg-light text-dark border-0"><select class="form-select select-auto border-success rounded-pill px-4" disabled id="pago_juzSelector" disabled onchange="pago_cargarExpedientes(this.value)">
+        <option value=""><option value="">--SELECCIONE N° DE JUZGADO--</option></select></span>, del expediente caratulado: <span class="badge bg-light text-dark border-0"><select class="form-select select-auto border-success rounded-pill px-4" disabled id="pago_exptSelector" disabled><option value="">--SELECCIONE EXPEDIENTE--</option></select></span>. En favor de la citada, regulados y notificados conforme lo dispuesto en el 
+      <strong>Art. 54 de la Ley Arancelaria de la Provincia de Buenos Aires, n° 14.967</strong>, y que reclamables de pago.------------------------------------------------------</p>
+
+      <p>
+      <strong>-SEGUNDA:</strong> Los honorarios del Letrado regulados, conforme sentencia de fecha <input type="date" id="fechaSentencia" class="input-auto" style="width: 140px; rounded-pill px-4"> por las gestiones y labores profesionales debidamente desarrolladas, en la cual se resolviera regular en favor de la <strong>LETRADA</strong>, un total de <input class="input-auto rounded-pill px-4" id="cantJus" style="width: 90px;" placeholder="000.00"></input>JUS o unidades arancelarias de justicia. Dejando debidamente asentado que el valor de dicha unidad arancelaria será actualizado al momento del efectivo pago total de lo adeudado, y cuyo valor se encuentra definido por la <strong>Suprema Corte de Justicia de la Provincia de Buenos Aires</strong>, que así lo publica en su portal web oficial, a tales fines.
+      Ante lo cual, el <strong>DEUDOR</strong> deberá abonar un monto equivalente al 40% del total adeudado, equivalente a <input class="input-auto rounded-pill px-4" id="porcentajeJus" readonly style="width: 90px; background:#f0f0f0;" oninput="calcularCuotas()"></input>, y el resto en 3 cuotas consecutivas y mensuales de <input class="input-auto rounded-pill px-4" id="cuotaJus" readonly style="width: 90px; background:#f0f0f0;"></input>JUS, hasta completar el total regulado.
+      Las cuotas serán abonadas el 1 y el 10 de cada mes, abonando la primera el día <input class="input-auto rounded-pill px-4" id="dayPago" style="width: 60px;"></input>del mes de <input class="input-auto rounded-pill px-4" id="mesPago" style="width: 100px;"></input> del corriente año en curso.-</p>
+
+      <p>
+      <strong>TERCERA:</strong> Sin perjuicio de lo estipulado anteriormente, quedarán en propiedad para el Letrado, los honorarios extrajudiciales o judiciales, que pudiere pagarle o fuesen regulados a cargo de los contrarios.</p>                        
+         
+      <p>
+       <strong>CUARTA:</strong> Los gastos, impuestos y tasas que se devenguen durante el período hasta la cancelación final de los montos detallados supra, serán a cargo del <strong>DEUDOR</strong>. Cancelada la que sea la totalidad de lo aquí pactado, la <strong>LETRADA</strong> no tendrá nada más que reclamar al <strong>DEUDOR</strong> por ningún concepto, haciéndole entrega de la correspondiente "carta de pago y cancelación de deuda", la cual surtirá los efectos de libre deuda en favor del <strong>DEUDOR</strong>, dando por finalizado el presente convenio.--------------------------------------------------------------------------------------------------------------</p>
+
+      <p>
+        <strong>QUINTA:</strong> Para el hipotético caso de que el <strong>DEUDOR</strong>, se atrasare en el pago de sus obligaciones legales contraídas, mediante el presente convenio, se le aplicará en concepto de <strong>"intereses por mora"</strong>, el monto de <strong>2JUS</strong> por <strong>cada día de retardo</strong>, posterior a las <strong>48hs.</strong> siguientes al quinto día hábil del mes en que incurrió la mora del obligado al pago. 
+        Para el caso, de que dicho retraso superen el <strong> mes</strong>, desde su vencimiento, facultará a la <strong>LETRADA</strong> a promover las acciones pertinentes en materia de <strong>"Ejecución de Honorarios"</strong>, de conformidad con lo dispuesto en el <strong>Art. 54 de la Ley Arancelaria de la Provincia de Buenos Aires n°14.967</strong>, bajo la opción del <strong>inc. "b)"</strong> de la citada ley.----------------------------------------</p>
+      
+      <p>
+       <strong>SEXTA:</strong> Para todos los efectos del presente convenio, la <strong>LETRADA</strong> constituye domicilio en su estudio profesional, en la <strong>calle Luis Viale 1470 de la Localidad de Haedo, Provincia de Buenos Aires</strong>, a los mismos fines.----------------------------------------------------------------</p>                        
+      
+      <p>
+        <strong>SÉPTIMA:</strong> En prueba de conformidad se firman 2 juegos del mismo tenor del presente convenio, 
+         recibiendo en este mismo acto, una copia el <strong>DEUDOR</strong>, y otra copia quedando en poder de la <strong>LETRADA</strong>, debidamente signada por el <strong>DEUDOR</strong>. En la ciudad de Haedo, a los  <span id="resDia" class="fw-bold" style="border-bottom: 1px solid #000; min-width: 30px; display: inline-block; text-align: center;">___</span> días del mes de <span id="resMes" class="fw-bold" style="border-bottom: 1px solid #000; min-width: 80px; display: inline-block; text-align: center;">__________</span> del año <span id="resAnio" class="fw-bold" style="border-bottom: 1px solid #000; min-width: 50px; display: inline-block; text-align: center;">_______</span>.
+          
+         <p class="text-muted small mt-2 no-pdf" style="user-select: none;">
+                <i class="bi bi-info-circle me-1"></i> 
+                Nota: Para cambiar la fecha del convenio seleccione en el calendario:
+                <input type="date" id="fechaConvenioPago" class="no-pdf d-inline-block shadow-sm" onchange="formatearFechaLegal(this.value)" style="width: 140px; height: 30px; font-size: 0.85rem; color: #666; border: 1px solid #ddd; border-radius: 5px; padding: 2px 5px; background-color: #f9f9f9; cursor: pointer;">
+            </p>
+
+          <div style="margin-top: 80px; display: flex; justify-content: space-around; text-align: center; width: 100%;">
+              <div style="width: 40%; border-top: 1px solid #000; padding-top: 5px;">
+                  Firma Cliente
+              </div>
+              <div style="width: 40%; border-top: 1px solid #000; padding-top: 5px;">
+                  Dra. Marcela Peralta
+              </div>
+          </div>
+        </div>
+                </form>
+          </div>
+            <div class="modal-footer bg-light">
+               <button class="btn btn-secondary me-2" onclick="cerrarModalYRegresar()">CANCELAR</button>
+               <button class="btn btn-primary px-5" style="background: #A813B7; border: none;" onclick="guardarConvenio()">
+                  <i class="fi fi-rr-disk"></i> GUARDAR Y GENERAR PDF</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!---FIN MODAL CONVENIO PAGO---->         
+
+<div class="row justify-content-center mt-3 mb-2">
+  <div class="col-auto">
+    <button type="button" class="btn-volver-glass-pro" onclick="loadContent('convenios'); return false;">
+      <i class="fi fi-br-angle-double-left"></i><span>VOLVER</span>
+    </button>
+  </div>
+</div>
+
+<script>
+const CARPETAS_RAIZ_TIPOS = {  
+    "PARTICULAR": "1dJNip5JuUtmYljHudu-Ztk8ao8nyfU38",  
+    "ANNYA": "1AY7X5-HjdeojTnuEhla15PU4MURb1Dh-"
+};
+let CLIENTES_MEMORIA = [];
+let modalActivo = null;
+    const PREFIJO_D_NOMBRE = {
+        'MO': 'MORON', 'LM': 'LA MATANZA', 'SI': 'SAN ISIDRO', 'SM': 'SAN MARTIN',
+        'MZ': 'MERCEDES LUJÁN', 'CA': 'CABA', 'AV': 'AVELLANEDA', 'MGRZ': 'MORENO GRAL RODRIGUEZ', 'LZ': 'LOMAS DE ZAMORA' 
+    };
+
+function cargarLogo() {
+    google.script.run
+        .withSuccessHandler(base64Data => {
+            if (base64Data) {
+                // Buscamos por clase para alcanzar a todos
+                const logos = document.querySelectorAll('.logo-estudio-dinamico');
+                logos.forEach(img => {
+                    img.src = base64Data;
+                    img.style.display = 'block';
+                    img.style.margin = '0 auto';
+                });
+                window.logoBase64Cache = base64Data;
+            }
+        })
+        .getLogoEstudio();
+}
+
+function abrirModalCuoLitis() {
+    modalActivo = new bootstrap.Modal(document.getElementById('modalCuoLitis'));
+    modalActivo.show();
+    const hoy = new Date().toISOString().split('T')[0];
+    const inputFecha = document.getElementById('fechaConvenioLitis');
+    if (inputFecha) {
+        inputFecha.value = hoy;
+        formatearFechaLegal(hoy, 'Litis'); // Pasamos el contexto
+    }
+    inicializarListas('Litis');
+    cargarLogo();
+}
+
+function abrirModalConvPago() {
+    modalActivo = new bootstrap.Modal(document.getElementById('modalConvPago'));
+    modalActivo.show();
+    const hoyISO = new Date().toISOString().split('T')[0];
+    const hoy = new Date();
+    const meses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+    
+    //Inyectar Fecha General del Convenio
+    const inputFecha = document.getElementById('fechaConvenioPago');
+    if (inputFecha) {
+        inputFecha.value = hoyISO;
+        formatearFechaLegal(hoyISO, 'Pago');
+    }
+
+    //Inyectar Día y Mes para la Cláusula Séptima
+    setTimeout(() => {
+        const d = document.getElementById('dayPago');
+        const m = document.getElementById('mesPago');
+        if (d) d.value = hoy.getDate();
+        if (m) m.value = meses[hoy.getMonth()];
+    }, 300); 
+    inicializarListas('Pago');
+    cargarLogo();
+}
+
+function cerrarModalYRegresar() {
+    const modalElement = document.querySelector('.modal.show');
+    if (modalElement) {
+        const instance = bootstrap.Modal.getInstance(modalElement);
+        if (instance) {
+            instance.hide();
+        }
+    }
+
+    //LIMPIEZA FORZOSA
+    document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
+    document.body.classList.remove('modal-open');
+    document.body.style.paddingRight = '0px';
+    loadContent('convenios');
+}
+
+function inicializarListas(tipo) {
+    const sufijo = (tipo === 'Litis') ? 'Litis' : 'Convenio';
+    const selectorCliente = document.getElementById(`selectCliente${sufijo}`);
+    const fueroSel = (tipo === 'Litis') ? document.getElementById('fueroSelector') : document.querySelectorAll('#fueroSelector')[1];
+    
+    //Cargar Clientes
+    google.script.run.withSuccessHandler(clientes => {
+        CLIENTES_MEMORIA = clientes;
+        selectorCliente.innerHTML = '<option value="" disabled selected>-- SELECCIONE CLIENTE --</option>';
+        clientes.forEach((c, i) => {
+            let opt = document.createElement('option');
+            opt.value = i; 
+            opt.textContent = c.nombre;
+            selectorCliente.appendChild(opt);
+        });
+        selectorCliente.disabled = false;
+    }).getListaClientesConvenio();
+
+//Cargar Fueros
+    fueroSel.innerHTML = '<option>Cargando...</option>';
+    google.script.run.withSuccessHandler(fueros => {
+        fueroSel.innerHTML = '<option value="" selected disabled>--SELECCIONE FUERO--</option>';
+        fueros.forEach(f => { 
+            let nombre = (typeof f === 'object') ? f.name : f;
+            let opt = document.createElement('option');
+            opt.value = nombre; 
+            opt.textContent = nombre;
+            fueroSel.appendChild(opt);
+        });
+        fueroSel.disabled = false;
+    }).getFuerosConvenio();
+}
+
+document.getElementById('fueroSelector').addEventListener('change', function() {
+    const fueroSeleccionado = this.value;
+    const deptoSel = document.getElementById('deptoSelector');
+    deptoSel.innerHTML = '<option value="">Cargando departamentos...</option>';
+    deptoSel.disabled = true;
+
+    google.script.run.withSuccessHandler(deptos => {
+        deptoSel.innerHTML = '<option value="" selected disabled>--SELECCIONE DPTO--</option>';
+        if (deptos.length === 0) {
+            deptoSel.innerHTML = '<option disabled>No hay departamentos</option>';
+            return;
+        }
+        deptos.forEach(d => {
+            let opt = document.createElement('option');
+            const nombreMostrado = PREFIJO_D_NOMBRE[d] || d; 
+            
+            opt.value = d; // Mantenemos el valor original para la búsqueda en Drive
+            opt.textContent = nombreMostrado; 
+            deptoSel.appendChild(opt);
+        });
+        deptoSel.disabled = false;
+    }).getDeptosConvenio(fueroSeleccionado);
+});
+
+document.getElementById('deptoSelector').addEventListener('change', function() {
+    const fueroSeleccionado = document.getElementById('fueroSelector').value;
+    const deptoSeleccionado = this.value;
+});
+
+/*Al seleccionar un cliente, inyecta los datos en el texto fijo*/
+function autocompletarClienteConvenio(indice) {
+    const c = CLIENTES_MEMORIA[indice];
+    if (!c) return;
+    document.querySelectorAll('#txtDniCliente').forEach(el => el.textContent = c.dni);
+    document.querySelectorAll('#txtDomicilioCliente').forEach(el => el.textContent = c.domicilio);
+}
+
+function guardarConvenio() {
+    const esLitis = document.getElementById('modalCuoLitis').classList.contains('show');
+    const idCuerpo = esLitis ? 'cuerpoCuoLitis' : 'cuerpoConvenioPago';
+    const selectorCli = esLitis ? 'selectClienteLitis' : 'selectClienteConvenio';
+    const tipo = esLitis ? "Cuota Litis" : "Convenio de Pago";
+    let materia;
+    if (esLitis) {
+        materia = document.getElementById('materiaInputLit').value;
+    } else {
+        const exptSel = document.getElementById('pago_exptSelector');
+        materia = exptSel.options[exptSel.selectedIndex] ? exptSel.options[exptSel.selectedIndex].text : "";
+    }
+
+    const selElement = document.getElementById(selectorCli);
+    const nombreCliente = selElement.options[selElement.selectedIndex].text;
+
+    if (!nombreCliente || nombreCliente.includes("--")) {
+        Swal.fire('Atención', 'Por favor, seleccione un cliente.', 'warning');
+        return;
+    }
+    
+    if (!esLitis && (!materia || materia.includes("--"))) {
+        Swal.fire('Atención', 'Por favor, seleccione el expediente.', 'warning');
+        return;
+    }
+
+    const datosFila = { 
+        cliente: nombreCliente, 
+        materia: materia, 
+        tipo: tipo,
+        cantJus: document.getElementById('cantJus').value || 0,
+        porcentajeJus: document.getElementById('porcentajeJus').value || 0,
+        cuotaJus: document.getElementById('cuotaJus').value || 0 
+    };
+
+    // --- PROCESO PARA PDF ---
+    const cuerpoOriginal = document.getElementById(idCuerpo);
+    const contenidoParaPDF = cuerpoOriginal.cloneNode(true);
+    const imgPDF = contenidoParaPDF.querySelector('.logo-estudio-dinamico');
+    if (imgPDF && window.logoBase64Cache) {
+        imgPDF.src = window.logoBase64Cache;
+        imgPDF.style.display = "block";
+    }
+
+    // --- LOGO ---
+    const imgOriginal = cuerpoOriginal.querySelector('#logoEstudio');
+    const imgClonada = contenidoParaPDF.querySelector('#logoEstudio');
+    if (imgOriginal && imgClonada && imgOriginal.src) {
+        imgClonada.src = imgOriginal.src;
+        imgClonada.style.display = "block";
+        imgClonada.style.margin = "0 auto";
+        imgClonada.style.width = "250px"; 
+    }
+
+    contenidoParaPDF.querySelectorAll('.no-pdf').forEach(el => el.remove());
+
+    //Convertir SELECTS a TEXTO
+    const selectoresOriginales = cuerpoOriginal.querySelectorAll('select');
+    contenidoParaPDF.querySelectorAll('select').forEach((sel, index) => {
+        const span = document.createElement('span');
+        span.textContent = selectoresOriginales[index].options[selectoresOriginales[index].selectedIndex].text;
+        span.style.fontWeight = "bold";
+        span.style.textDecoration = "underline";
+        sel.parentNode.replaceChild(span, sel);
+    });
+
+    //Convertir INPUTS a TEXTO
+    const inputsOriginales = cuerpoOriginal.querySelectorAll('input');
+    contenidoParaPDF.querySelectorAll('input').forEach((inp, index) => {
+        if (inp.type !== 'hidden') {
+            const span = document.createElement('span');
+            span.textContent = inputsOriginales[index].value || "__________";
+            span.style.fontWeight = "bold";
+            inp.parentNode.replaceChild(span, inp);
+        }
+    });
+
+    const htmlFinal = contenidoParaPDF.innerHTML;
+
+    Swal.fire({ title: 'Procesando...', text: 'Registrando y generando PDF', allowOutsideClick: false, didOpen: () => { Swal.showLoading(); }});
+
+    google.script.run
+        .withSuccessHandler(idRegistro => {
+            google.script.run
+                .withSuccessHandler(resPDF => {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Convenio Finalizado',
+                        html: `ID: <b>${idRegistro}</b><br><br><a href="${resPDF.url}" target="_blank" class="btn btn-primary">VER PDF</a>`,
+                    }).then(() => {
+                        cerrarModalYRegresar();
+                    });
+                })
+                .generarPDFConvenio(htmlFinal, nombreCliente, tipo);
+        })
+        .guardarConvenioFinal(datosFila);
+}
+
+/*Formatea la fecha de selección en formato legal*/
+flatpickr("#fechaConvenio", {
+    dateFormat: "Y-m-d",
+    locale: "es",
+    onChange: function(selectedDates, dateStr) {
+        formatearFechaLegal(dateStr);
+    }
+});
+
+function formatearFechaLegal(fechaIso, contexto) {
+    if (!fechaIso) return;
+    const fecha = new Date(fechaIso + 'T00:00:00'); 
+    const meses = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
+
+    // Buscamos los elementos dentro del modal activo únicamente
+    const contenedorId = contexto === 'Litis' ? 'cuerpoCuoLitis' : 'cuerpoConvenioPago';
+    const contenedor = document.getElementById(contenedorId);
+    
+    if (contenedor) {
+        const elDia = contenedor.querySelector('#resDia');
+        const elMes = contenedor.querySelector('#resMes');
+        const elAnio = contenedor.querySelector('#resAnio');
+
+        if (elDia) elDia.textContent = fecha.getDate();
+        if (elMes) elMes.textContent = meses[fecha.getMonth()];
+        if (elAnio) elAnio.textContent = fecha.getFullYear();
+    }
+}
+
+// Iniciar Cascada por Tipo
+function pago_cargarFueros(tipo) {
+    const raizId = CARPETAS_RAIZ_TIPOS[tipo];
+    const sel = document.getElementById('pago_fueroSelector');
+    
+    sel.innerHTML = '<option>Cargando...</option>';
+    google.script.run.withSuccessHandler(fueros => {
+        sel.innerHTML = '<option value="" selected disabled>--SELECCIONE FUERO--</option>';
+        fueros.forEach(f => {
+            let opt = document.createElement('option');
+            opt.value = f.name;
+            opt.textContent = f.name;
+            sel.appendChild(opt);
+        });
+        sel.disabled = false;
+    }).getFuerosDesdeRaiz(raizId);
+}
+
+function pago_cargarDeptos(fuero) {
+    const tipo = document.getElementById('pago_tipoSelector').value;
+    const raizId = CARPETAS_RAIZ_TIPOS[tipo];
+    const sel = document.getElementById('pago_deptoSelector');
+
+    sel.innerHTML = '<option>Cargando...</option>';
+    google.script.run.withSuccessHandler(deptos => {
+        sel.innerHTML = '<option value="" selected disabled>--SELECCIONE DPTO--</option>';
+        deptos.forEach(d => {
+            let opt = document.createElement('option');
+            opt.value = d;
+            opt.textContent = PREFIJO_D_NOMBRE[d] || d;
+            sel.appendChild(opt);
+        });
+        sel.disabled = false;
+    }).getDeptosDinamicos(raizId, fuero);
+}
+
+function pago_cargarJuzgados(depto) {
+    const tipo = document.getElementById('pago_tipoSelector').value;
+    const raizId = CARPETAS_RAIZ_TIPOS[tipo];
+    const fuero = document.getElementById('pago_fueroSelector').value;
+    const sel = document.getElementById('pago_juzSelector');
+
+    sel.innerHTML = '<option>Cargando...</option>';
+    google.script.run.withSuccessHandler(juzgados => {
+        sel.innerHTML = '<option value="" selected disabled>--N° JUZGADO--</option>';
+        juzgados.forEach(j => {
+            let opt = document.createElement('option');
+            opt.value = j;
+            opt.textContent = j;
+            sel.appendChild(opt);
+        });
+        sel.disabled = false;
+    }).getJuzgadosDinamicos(raizId, fuero, depto);
+}
+
+function pago_cargarExpedientes(nombreExcel) {
+    const tipo = document.getElementById('pago_tipoSelector').value;
+    const raizId = CARPETAS_RAIZ_TIPOS[tipo];
+    const fuero = document.getElementById('pago_fueroSelector').value;
+    const depto = document.getElementById('pago_deptoSelector').value;
+    const sel = document.getElementById('pago_exptSelector');
+
+    sel.innerHTML = '<option>Cargando...</option>';
+    google.script.run.withSuccessHandler(expedientes => {
+        sel.innerHTML = '<option value="" selected disabled>--SELECCIONE EXPEDIENTE--</option>';
+        expedientes.forEach(e => {
+            let opt = document.createElement('option');
+            opt.value = e; 
+            opt.textContent = e;
+            sel.appendChild(opt);
+        });
+        sel.disabled = false;
+    }).getListaExpedientesDinamicos(raizId, fuero, depto, nombreExcel);
+}
+
+//Cálculo Automático de Cuotas
+function calcularCuotas() {
+    const cantJus = parseFloat(document.getElementById('cantJus').value) || 0;
+    const porcMostrado = document.getElementById('porcentajeJus');
+    const cuotaInp = document.getElementById('cuotaJus');
+
+    if (cantJus > 0) {
+        const pagoInicialJus = cantJus * 0.40; /*Cambiar este valor en caso de aumento o disminución del porcentaje*/
+        const saldoRestante = cantJus - pagoInicialJus;
+        const valorCuota = saldoRestante / 3;
+
+        porcMostrado.value = pagoInicialJus.toFixed(2);
+        cuotaInp.value = valorCuota.toFixed(2);
+    } else {
+        porcMostrado.value = "";
+        cuotaInp.value = "";
+    }
+}
+document.getElementById('cantJus').addEventListener('input', calcularCuotas);
+
+</script>

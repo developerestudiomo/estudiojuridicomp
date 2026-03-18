@@ -1,0 +1,276 @@
+<!---tareas.html---->
+<div class="container mt-4 animate__animated animate__fadeIn">
+  <div class="row g-4">
+    <div class="col-md-6">
+      <div class="card card-data-premium h-100 shadow-sm" style="background-color: #FAE8FF; border-radius: 20px; border: none;">
+        <div class="card-body d-flex flex-column align-items-center p-4">
+          <div class="icon-circle bg-rose-light mb-3">
+            <i class="fi fi-rr-inbox" style="color: #E61876; font-size: 2.5rem;"></i>
+          </div>
+          <h5 class="fw-bold" style="color: #A813B7;">Nueva Tarea</h5>
+          <p class="mb-4 text-center" style="color: #A813B7; max-width: 80%;">Cargar nueva tarea diaria del estudio.</p>
+          <button class="btn-menu rounded-pill px-4" onclick="abrirModalNuevaTarea()">- NUEVA TAREA -</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="card card-data-premium h-100 shadow-sm" style="background-color: #FAE8FF; border-radius: 20px; border: none;">
+        <div class="card-body d-flex flex-column align-items-center p-4">
+          <div class="icon-circle bg-yellow-light mb-3">
+            <i class="fi fi-rr-task-checklist" style="color: #FFB93B; font-size: 3rem;"></i>
+          </div>
+          <h5 class="fw-bold" style="color: #A813B7;">Gestión de Tareas</h5>
+          <p class="mb-4 text-center" style="color: #A813B7; max-width: 80%;">Gestión, verificación y finalización de tareas.</p>
+          <button class="btn-menu rounded-pill px-4" onclick="loadContent('gestorTareas')">- GESTOR DE TAREAS -</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row justify-content-center mt-5 mb-2">
+    <div class="col-auto">
+      <button type="button" class="btn-volver-glass-pro" onclick="loadContent('_home'); return false;">
+        <i class="fi fi-br-angle-double-left"></i><span>VOLVER</span>
+      </button>
+    </div>
+  </div>
+<!---MODAL DE NUEVA TAREA----->
+  <div class="modal fade" id="modalNuevaTarea" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content rounded-4 border-0 shadow">
+        <div class="modal-header border-0 bg-light rounded-top-4">
+          <h5 class="fw-bold mb-0" style="color:#8e44ad;"><i class="fi fi-rr-edit me-2"></i>NUEVA TAREA</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body p-4">
+          <form id="formNuevaTarea">
+            <div class="row g-3">
+              <div class="col-md-4">
+                <label class="form-label small fw-bold">FECHA INICIO</label>
+                <input type="text" id="t_fInicio" class="form-control" readonly disabled>
+              </div>
+              <div class="col-md-4">
+                <label class="form-label small fw-bold">FECHA FIN</label>
+                <input type="date" id="t_fFin" class="form-control">
+              </div>
+              <div class="col-md-4">
+                <label class="form-label small fw-bold">ASIGNAR A</label>
+                <select id="t_usuario" class="form-select">
+                  <option value="Marcela">Marcela</option>
+                  <option value="Gastón">Gastón</option>
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label small fw-bold">CATEGORÍA</label>
+                <select id="t_cat" class="form-select" onchange="toggleSeccionExpedientes()">
+                  <option value="Expedientes">Sobre Expedientes</option>
+                  <option value="Otras">Otras tareas</option>
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label small fw-bold">PRIORIDAD</label>
+                <select id="t_prioridad" class="form-select">
+                  <option value="NORMAL">🟢 NORMAL</option>
+                  <option value="PRIORITARIO">🟠 PRIORITARIO</option>
+                  <option value="URGENTE">🔴 URGENTE</option>
+                </select>
+              </div>
+
+              <div class="col-12" id="div_otra_desc" style="display:none;">
+                <label class="form-label small fw-bold">DESCRIPCIÓN DE LA TAREA (BREVE)</label>
+                <input type="text" id="t_desc_manual" class="form-control" placeholder="Ej: Pago de tasas administrativas">
+              </div>
+
+              <div id="div_exp_cascada" class="row g-2 mt-1">
+                <div class="col-md-6">
+                  <label class="form-label small fw-bold">TIPO</label>
+                  <select id="t_tipo" class="form-select" onchange="actualizarFuerosTarea()">
+                    <option value="">Seleccione...</option>
+                    <option value="ANNYA">ANNYA</option>
+                    <option value="PARTICULAR">PARTICULAR</option>
+                  </select>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label small fw-bold">FUERO</label>
+                  <select id="t_fuero" class="form-select" disabled onchange="actualizarDeptosTarea()"></select>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label small fw-bold">DPTO</label>
+                  <select id="t_depto" class="form-select" disabled onchange="actualizarExpedientesTarea()"></select>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label small fw-bold">EXPEDIENTE</label>
+                  <select id="t_exp_final" class="form-select" disabled></select>
+                </div>
+              </div>
+
+              <div class="col-12 mt-3">
+                <label class="form-label small fw-bold">DETALLE COMPLETO</label>
+                <textarea id="t_detalle" class="form-control" rows="5"></textarea>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer border-0 bg-light rounded-bottom-4">
+          <button type="button" class="btn btn-secondary rounded-pill px-4" data-bs-dismiss="modal">Cerrar</button>
+          <button type="button" class="btn btn-personalizado-fucsia rounded-pill px-4" onclick="procesarGuardarTarea()">
+            <i class="fi fi-rr-disk me-2"></i>Guardar Tarea
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!---FIN MODAL NUEVA TAREA---->
+<script>
+const PREFIJO_D_NOMBRE = {
+    'MO': 'MORON', 'LM': 'LA MATANZA', 'SI': 'SAN ISIDRO', 'SM': 'SAN MARTIN',
+    'MZ': 'MERCEDES LUJÁN', 'CA': 'CABA', 'AV': 'AVELLANEDA', 
+    'MGRZ': 'MORENO GRAL RODRIGUEZ', 'LZ': 'LOMAS DE ZAMORA' 
+};
+
+function abrirModalNuevaTarea() {
+    try {
+        const hoy = new Date();
+        document.getElementById('t_fInicio').value = hoy.toLocaleDateString('es-AR');
+        document.getElementById('formNuevaTarea').reset();
+        toggleSeccionExpedientes();
+        const m = new bootstrap.Modal(document.getElementById('modalNuevaTarea'));
+        m.show();
+    } catch (err) {
+        Swal.fire('Error', 'No se pudo abrir el modal', 'error');
+    }
+}
+
+function toggleSeccionExpedientes() {
+    const cat = document.getElementById('t_cat').value;
+    document.getElementById('div_exp_cascada').style.display = (cat === 'Expedientes') ? 'flex' : 'none';
+    document.getElementById('div_otra_desc').style.display = (cat === 'Otras') ? 'block' : 'none';
+}
+
+function actualizarFuerosTarea() {
+    const tipo = document.getElementById('t_tipo').value;
+    const fueroSel = document.getElementById('t_fuero');
+    if (!tipo) return;
+
+    fueroSel.innerHTML = '<option>Cargando...</option>';
+    fueroSel.disabled = true;
+
+    google.script.run
+        .withSuccessHandler(fueros => {
+            fueroSel.innerHTML = '<option value="" selected disabled>-- SELECCIONE FUERO --</option>';
+            fueros.forEach(f => {
+                let opt = document.createElement('option');
+                opt.value = f; opt.textContent = f;
+                fueroSel.appendChild(opt);
+            });
+            fueroSel.disabled = false;
+        })
+        .getFuerosTarea(tipo);
+}
+
+function actualizarDeptosTarea() {
+    const tipo = document.getElementById('t_tipo').value;
+    const fuero = document.getElementById('t_fuero').value;
+    const deptoSel = document.getElementById('t_depto');
+    deptoSel.innerHTML = '<option>Cargando...</option>';
+    deptoSel.disabled = true;
+
+    google.script.run
+        .withSuccessHandler(deptos => {
+            deptoSel.innerHTML = '<option value="" selected disabled>-- SELECCIONE DPTO --</option>';
+            deptos.forEach(d => {
+                let opt = document.createElement('option');
+                opt.value = d; opt.textContent = PREFIJO_D_NOMBRE[d] || d;
+                deptoSel.appendChild(opt);
+            });
+            deptoSel.disabled = false;
+        })
+        .getDeptosTarea(tipo, fuero);
+}
+
+function actualizarExpedientesTarea() {
+    const tipo = document.getElementById('t_tipo').value;
+    const fuero = document.getElementById('t_fuero').value;
+    const depto = document.getElementById('t_depto').value;
+    const expSel = document.getElementById('t_exp_final');
+
+    expSel.innerHTML = '<option>Cargando listado...</option>';
+    expSel.disabled = true;
+
+    google.script.run
+        .withSuccessHandler(exps => {
+            expSel.innerHTML = '<option value="" selected disabled>-- SELECCIONE EXPEDIENTE --</option>';
+            exps.forEach(textoCompleto => {
+                let opt = document.createElement('option');
+                opt.value = textoCompleto; 
+                opt.textContent = textoCompleto;
+                expSel.appendChild(opt);
+            });
+            expSel.disabled = false;
+        })
+        .getExpedientesTarea(tipo, fuero, depto);
+}
+
+function procesarGuardarTarea() {
+    const cat = document.getElementById('t_cat').value;
+    const fFin = document.getElementById('t_fFin').value;
+    const detalle = document.getElementById('t_detalle').value.trim();
+
+    if (!fFin || !detalle) {
+        Swal.fire('Atención', 'Por favor, complete la fecha de vencimiento y el detalle de la tarea.', 'warning');
+        return;
+    }
+
+    // Recopilación de datos
+    const datos = {
+        fechaFin: fFin,
+        usuario: document.getElementById('t_usuario').value,
+        categoria: cat,
+        prioridad: document.getElementById('t_prioridad').value,
+        detalle: detalle,
+        referencia: (cat === 'Expedientes') ? 
+                     document.getElementById('t_exp_final').value : 
+                     document.getElementById('t_desc_manual').value
+    };
+
+    Swal.fire({
+        title: 'Guardando Tarea...',
+        text: 'Espere un momento por favor',
+        allowOutsideClick: false,
+        didOpen: () => Swal.showLoading()
+    });
+
+    google.script.run
+        .withSuccessHandler(res => {
+            if (res.success) {
+                Swal.fire({
+                    icon: 'success',
+                    title: '¡Tarea Guardada!',
+                    text: 'ID: ' + res.id,
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+
+                const modalElement = document.getElementById('modalNuevaTarea');
+                const modalInstance = bootstrap.Modal.getInstance(modalElement);
+                if (modalInstance) modalInstance.hide();
+                try {
+                        loadContent('gestorTareas'); 
+                    } catch (e) {
+                        console.error("Error al redirigir al gestor:", e);
+                        loadContent('_home'); // Redirección de respaldo
+                    }
+
+                
+            } else {
+                Swal.fire('Error', 'No se pudo guardar: ' + res.error, 'error');
+            }
+        })
+        .withFailureHandler(err => {
+            Swal.fire('Error Crítico', 'Fallo en la comunicación con el servidor: ' + err.message, 'error');
+        })
+        .guardarNuevaTarea(datos);
+}
+</script>

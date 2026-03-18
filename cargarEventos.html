@@ -1,0 +1,204 @@
+<!---cargarEventos.html---->
+<div class="card card-data-premium animate__animated animate__fadeIn">
+    <div class="card-header text-white d-flex justify-content-between align-items-center" style="background-color: #ED6AFF;">
+        <h5 class="mb-0"><i class="fi fi-rr-file-chart-pie"></i> VINCULAR EVENTO A EXPEDIENTE</h5>
+    </div>
+    <div class="card-body">
+        <div class="tipo-expediente-container mb-4">
+            <label class="labelInputFormNew d-block text-center">¿TIPO DE EXPEDIENTE?</label>
+            <div class="btn-group-select d-flex gap-2 justify-content-center" role="group">
+                <input type="radio" class="btn-check" name="tipoCasoMaestro" id="radioParticular" value="PARTICULAR" autocomplete="off">
+                <label class="btn-menu rounded-pill px-4" for="radioParticular" id="labelParticular">
+                    <i class="fi fi-tr-hr-person"></i> PARTICULAR
+                </label>
+
+                <input type="radio" class="btn-check" name="tipoCasoMaestro" id="radioAnnya" value="ANNYA" autocomplete="off">
+                <label class="btn-menu rounded-pill px-4" for="radioAnnya" id="labelAnnya">
+                    <i class="fi fi-rr-hands-holding-child"></i> ANNYA
+                </label>
+            </div>
+        </div>
+
+        <form id="formNuevoEvento">
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label class="labelInputFormNew">Fecha y Hora:</label>
+                    <input type="datetime-local" id="fechaEvento" class="input-form-premium" required>
+                </div>
+                <div class="col-md-6">
+                    <label class="labelInputFormNew">Motivo / Tipo:</label>
+                    <select id="motivoEvento" class="input-form-premium rounded-pill px-4" required>
+                        <option value="" disabled selected>-- SELECCIONE --</option>
+                        <option value="Audiencia">Audiencia</option>
+                        <option value="Pericia">Pericia</option>
+                        <option value="Cita Cliente">Cita con Cliente</option>
+                        <option value="Vencimiento">Vencimiento Término</option>
+                    </select>
+                </div>
+            </div>
+
+            <hr>
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label class="labelInputFormNew">Fuero:</label>
+                    <select id="selectFuero" class="input-form-premium rounded-pill px-4" required disabled>
+                        <option value="">Seleccione tipo primero...</option>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label class="labelInputFormNew">Depto. Judicial:</label>
+                    <select id="selectDepto" class="input-form-premium rounded-pill px-4" required disabled>
+                        <option value="">Seleccione Fuero primero...</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-5">
+                    <label class="labelInputFormNew">Juzgado:</label>
+                    <select id="selectJuzgado" class="input-form-premium rounded-pill px-4" required disabled>
+                        <option value="">Seleccione Depto...</option>
+                    </select>
+                </div>
+                <div class="col-md-7">
+                    <label class="labelInputFormNew">Seleccionar Expediente:</label>
+                    <select id="selectExpediente" class="input-form-premium rounded-pill px-4" required disabled style="border-color: #AD46FF;">
+                        <option value="">Esperando selección de juzgado...</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label class="labelInputFormNew">Detalles del evento:</label>
+                <textarea id="detalleEvento" class="input-form-premium" rows="3" placeholder="Información adicional..."></textarea>
+            </div>
+
+            <div class="text-end">
+                <button type="submit" id="btnSubmitEvento" class="btn-menu rounded-pill px-4">
+                    <i class="fi fi-rr-file-signature"></i> REGISTRAR Y SINCRONIZAR
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="row justify-content-center mt-3 mb-2">
+  <div class="col-auto">
+    <button type="button" class="btn-volver-glass-pro" onclick="loadContent('eventos'); return false;">
+      <i class="fi fi-br-angle-double-left"></i><span>VOLVER</span>
+    </button>
+  </div>
+</div>
+
+<script>
+(function() {
+    const form = document.getElementById('formNuevoEvento');
+    const btn = document.getElementById('btnSubmitEvento');
+    const radios = document.getElementsByName('tipoCasoMaestro');
+    
+    const sFuero = document.getElementById('selectFuero');
+    const sDepto = document.getElementById('selectDepto');
+    const sJuzgado = document.getElementById('selectJuzgado');
+    const sExpediente = document.getElementById('selectExpediente');
+
+    let tipoSeleccionado = "";
+
+    radios.forEach(r => {
+        r.onchange = () => {
+            tipoSeleccionado = r.value;
+            limpiarTodo();
+            sFuero.innerHTML = '<option>Cargando fueros...</option>';
+            google.script.run
+                .withSuccessHandler(f => {
+                    llenarSelector(sFuero, f, "Seleccione Fuero...");
+                    sFuero.disabled = false;
+                })
+                .getFuerosDriveRaiz(tipoSeleccionado); 
+        };
+    });
+
+    sFuero.onchange = () => {
+        limpiarDesde(sDepto);
+        google.script.run.withSuccessHandler(d => { 
+            llenarSelector(sDepto, d, "Seleccione Depto..."); 
+            sDepto.disabled = false; 
+        }).getDeptosJudiciales(sFuero.value, tipoSeleccionado);
+    };
+
+    sDepto.onchange = () => {
+        limpiarDesde(sJuzgado);
+        google.script.run.withSuccessHandler(j => { 
+            llenarSelector(sJuzgado, j, "Seleccione Juzgado..."); 
+            sJuzgado.disabled = false; 
+        }).getExptesFromDrive(sFuero.value, sDepto.value, tipoSeleccionado);
+    };
+
+    sJuzgado.onchange = () => {
+        sExpediente.disabled = true;
+        sExpediente.innerHTML = '<option>Cargando expedientes...</option>';
+        google.script.run.withSuccessHandler(expedientes => {
+            llenarSelector(sExpediente, expedientes, "Seleccione el expediente...");
+            sExpediente.disabled = false;
+        }).getListaExptesdeId(sJuzgado.value); 
+    };
+
+    function llenarSelector(select, datos, placeholder) {
+        select.innerHTML = `<option value="">${placeholder}</option>`;
+        if (!datos || !Array.isArray(datos)) return;
+        datos.forEach(d => {
+            let texto = (typeof d === 'object' && d !== null) ? (d.name || d.nombre || "Sin nombre") : d;
+            let valor = (typeof d === 'object' && d !== null) ? (d.id || texto) : d;
+            select.innerHTML += `<option value="${valor}">${texto}</option>`;
+        });
+    }
+
+    function limpiarDesde(select) {
+        select.innerHTML = '<option value="">Cargando...</option>';
+        select.disabled = true;
+        if(select === sDepto) limpiarDesde(sJuzgado);
+        if(select === sJuzgado) { sExpediente.innerHTML = '<option>--</option>'; sExpediente.disabled = true; }
+    }
+
+    function limpiarTodo() {
+        [sFuero, sDepto, sJuzgado, sExpediente].forEach(s => {
+            s.innerHTML = '<option value="">Esperando tipo...</option>';
+            s.disabled = true;
+        });
+    }
+
+    form.onsubmit = (e) => {
+    e.preventDefault();
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> PROCESANDO...';
+
+    // CAPTURA DE TEXTOS
+    const fueroNombre = sFuero.options[sFuero.selectedIndex].text;
+    const deptoNombre = sDepto.options[sDepto.selectedIndex].text;
+    const juzgadoNombre = sJuzgado.options[sJuzgado.selectedIndex].text;
+
+    const datos = {
+        fecha: document.getElementById('fechaEvento').value,
+        motivo: document.getElementById('motivoEvento').value,
+        fuero: fueroNombre,
+        tipoRama: tipoSeleccionado,
+        juzgadoInfo: `${deptoNombre} - ${juzgadoNombre}`, 
+        expediente: sExpediente.value,
+        detalle: document.getElementById('detalleEvento').value
+    };
+
+    google.script.run
+        .withSuccessHandler(res => {
+            if(res.success) {
+                showAlert("✅ Evento registrado con éxito", "success");
+                form.reset();
+                setTimeout(() => loadContent('eventos'), 1500);
+            } else {
+                showAlert("❌ Error: " + res.error, "danger");
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fi fi-rr-file-signature"></i> REGISTRAR Y SINCRONIZAR';
+            }
+        })
+        .guardarEvento(datos);
+    };
+})();
+</script>

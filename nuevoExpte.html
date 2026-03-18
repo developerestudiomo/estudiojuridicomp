@@ -1,0 +1,480 @@
+<!--nuevoExpte.html-->
+<div id="nuevoExpedienteContainer" class="flex flex-col items-center justify-center">
+      <div class="login-card">
+          <div class="login-header">
+              <div class="neu-icon">
+                  <div class="icon-inner">
+                        <i class="fi fi-rr-legal-document text-2xl icon-clr-ciruel"></i>
+                  </div>
+              </div>
+
+              <h2 class="text-3xl font-extrabold tracking-tight title-expediente" style="color: var(--principal);">
+                  REGISTRO DE NUEVO <span class="subtitle-expediente" style="color: var(--principal-dark);">EXPEDIENTE</span>
+              </h2>
+          </div>
+
+      <form class="login-form" novalidate>
+          <div class="barras-titles flex items-center gap-2 text-white p-4 header-paso-1" style="background: var(--principal);">
+              <span class="bg-pulse-teal w-4 h-4 rounded-full animate-pulse"></span>
+              <h6 class="mb-0 font-bold text-xs uppercase tracking-widest">Paso 1: Clasificación del Caso</h6>
+          </div>
+
+          <div id="selectorSection" class="form-group p-8 bg-[#e0e5ec]"> <div class="flex flex-col md:flex-row items-center justify-center gap-8 mb-10">
+                  <label class="labelFormsTitle text-gray-500 font-bold uppercase text-xs tracking-wider">Seleccione Tipo:</label>
+                  <div class="flex gap-6">
+                      <div class="neu-radio-container">
+                          <input type="radio" class="hidden-radio" name="tipoCasoMaestro" id="btnParticular" value="PARTICULAR" autocomplete="off">
+                          <label class="neu-button-label" for="btnParticular">
+                              <i class="fi fi-tr-hr-person"></i> PARTICULAR
+                          </label>
+                      </div>
+                      <div class="neu-radio-container">
+                          <input type="radio" class="hidden-radio" name="tipoCasoMaestro" id="btnAnnya" value="ANNYA" autocomplete="off">
+                          <label class="neu-button-label" for="btnAnnya">
+                              <i class="fi fi-rr-hands-holding-child"></i> ANNYA
+                          </label>
+                      </div>
+                  </div>
+              </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div class="neu-input">
+                  <select class="input-form-premium w-full" id="fueroSelector" required disabled>
+                      <option value="" selected disabled>-- SELECCIONE --</option>
+                  </select>
+                  <label class="labelFormsTitle">FUERO</label>
+              </div>
+
+              <div class="neu-input">
+                  <select class="input-form-premium w-full" id="departamentoSelector" required disabled>
+                      <option value="" selected disabled>-- SELECCIONE --</option>
+                  </select>
+                  <label class="labelFormsTitle">DEPTO JUDICIAL</label>
+              </div>
+
+              <div class="neu-input">
+                  <select class="input-form-premium w-full" id="juzgadoSelector" required disabled>
+                      <option value="" selected disabled>-- SELECCIONE --</option>
+                  </select>
+                  <label class="labelFormsTitle">N° JUZGADO</label>
+              </div>
+          </div>
+          </div>
+      </form>
+
+          <form class="login-form" id="loginForm" novalidate>
+              <div class="barras-titles flex items-center gap-2 bg-gray-800 text-white p-4">
+                  <span class="bg-pulse-yellow w-4 h-4 rounded-full"></span>
+                  <h6 class="mb-0 font-bold text-xs uppercase tracking-widest">Paso 2: Datos del Expediente</h6>
+              </div>
+
+              <div class="form-group p-8">
+                    <div class="input-group neu-input mb-2"> <div class="inline-flex items-center gap-3 py-1 px-4 border-l-4  rounded-r-xl backdrop-blur-md bg-white/40 shadow-lg indicator-container" 
+                    style="border-left-color: var(--principal); margin-top: 5px; margin-bottom: 5px;">
+          
+                        <input type="text" id="tipoCasoDisplay" 
+                              class="bg-transparent border-none font-black focus:ring-0 uppercase w-32 text-xs outline-none indicator-input" 
+                              style="color: var(--principal-dark);" readonly>
+                        
+                        <label class="labelFormsTitle m-0 text-[9px] font-bold tracking-wider indicator-label" 
+                              style="color: var(--principal);">MODO SELECCIONADO</label>
+                    </div>
+                </div>
+
+                 <div class="form-group neu-input mb-6">
+                    <div class="grid grid-cols-1  md:grid-cols-3 gap-6 mb-6">
+                      <div class="neu-input">
+                          <input type="text" class="input-form-premium w-full bg-gray-50 text-center font-bold" id="prefijo" placeholder=" " readonly>
+                          <label class="labelFormsTitle block mb-2">PREFIJO</label>
+
+                      </div>
+                      <div class="neu-input">
+                        <input type="number" class="input-form-premium w-full" id="numeroReceptoria" placeholder=" " required>
+                          <label class="labelFormsTitle block mb-2">N° RECEPTORIA (*)</label>
+
+                      </div>
+                      <div class="neu-input">
+                        <input type="text" class="input-form-premium w-full" id="anio" required maxlength="4" placeholder=" " required>
+                          <label class="labelFormsTitle block mb-2">AÑO (*)</label>
+
+                      </div>
+                      </div>
+
+                      <div class="neu-input cols-1 mb-6">
+                         <input type="text" class="input-form-premium w-full" id="caratula" placeholder=" " required>
+                          <label class="labelFormsTitle block mb-2">CARÁTULA (*)</label>
+
+                      </div>
+
+                      <!--<div class="grid grid-cols-1 md:grid-cols-12 gap-6 mb-6">-->
+                          <div class="neu-input">
+                              <input type="date" class="input-form-premium w-full" id="fechaInicial" placeholder=" " required>                             
+                              <label class="labelFormsTitle block mb-2">FECHA INICIO (*)</label>
+
+                          </div>
+
+                          <div class="md:col-span-8 neu-input gap-6 mb-6">
+                              <label class="labelFormsTitle block mb-2"> Registre las NOVEDADES aqui</label>
+                              <textarea class="input-form-premium w-full min-h-[400px]" id="novedadesIniciales"></textarea>
+                          </div>
+                  
+                  </div>
+
+                  <div class="flex justify-end gap-6 mt-10">
+                      <button type="reset" class="neu-button btn-clean" title="Limpiar Formulario">
+                          <i class="fi fi-rr-trash"></i>
+                      </button>
+                      <button type="submit" id="btnSubmitEvento" class="neu-button btn-save" title="Guardar Expediente">
+                            <i class="fi fi-rr-disk"></i>
+
+                        <div class="btn-loader" style="display: none;">
+                              <div class="neu-spinner"></div>
+                        </div>
+                      </button>
+                  </div>
+              </div>
+          </form>
+
+          <div class="divider">
+              <div class="divider-line"></div>
+              <span>Gestión Legal Digital</span>
+              <div class="divider-line"></div>
+          </div>
+      </div>
+
+<!--------------------MODAL GUARDADO------------------------>
+<div class="modal fade" id="confirmUploadModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 420px;">
+        <div class="modal-content neu-modal-container">
+            
+            <div class="neu-modal-header">
+                <div class="neu-icon-circle">
+                    <i class="fi fi-rr-badge-check"></i>
+                </div>
+                <h5 class="neu-badge-text">Registro Exitoso</h5>
+            </div>
+
+            <div class="neu-modal-body">
+                <h4 class="neu-main-question">
+                    ¿Deseas adjuntar documentos <br>
+                    <span class="highlight-text">al expediente ahora?</span>
+                </h4>
+            </div>
+
+            <div class="neu-modal-footer">
+                <button class="neu-button btn-clean w-auto px-8" onclick="loadContent('gestionExpte')">
+                    <span class="btn-text">LUEGO</span>
+                </button>
+                <button class="neu-button btn-save w-auto px-8" onclick="window.startUploadProcess()">
+                    <span class="btn-text">SÍ, ADJUNTAR</span>
+                </button>
+            </div>
+            
+        </div>
+    </div>
+</div>
+	<!-------------------MODAL CARGA ARCHIVOS--------------------------------->	
+		<div class="modal fade" id="uploadFilesModal" tabindex="-1" data-bs-backdrop="static" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" style="max-width: 420px;"> 
+          <div class="modal-content neu-modal-container"> <div class="neu-modal-header" style="border-bottom: 2px solid rgba(126, 34, 206, 0.1);">
+                  <div class="neu-icon-circle" style="color: #7e22ce; box-shadow: 4px 4px 10px #bec3cf, -4px -4px 10px #ffffff;">
+                      <i class="fi fi-rr-cloud-upload"></i>
+                  </div>
+                  <h5 class="neu-badge-text" style="color: #7e22ce;">Digitalización de Documentos</h5>
+              </div>
+
+              <div class="neu-modal-body p-8">
+                  <div class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#e0e5ec] shadow-inner mb-6 border border-white/40">
+                      <i class="fi fi-rr-folder text-purple-600 text-xs"></i>
+                      <span id="newExpteNameDisplay" class="text-xs font-black text-gray-600 tracking-tight">---</span>
+                  </div>
+                      
+                  <input type="file" id="documentFiles" class="hidden" multiple />
+                  <label for="documentFiles" class="neu-upload-zone">
+                      <div class="neu-upload-icon-box">
+                          <i class="fi fi-rr-upload text-2xl text-purple-600"></i>
+                      </div>
+                      <span id="fileLabel" class="text-[11px] font-black text-gray-500 uppercase tracking-wider">
+                          Seleccionar archivos
+                      </span>
+                      <p class="text-[9px] text-gray-400 mt-2 italic">PDF, JPG o PNG permitidos</p>
+                  </label>
+
+                  <div id="progressArea" class="mt-8 hidden">
+                      <div class="flex justify-between items-end mb-2">
+                          <span class="text-[9px] font-black text-purple-900">PROCESANDO...</span>
+                          <span id="progressPercent" class="text-xs font-black text-purple-700">0%</span>
+                      </div>
+                      <div class="neu-progress-bg">
+                          <div id="progressBar" class="neu-progress-bar" style="width: 0%"></div>
+                      </div>
+                  </div>
+              </div>
+
+              <div class="neu-modal-footer">
+                  <button class="neu-button btn-clean w-auto px-8" onclick="loadContent('gestionExpte')">FINALIZAR</button>
+                  <button class="neu-button btn-save w-auto px-8" id="uploadFilesBtn" style="--principal: #7e22ce; --principal-dark: #6b21a8;">
+                      SUBIR ARCHIVOS
+                  </button>
+              </div>
+          </div>
+      </div>
+  </div>
+		
+	<!----------------------cierra card-------------------------------------->
+</div>
+
+<input type="hidden" id="selectedJuzgadoId">
+<input type="hidden" id="selectedJuzgadoName">
+<input type="hidden" id="selectedJuzgadoFolderId">
+<input type="hidden" id="expedienteFolderId">
+
+<script>
+(function() {
+    class ExpedienteManager {
+        constructor() {
+            // Elementos Principales
+            this.container = document.getElementById('nuevoExpedienteContainer');
+            this.form = document.getElementById('loginForm');
+            this.submitBtn = document.getElementById('btnSubmitEvento');
+            this.tipoDisplay = document.getElementById('tipoCasoDisplay');
+            
+            // Selectores
+            this.fueroSel = document.getElementById('fueroSelector');
+            this.deptoSel = document.getElementById('departamentoSelector');
+            this.juzSel = document.getElementById('juzgadoSelector');
+
+            // Inputs de Archivos
+            this.fileInput = document.getElementById('documentFiles');
+            this.uploadBtn = document.getElementById('uploadFilesBtn');
+
+            if (this.container) this.init();
+        }
+
+        init() {
+            this.setupTypeSelectors();
+            this.setupChainLogic();
+            this.setupFormSubmission();
+            this.setupFileUploadLogic(); // <-- SECCIÓN INTEGRADA
+        }
+
+      setupTypeSelectors() {
+          document.querySelectorAll('input[name="tipoCasoMaestro"]').forEach(radio => {
+              radio.addEventListener('change', (e) => {
+                  const val = e.target.value;
+                  this.tipoDisplay.value = val;
+                  
+                  // Definimos la paleta según el tipo
+                  const isAnnya = (val === 'ANNYA');
+                  const colorMain = isAnnya ? '#ef66b6' : '#00897b'; // Rosa vs Teal
+                  const colorDark = isAnnya ? '#ae4482' : '#07665c';
+                  this.container.querySelector('.header-paso-1').style.backgroundColor = colorMain;
+                  this.container.querySelector('.indicator-container').style.borderLeftColor = colorMain;
+                  this.container.querySelector('.indicator-label').style.color = colorMain;
+                  this.container.querySelector('.indicator-input').style.color = colorDark;
+
+                  document.documentElement.style.setProperty('--principal-bg-dynamic', colorMain);
+
+                  this.resetSelectors();
+                  this.fetchFueros(val);
+              });
+          });
+      }
+
+        resetSelectors() {
+            this.fueroSel.disabled = true;
+            this.fueroSel.innerHTML = '<option selected disabled>Cargando...</option>';
+            this.deptoSel.disabled = true;
+            this.deptoSel.innerHTML = '<option selected disabled>-- SELECCIONE DPTO --</option>';
+            this.juzSel.disabled = true;
+            this.juzSel.innerHTML = '<option selected disabled>-- SELECCIONE JUZGADO --</option>';
+        }
+
+        fetchFueros(tipo) {
+            google.script.run.withSuccessHandler(f => {
+                this.fueroSel.innerHTML = '<option selected disabled>-- SELECCIONE FUERO --</option>';
+                if(f) f.sort().forEach(item => {
+                    let opt = document.createElement('option');
+                    opt.value = item; opt.textContent = item;
+                    this.fueroSel.appendChild(opt);
+                });
+                this.fueroSel.disabled = false;
+                this.fueroSel.dispatchEvent(new Event('change'));
+            }).getFuerosDesdeDrive(tipo);
+        }
+
+        setupChainLogic() {
+            this.fueroSel.onchange = () => {
+                const tipo = document.querySelector('input[name="tipoCasoMaestro"]:checked').value;
+                this.deptoSel.disabled = true;
+                this.deptoSel.innerHTML = '<option>Cargando...</option>';
+                google.script.run.withSuccessHandler(d => {
+                    this.deptoSel.innerHTML = '<option selected disabled>-- SELECCIONE DPTO --</option>';
+                    if(d) d.forEach(p => {
+                        let opt = document.createElement('option');
+                        opt.value = p; opt.textContent = p;
+                        this.deptoSel.appendChild(opt);
+                    });
+                    this.deptoSel.disabled = false;
+                }).getDepartamentosJudiciales(this.fueroSel.value, tipo);
+            };
+
+            this.deptoSel.onchange = () => {
+                const tipo = document.querySelector('input[name="tipoCasoMaestro"]:checked').value;
+                document.getElementById('prefijo').value = this.deptoSel.value;
+                this.juzSel.disabled = true;
+                this.juzSel.innerHTML = '<option>Cargando...</option>';
+                google.script.run.withSuccessHandler(j => {
+                    this.juzSel.innerHTML = '<option selected disabled>-- SELECCIONE JUZGADO --</option>';
+                    if(j) j.forEach(item => {
+                        let opt = document.createElement('option');
+                        opt.value = item.id; opt.textContent = item.name;
+                        opt.setAttribute('data-folder', item.folderId);
+                        this.juzSel.appendChild(opt);
+                    });
+                    this.juzSel.disabled = false;
+                }).getExpedientesFromDrive(this.fueroSel.value, this.deptoSel.value, tipo);
+            };
+
+            this.juzSel.onchange = () => {
+                const selected = this.juzSel.options[this.juzSel.selectedIndex];
+                document.getElementById('selectedJuzgadoId').value = this.juzSel.value;
+                document.getElementById('selectedJuzgadoName').value = selected.textContent;
+                document.getElementById('selectedJuzgadoFolderId').value = selected.getAttribute('data-folder');
+            };
+        }
+
+        setupFormSubmission() {
+            this.form.onsubmit = (e) => {
+                e.preventDefault();
+                const tipoCheck = document.querySelector('input[name="tipoCasoMaestro"]:checked');
+                if(!tipoCheck || !this.juzSel.value) {
+                    Swal.fire('Atención', 'Complete la clasificación del caso (Paso 1)', 'warning');
+                    return;
+                }
+
+                this.setLoading(true);
+                const data = {
+                    fueroId: this.fueroSel.value,
+                    juzgadoId: document.getElementById('selectedJuzgadoId').value,
+                    juzgadoName: document.getElementById('selectedJuzgadoName').value,
+                    juzgadoFolderId: document.getElementById('selectedJuzgadoFolderId').value,
+                    sheetName: `${document.getElementById('prefijo').value}-${document.getElementById('numeroReceptoria').value}-${document.getElementById('anio').value}`,
+                    caratula: document.getElementById('caratula').value.toUpperCase(),
+                    fechaInicial: document.getElementById('fechaInicial').value,
+                    novedadesIniciales: document.getElementById('novedadesIniciales').value,
+                    prefijo: document.getElementById('prefijo').value,
+                    numeroReceptoria: document.getElementById('numeroReceptoria').value,
+                    anio: document.getElementById('anio').value,
+                    tipoCaso: tipoCheck.value
+                };
+
+                google.script.run.withSuccessHandler(res => {
+                    this.setLoading(false);
+                    if(res && res.error) return Swal.fire('Error', res.error, 'error');
+                    
+                    document.getElementById('expedienteFolderId').value = res.folderId;
+                    document.getElementById('newExpteNameDisplay').textContent = data.sheetName;
+                    const modalConfirm = new bootstrap.Modal(document.getElementById('confirmUploadModal'));
+                    modalConfirm.show();
+                }).createNewExpedienteSheet(data);
+            };
+        }
+
+        setupFileUploadLogic() {
+          if(this.fileInput) {
+              this.fileInput.onchange = () => {
+                  const count = this.fileInput.files.length;
+                  document.getElementById('fileLabel').textContent = count > 0 ? `${count} archivos seleccionados` : 'Seleccionar archivos';
+              };
+          }
+
+          if(this.uploadBtn) {
+              this.uploadBtn.onclick = () => {
+                  const files = this.fileInput.files;
+                  const folderId = document.getElementById('expedienteFolderId').value;
+
+                  if (files.length === 0) return Swal.fire('Atención', 'Adjunte archivos para subir', 'warning');
+
+                  this.uploadBtn.disabled = true;
+                  this.uploadBtn.textContent = "SUBIENDO...";
+                  document.getElementById('progressArea').classList.remove('hidden');
+
+                  let uploadedCount = 0;
+                  Array.from(files).forEach(file => {
+                      const reader = new FileReader();
+                      reader.onload = (e) => {
+                          const content = e.target.result.split(',')[1];
+                          google.script.run.withSuccessHandler((res) => {
+                              if (res && res.success) {
+                                  uploadedCount++;
+                                  let percent = Math.round((uploadedCount / files.length) * 100);
+                                  document.getElementById('progressBar').style.width = percent + '%';
+                                  document.getElementById('progressPercent').textContent = percent + '%';
+                                  if (uploadedCount === files.length) {
+                                      Swal.fire({
+                                          title: '¡Expediente Digitalizado!',
+                                          text: 'Los archivos se vincularon correctamente al Drive.',
+                                          icon: 'success',
+                                          confirmButtonColor: '#7e22ce',
+                                          confirmButtonText: 'FINALIZAR',
+                                          allowOutsideClick: false
+                                      }).then((result) => {
+                                          if (result.isConfirmed) {
+                                              const modalUpload = bootstrap.Modal.getInstance(document.getElementById('uploadFilesModal'));
+                                              if(modalUpload) modalUpload.hide();
+                                              if (typeof loadContent === 'function') {
+                                                  loadContent('gestionExpte'); 
+                                              } else {
+                                                  window.location.reload();
+                                              }
+                                          }
+                                      });
+                                  }
+                              }
+                          }).uploadBase64File(content, file.type, file.name, folderId);
+                      };
+                      reader.readAsDataURL(file);
+                  });
+              };
+          }
+      }
+
+          setLoading(isLoading) {
+              if (!this.submitBtn) return;
+
+              // Buscamos el icono/texto y el loader
+              const btnIcon = this.submitBtn.querySelector('.fi-rr-disk');
+              const btnLoader = this.submitBtn.querySelector('.btn-loader');
+
+              this.submitBtn.disabled = isLoading;
+
+              if (isLoading) {
+                  this.submitBtn.classList.add('loading-active');
+                  if (btnIcon) btnIcon.style.display = 'none';
+                  if (btnLoader) btnLoader.style.display = 'block';
+              } else {
+                  this.submitBtn.classList.remove('loading-active');
+                  if (btnIcon) btnIcon.style.display = 'inline-block';
+                  if (btnLoader) btnLoader.style.display = 'none';
+              }
+          }
+    }
+
+    window.startUploadProcess = function() {
+        const modalConfirmEl = document.getElementById('confirmUploadModal');
+        const modalConfirm = bootstrap.Modal.getInstance(modalConfirmEl);
+        if(modalConfirm) modalConfirm.hide();
+        
+        const modalUpload = new bootstrap.Modal(document.getElementById('uploadFilesModal'));
+        modalUpload.show();
+    };
+
+    const initManager = () => { window.expedienteManager = new ExpedienteManager(); };
+    if (document.readyState === 'complete' || document.readyState === 'interactive') {
+        initManager();
+    } else {
+        document.addEventListener('DOMContentLoaded', initManager);
+    }
+})();
+</script>

@@ -1,0 +1,371 @@
+<!----- seleccionarExpedientes.html ---------->
+<div id="content" class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-11">
+          <div class="flex items-center gap-4 mb-8">
+            <div class="icon-circle-3D bg-fucsia-light w-16 h-16 flex items-center justify-center rounded-full shadow-inner"><i class="bi bi-search text-2xl icon-clr-pink"></i></div>
+            <h2 class="text-3xl font-extrabold tracking-tight title-expediente" style="color: bg-purple-50;">
+                GESTOR DE <span class="subtitle-expediente" style="color: var(--principal-dark);">EXPEDIENTES EN CURSO</span>
+            </h2>
+        </div>
+           
+     <div class="card shadow-sm mb-4 border-0"> <div class="card-body contenedor-switches-premium">
+         <div id="selectorSection" class="card-form-glass shadow-xl mb-6 overflow-hidden border border-gray-100">
+            <div class="barras-titles flex items-center gap-2 text-white p-4 header-paso-1" style="background: var(--principal);">   
+              <span class="bg-pulse-yellow w-4 h-4 rounded-full animate-pulse"></span>    
+                    <h6 class="mb-0 font-bold text-xs uppercase tracking-widest">
+                        1. SELECCIONE EL TIPO DE EXPTE A LISTAR
+                    </h6>
+            </div>
+           <div class="card-body p-8" style="background: #f8fafc;">
+              <div class="flex flex-col md:flex-row items-center justify-center gap-8 mb-6">
+                    <label class="labelFormsTitle text-gray-500 font-bold">SELECCIONE TIPO DE PROCESO:</label>
+<!--SELECTORES DE TIPO-->
+                    <div class="flex gap-6">
+                        <div class="neu-radio-container">
+                            <input type="radio" class="hidden-radio" name="tipoCasoMaestro" id="btnParticular" value="PARTICULAR" autocomplete="off">
+                            <label class="neu-button-label" for="btnParticular" id="labelParticular">
+                                <i class="fi fi-tr-hr-person text-xl"></i> PARTICULAR
+                            </label>
+                        </div>
+                        <div class="neu-radio-container">
+                            <input type="radio" class="hidden-radio" name="tipoCasoMaestro" id="btnAnnya" value="ANNYA" autocomplete="off">
+                            <label class="neu-button-label" for="btnAnnya" id="labelAnnya">
+                                <i class="fi fi-rr-hands-holding-child text-xl"></i> ANNYA
+                            </label>
+                        </div>
+                    </div>
+              </div>
+<!--FIN SELECTORES TIPO-->
+                <div class="barras-titles flex items-center gap-2 text-white p-4 header-paso-1" style="background: var(--principal);">   
+                    <span class="bg-pulse-red w-4 h-4 rounded-full animate-pulse"></span>    
+                    <h6 class="mb-0 font-bold text-xs uppercase tracking-widest">
+                            <i class="fi fi-tc-choose"></i> SELECTOR DE FUEROS Y JUZGADOS
+                    </h6>
+                  </div>
+                  <div class="card-body">
+                    <form id="selectExpedienteForm" class="row g-3">
+                              <div class="col-md-4">
+                                  <label for="fueroSelector" class="labelFormsTitle d-block mb-1">Fuero:</label>
+                                  <select class="form-select-juz sel-fuero w-100" disabled id="fueroSelector">
+                                      <option value="" selected disabled>-- SELECCIONE FUERO --</option>
+                                  </select>
+                              </div>
+                              <div class="col-md-4">
+                                  <label for="departamentoSelector" class="labelFormsTitle d-block mb-1">Departamento:</label>
+                                  <select class="form-select-juz sel-depto w-100" disabled id="departamentoSelector">
+                                      <option value="">-- SELECCIONE DPTO JUDICIAL --</option>
+                                  </select>
+                              </div>
+                              <div class="col-md-4">
+                                  <label for="archivoSelector" class="labelFormsTitle d-block mb-1">Juzgado:</label>
+                                  <select class="form-select-juz sel-juzgado w-100" disabled id="archivoSelector">
+                                      <option value="">-- SELECCIONE N° JUZGADO --</option>
+                                  </select>
+                              </div>
+
+
+                          <div class="flex justify-end gap-6 mt-10">
+                              <button type="submit" class="btn-actions" title="Listar Expedientes" id="cargarExpedienteBtn" disabled>
+                                  <i class="fi fi-rc-assessment icon-clr-pink"></i></button>
+                          </div>
+                    </form>
+                  </div>
+
+            </div>
+<!-----------------------SECCIÓN DE LA TABLA----------------------------------->        
+            <div id="expedientesListSection" class="card shadow-sm mt-4" style="display: none;">
+              <div class="barras-titles flex items-center gap-2 bg-gray-800 text-white p-4">
+                <span class="bg-pulse-green w-4 h-4 rounded-full"></span>
+                  <h6 class="mb-0 font-bold text-xs uppercase tracking-widest">
+                      Listado: <span id="fueroSelectedName" class="fw-bold"></span> - 
+                      <span id="juzgadoSeleccionadoNombre"></span>
+                  </h6>
+                  <span class="badge-sunset badge-pulse" id="tipoGestionBadge"></span>
+               </div>
+                <div class="card-form-glass p-3">
+                    <div id="loadingMessage" class="text-center py-10" style="display: none;">
+                            <div class="loader-wrapper">
+                                <div class="custom-spinner"></div>
+                                <div class="spinner-dot"></div>
+                            </div>
+                            <p class="mt-4 fw-black text-uppercase tracking-widest text-xs" style="color: var(--principal); opacity: 0.8;">
+                                Sincronizando Expedientes...
+                            </p>
+                    </div>
+                    <div class="card-data-premium p-3" id="expedientesTableContainer" style="display: none;">
+                        <table id="tableSelectExpt" class="table w-100">
+                            <thead></thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row justify-content-center mt-3 mb-2">
+  <div class="col-auto">
+    <button type="button" class="btn-volver-glass-pro" onclick="loadContent('gestionExpte'); return false;">
+      <i class="fi fi-br-angle-double-left"></i><span>VOLVER</span>
+    </button>
+  </div>
+</div>
+
+<script>
+(function () {
+    // Mapeo de prefijos
+    const PREFIJO_TO_NOMBRE = {
+        'MO': 'MORON', 'LM': 'LA MATANZA', 'SI': 'SAN ISIDRO', 'SM': 'SAN MARTIN',
+        'MZ': 'MERCEDES LUJÁN', 'CA': 'CABA', 'AV': 'AVELLANEDA', 'MGRZ': 'MORENO GRAL RODRIGUEZ', 'LZ': 'LOMAS DE ZAMORA' 
+    };
+
+    // Elementos del DOM
+    const fueroSelector = document.getElementById('fueroSelector');
+    const departamentoSelector = document.getElementById('departamentoSelector');
+    const archivoSelector = document.getElementById('archivoSelector');
+    const cargarExpedienteBtn = document.getElementById('cargarExpedienteBtn');
+    const radioButtons = document.querySelectorAll('input[name="tipoCasoMaestro"]');
+    const loadingMessage = document.getElementById('loadingMessage');
+    const expedientesTableContainer = document.getElementById('expedientesTableContainer');
+
+    // Auxiliar para obtener gestión activa
+    const getTipo = () => document.querySelector('input[name="tipoCasoMaestro"]:checked')?.value;
+
+    // --- FUNCIÓN DE CAMBIO DE ESTÉTICA ---
+    function setupTypeSelectors() {
+        document.querySelectorAll('input[name="tipoCasoMaestro"]').forEach(radio => {
+            radio.addEventListener('change', (e) => {
+                const val = e.target.value;
+                
+                // Definimos la paleta según el tipo
+                const isAnnya = (val === 'ANNYA');
+                const colorMain = isAnnya ? '#ef66b6' : '#00897b'; // Rosa vs Teal
+                
+                // Aplicamos cambios de color a los elementos del encabezado
+                const headers = document.querySelectorAll('.header-paso-1');
+                headers.forEach(h => h.style.backgroundColor = colorMain);
+                  const mainContent = document.getElementById('content'); 
+                if (mainContent) {
+                    const localHeaders = mainContent.querySelectorAll('.header-paso-1');
+                    localHeaders.forEach(h => h.style.backgroundColor = colorMain);                
+                }  
+                document.documentElement.style.setProperty('--principal-bg-dynamic', colorMain);
+            });
+        });
+    }
+
+    // Inicializar los selectores de tipo
+    setupTypeSelectors();
+
+    // --- EVENTO TIPO EXPTE ---//
+    radioButtons.forEach(radio => {
+        radio.addEventListener('change', function() {
+            const tipo = this.value;
+            sessionStorage.setItem('tipoGestionActiva', tipo);
+            fueroSelector.disabled = true;
+            fueroSelector.innerHTML = '<option value="">Cargando...</option>';
+            departamentoSelector.innerHTML = '<option value="">-- Elija Fuero --</option>';
+            departamentoSelector.disabled = true;
+            archivoSelector.innerHTML = '<option value="">-- Elija Depto --</option>';
+            archivoSelector.disabled = true;
+            cargarExpedienteBtn.disabled = true;
+
+            google.script.run
+                .withSuccessHandler(fueros => {
+                    fueroSelector.innerHTML = '<option value="" selected disabled>-- Seleccione Fuero --</option>';
+                    fueros.forEach(f => {
+                        let opt = new Option(f, f);
+                        fueroSelector.add(opt);
+                    });
+                    fueroSelector.disabled = false;
+                })
+                .getFuerosDesdeDrive(tipo);
+        });
+    });
+
+    // ---CAMBIO DE FUERO ---//
+    fueroSelector.addEventListener('change', function () {
+        const tipo = getTipo();
+        departamentoSelector.disabled = true;
+        departamentoSelector.innerHTML = '<option value="">Cargando...</option>';
+        
+        google.script.run
+            .withSuccessHandler(deps => {
+                departamentoSelector.innerHTML = '<option value="" selected disabled>-- Seleccione Depto Judicial --</option>';
+                deps.forEach(d => {
+                    let opt = new Option(PREFIJO_TO_NOMBRE[d] || d, d);
+                    departamentoSelector.add(opt);
+                });
+                departamentoSelector.disabled = false;
+            })
+            .getDepartamentosJudiciales(this.value, tipo);
+    });
+
+    // --- CAMBIO DE DEPARTAMENTO ---//
+    departamentoSelector.addEventListener('change', function () {
+        const tipo = getTipo();
+        archivoSelector.disabled = true;
+        archivoSelector.innerHTML = '<option value="">Buscando Juzgados...</option>';
+
+        google.script.run
+            .withSuccessHandler(archivos => {
+                archivoSelector.innerHTML = '<option value="" selected disabled>-- Seleccione Juzgado --</option>';
+                if(archivos && archivos.length > 0) {
+                    archivos.forEach(a => {
+                        let opt = new Option(a.name, a.id);
+                        opt.setAttribute('data-folder', a.folderId);
+                        archivoSelector.add(opt);
+                    });
+                    archivoSelector.disabled = false;
+                } else {
+                    archivoSelector.innerHTML = '<option value="">Sin archivos en esta ruta</option>';
+                }
+            })
+            .getExpedientesFromDrive(fueroSelector.value, this.value, tipo);
+    });
+
+    // ---SELECCIÓN DE JUZGADO ---//
+    archivoSelector.addEventListener('change', function() {
+        const sel = this.options[this.selectedIndex];
+        sessionStorage.setItem('activeSpreadsheetId', this.value);
+        sessionStorage.setItem('activeFolderId', sel.getAttribute('data-folder'));
+        sessionStorage.setItem('activeJuzgadoName', sel.text);
+        cargarExpedienteBtn.disabled = !this.value;
+    });
+
+    // --- CARGAR LISTADO(SUBMIT)---//
+    document.getElementById("selectExpedienteForm").addEventListener("submit", function (e) {
+        e.preventDefault();
+        const ssId = archivoSelector.value;
+        const juzgadoName = archivoSelector.options[archivoSelector.selectedIndex].text;
+        fetchExpedientesList(ssId, juzgadoName);
+    });
+
+    // --- LÓGICA DE DATATABLES Y OBTENCIÓN DE DATOS ---
+    window.fetchExpedientesList = function(spreadsheetId, juzgadoName) {
+        const section = document.getElementById('expedientesListSection');
+        const loadMsg = document.getElementById('loadingMessage');
+        const tableCont = document.getElementById('expedientesTableContainer');
+        const labelJuzgado = document.getElementById('juzgadoSeleccionadoNombre');
+        const labelFuero = document.getElementById('fueroSelectedName');
+        const badgeGestion = document.getElementById('tipoGestionBadge');
+
+        if (section) section.style.display = 'block';
+        if (loadMsg) loadMsg.style.display = 'block';
+        if (tableCont) tableCont.style.display = 'none';
+        if (labelJuzgado) labelJuzgado.textContent = juzgadoName;
+        
+        if (labelFuero) {
+            labelFuero.textContent = fueroSelector ? fueroSelector.value : (sessionStorage.getItem('activeFueroName') || 'FUERO');
+        }
+        
+        if (badgeGestion) {
+            badgeGestion.textContent = getTipo() || sessionStorage.getItem('tipoGestionActiva');
+        }
+
+        google.script.run
+            .withSuccessHandler(function(res) {
+                if (loadMsg) loadMsg.style.display = 'none';
+                
+                if (!res || !res.success) {
+                    showAlert(res?.error || "Error al leer INDICE", "danger");
+                    return;
+                }
+
+                if (typeof renderExpedientesTable === 'function') {
+                    renderExpedientesTable(res.headers, res.data);
+                }
+
+                if (tableCont) tableCont.style.display = 'block';
+            })
+            .withFailureHandler(err => {
+                if (loadMsg) loadMsg.style.display = 'none';
+                showAlert("Error crítico: " + err.message, "danger");
+            })
+            .getData(spreadsheetId, 'INDICE');
+    };
+
+    function renderExpedientesTable(headers, data) {
+        const tableSelector = '#tableSelectExpt';
+        
+        if ($.fn.DataTable.isDataTable(tableSelector)) {
+            $(tableSelector).DataTable().destroy();
+            $(tableSelector).empty();
+        }
+
+        const columns = headers.map(h => ({ title: h }));
+        columns.push({ title: "ACCIONES", orderable: false, className: "text-center" });
+        
+        const tableData = data.map(fila => {
+            const expte = fila[0];
+            const btnHtml = `
+                <div class="btn-group-acciones">
+                    <button class="btn-view" data-nro="${expte}" title="Ver Detalle">
+                        <i class="fi fi-rr-assessment"></i>
+                    </button>
+                    <button class="btn-marca" data-nro="${expte}" title="Eliminar">
+                        <i class="fi fi-br-delete-document"></i>
+                    </button>
+                </div>`;
+            return [...fila, btnHtml];
+        });
+
+        $(tableSelector).DataTable({
+            data: tableData,
+            columns: columns,
+            order: [[0, 'desc']],
+            responsive: true,
+            language: { url: 'https://cdn.datatables.net/plug-ins/1.10.21/i18n/Spanish.json' },
+            "headerCallback": function(thead) {
+                $(thead).find('th').addClass('custom-header');
+            }
+        });
+
+        $(tableSelector + ' tbody').off('click').on('click', '.btn-view', function() {
+            navegarADetalle($(this).data('nro'));
+        });
+
+        $(tableSelector + ' tbody').on('click', '.btn-marca', function() {
+            confirmarEliminar($(this).data('nro'));
+        });
+    }
+
+    function navegarADetalle(nroExpte) {
+        sessionStorage.setItem('activeSheetName', nroExpte);
+        if (typeof loadContent === 'function') {
+            loadContent('verExpediente');
+        } else {
+            window.location.hash = 'verExpediente';
+        }
+    }
+
+    function confirmarEliminar(nroExpte) {
+        if (confirm(`¿Eliminar expediente ${nroExpte}?`)) {
+            const ssId = sessionStorage.getItem('activeSpreadsheetId');
+            google.script.run
+                .withSuccessHandler(res => {
+                    if(res.success) {
+                        showAlert("Eliminado correctamente", "success");
+                        fetchExpedientesList(ssId, sessionStorage.getItem('activeJuzgadoName'));
+                    }
+                })
+                .eliminarExpedienteCompleto(ssId, nroExpte);
+        }
+    }
+
+    function showAlert(msg, type) {
+        const placeholder = document.getElementById('alertPlaceholder') || document.body;
+        const div = document.createElement('div');
+        div.className = `alert alert-${type} alert-dismissible fade show shadow`;
+        div.style.position = 'fixed';
+        div.style.top = '20px';
+        div.style.right = '20px';
+        div.style.zIndex = '9999';
+        div.innerHTML = `${msg}<button type="button" class="btn-close" data-bs-dismiss="alert"></button>`;
+        placeholder.appendChild(div);
+        setTimeout(() => div.remove(), 5000);
+    }
+})();
+</script>

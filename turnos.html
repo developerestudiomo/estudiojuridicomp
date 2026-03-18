@@ -1,0 +1,209 @@
+<!---turnos.html--->
+<div class="container-fluid mt-4">
+    <div class="row">
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm border-0 rounded-4">
+                <div class="card-header d-flex justify-content-between align-items-center" style="background-color: #ED6AFF; color: white; border-radius: 15px 15px 0 0;">
+                    <h5 class="mb-0 fw-bold"><i class="bi bi-inbox-fill me-2"></i>Bandeja de Entrada</h5>
+                    <span class="badge rounded-pill bg-white text-dark" id="contadorBandeja">0</span>
+                </div>
+                <div class="card-body p-0" id="contenedorBandeja" style="max-height: 70vh; overflow-y: auto;">
+                    <div class="p-5 text-center text-muted">
+                        <div class="spinner-border text-primary mb-2" role="status"></div>
+                        <p>Sincronizando...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-8">
+            <div class="card shadow-sm border-0 rounded-4">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h4 class="fw-bold text-secondary">Agenda del Estudio</h4>
+                        <button class="btn-menu rounded-pill px-3" onclick="cargarEventosBandeja()">
+                            <i class="bi bi-arrow-clockwise"></i> Actualizar
+                        </button>
+                    </div>
+                    <div id="calendarioGestion" class="bg-light rounded-4 p-4 text-center" style="min-height: 400px;">
+                        <p class="text-muted mt-5">Área de visualización de eventos agendados.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!---modal de agendar turno---->
+<div class="modal fade" id="modalAgendar" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content shadow-lg border-0 rounded-4">
+      <div class="modal-header bg-light">
+        <h5 class="modal-title fw-bold"><i class="bi bi-calendar-check me-2 text-primary"></i>Programar Cita</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div id="infoCliente" class="mb-3 p-3 bg-primary bg-opacity-10 rounded-3">
+          </div>
+        <form id="formAgendar">
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label small fw-bold">Fecha del Evento</label>
+              <input type="date" class="form-control rounded-pill" id="fechaEvento" required>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label small fw-bold">Horario</label>
+              <input type="time" class="form-control rounded-pill" id="horaEvento" required>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label small fw-bold">Notas adicionales</label>
+            <textarea class="form-control rounded-3" id="notasEvento" rows="2" placeholder="Detalles de la consulta..."></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer border-0">
+        <button type="button" class="btn btn-light rounded-pill px-4" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn-menu rounded-pill px-4" onclick="confirmarAgendado()">
+          <i class="bi bi-send-check me-2"></i>Agendar e Impactar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  // Inicialización corregida para WebApps
+  document.addEventListener('DOMContentLoaded', function() {
+      cargarEventosBandeja();
+  });
+
+ let turnoSeleccionado = null; // Para guardar el turno actual
+
+function cargarEventosBandeja() {
+  const contenedor = document.getElementById('contenedorBandeja');
+  const contador = document.getElementById('contadorBandeja');
+  contenedor.innerHTML = '<div class="p-5 text-center"><div class="spinner-border text-primary"></div></div>';
+
+  google.script.run
+    .withSuccessHandler(function(bandeja) {
+      bandeja = bandeja || [];
+      contador.innerText = bandeja.length;
+      contenedor.innerHTML = ""; 
+
+      if (bandeja.length === 0) {
+        contenedor.innerHTML = '<div class="p-4 text-center text-muted">No hay turnos pendientes</div>';
+        return;
+      }
+
+      bandeja.forEach(item => {
+        const color = item.color || "#AD46FF";
+        const fecha = item.fechaTexto ? item.fechaTexto.split(' ')[0] : 'S/F';
+        
+        // Creamos un ID único para el elemento HTML de la tarjeta
+        const elementId = `card-turno-${item.idFila}`;
+
+        contenedor.innerHTML += `
+          <div class="tarjeta-turno p-3 mb-3 shadow-sm mx-2" id="${elementId}" style="--line-color: ${color};">
+            <div class="d-flex justify-content-between align-items-start mb-2">
+              <span class="text-muted small"><i class="bi bi-calendar-event me-1"></i>${fecha}</span>
+              <span class="badge rounded-pill" style="background-color: ${color}15; color: ${color}; border: 1px solid ${color}30;">${item.motivo}</span>
+            </div>
+            <h6 class="fw-bold mb-1">${item.nombre}</h6>
+            <p class="small text-muted mb-2"><i class="bi bi-whatsapp text-success me-1"></i>${item.whatsapp}</p>
+            <button class="btn btn-sm btn-agendar text-white w-100 rounded-pill" 
+                    onclick='prepararAgendar(${JSON.stringify(item).replace(/'/g, "&apos;")})'>
+              Agendar Turno
+            </button>
+          </div>`;
+      });
+    })
+    .obtenerBandejaEntrada();
+}
+
+// Función que abre el modal y carga los datos
+function prepararAgendar(item) {
+  turnoSeleccionado = item;
+  const detalle = document.getElementById('detalleTurnoModal');
+  
+  detalle.innerHTML = `
+    <div class="text-center mb-3">
+       <div class="display-6 text-primary"><i class="bi bi-person-check"></i></div>
+       <h5 class="fw-bold">${item.nombre}</h5>
+    </div>
+    <ul class="list-group list-group-flush small">
+      <li class="list-group-item d-flex justify-content-between"><span>Motivo:</span> <strong>${item.motivo}</strong></li>
+      <li class="list-group-item d-flex justify-content-between"><span>WhatsApp:</span> <strong>${item.whatsapp}</strong></li>
+      <li class="list-group-item d-flex justify-content-between"><span>Solicitud:</span> <strong>${item.fechaTexto}</strong></li>
+    </ul>
+    <p class="text-muted small mt-3 text-center">Al confirmar, el estado cambiará a "Agendado" y se quitará de la bandeja.</p>
+  `;
+
+  const miModal = new bootstrap.Modal(document.getElementById('modalAgendar'));
+  miModal.show();
+
+  // Configurar el botón de confirmación del modal
+  document.getElementById('btnConfirmarAgendar').onclick = function() {
+    miModal.hide();
+    ejecutarAgendar(item.idFila);
+  };
+}
+
+// Función que hace la magia de la animación y el servidor
+function ejecutarAgendar(idFila) {
+  const tarjeta = document.getElementById(`card-turno-${idFila}`);
+  
+  // 1. Animación visual inmediata
+  if(tarjeta) tarjeta.classList.add('fade-out-card');
+
+  // 2. Llamada al servidor
+  google.script.run
+    .withSuccessHandler(() => {
+        // Esperamos a que termine la animación antes de recargar
+        setTimeout(() => {
+          Swal.fire({
+            title: '¡Agendado!',
+            icon: 'success',
+            timer: 1500,
+            showConfirmButton: false
+          });
+          cargarEventosBandeja();
+        }, 500);
+    })
+    .marcarTurnoComoAgendado(idFila);
+}
+
+function confirmarAgendado() {
+  const fecha = document.getElementById('fechaEvento').value;
+  const hora = document.getElementById('horaEvento').value;
+  const notas = document.getElementById('notasEvento').value;
+
+  if (!fecha || !hora) {
+    Swal.fire('Atención', 'Por favor selecciona fecha y hora', 'warning');
+    return;
+  }
+
+  const datosEvento = {
+    idFila: turnoSeleccionado.idFila,
+    nombre: turnoSeleccionado.nombre,
+    whatsapp: turnoSeleccionado.whatsapp,
+    motivo: turnoSeleccionado.motivo,
+    fechaCita: fecha,
+    horaCita: hora,
+    notas: notas
+  };
+
+  // Cerramos modal y ejecutamos animación de la tarjeta
+  bootstrap.Modal.getInstance(document.getElementById('modalAgendar')).hide();
+  const tarjeta = document.getElementById(`card-turno-${turnoSeleccionado.idFila}`);
+  if(tarjeta) tarjeta.classList.add('fade-out-card');
+
+  // Enviamos al servidor para impactar en Calendario y Sheet Eventos
+  google.script.run
+    .withSuccessHandler(() => {
+        setTimeout(() => {
+          Swal.fire('¡Éxito!', 'Evento registrado en Google Calendar y Hoja de Eventos', 'success');
+          cargarEventosBandeja();
+        }, 500);
+    })
+    .procesarAgendadoCompleto(datosEvento);
+}
+</script>

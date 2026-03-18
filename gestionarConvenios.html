@@ -1,0 +1,238 @@
+<!----gestionarConvenios.html---->
+<div class="container mt-4 animate__animated animate__fadeIn">
+    <div class="card shadow-lg border-0" style="border-radius: 20px;">
+        <div class="card-header bg-white text-center py-4 border-0">
+            <h4 class="fw-bold" style="color: #A813B7;">GENERADOR DE CONVENIO DE HONORARIOS</h4>
+            <hr class="mx-auto w-25" style="border-top: 3px solid #ED6AFF;">
+        </div>
+       <div class="card-body p-5 text-justify shadow-inner">
+<!---COMIENZO CARDS GESTOR CONVENIO--->
+            <div class="row g-4 mt-2"> 
+              <div class="col-md-6">
+                  <div class="card card-data-premium h-100 shadow-sm" style="background-color: #FAE8FF;">
+                    <div class="card-body d-flex flex-column align-items-center p-4"> 
+                      <div class="icon-circle bg-red-light mb-3">
+                        <i class="fi fi-tr-legal" style="color: #dc3545; font-size: 2.5rem;"></i>
+                      </div>
+                          <h5 class="fw-bold" style="color: #A813B7;">Registrar pago cuotas</h5>
+                          <p class="mb-4" style="color: #A813B7; max-width: 80%;">
+                                Asentar pago recibido de convenios vigentes.
+                          </p>
+                        <button class="btn-menu rounded-pill px-4" onclick="abrirModalCargaPagos()"> - Cargar pagos -
+                          </button>
+                    </div>
+                  </div>
+              </div>
+
+                <div class="col-md-6">
+                    <div class="card card-data-premium h-100" style="background-color: #FAE8FF;">
+                        <div class="card-body d-flex flex-column align-items-center p-4">
+                            <div class="icon-circle bg-orange-light mb-3">
+                                <i class="fi fi-tr-money-check-edit" style="color: #FF692A; font-size: 2.5rem;"></i>
+                            </div>
+                            <h5 class="fw-bold" style="color: #A813B7;">Listar Convenios vigentes</h5>
+                            <p class="mb-4" style="color: #A813B7; max-width: 80%;">
+                                Listado de convenios de pagos activos.
+                            </p>
+                            <button class="btn-menu rounded-pill px-4" onclick="listarConveniosVigentes()"> - Listar Convenios - </button>
+                        </div>
+                    </div>
+                </div>
+              </div> 
+<!---FIN CARDS--->
+        </div>
+        <div class="card-footer bg-light text-end p-4">
+        </div>
+    </div>
+</div>
+<!----MODAL GESTOR PAGOS------------->
+<div class="modal fade" id="modalCargaPagos" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content" style="border-radius: 25px; border: none; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px);">
+            <div class="modal-header border-0 p-4">
+                <h5 class="fw-bold" style="color: #5e2d79; letter-spacing: 1px;">
+                    <i class="fi fi-rr-wallet me-2" style="color: #e91e63;"></i>REGISTRAR PAGO RECIBIDO
+                </h5>
+                <div class="col-md-4 text-end">
+                    <span id="pago_estadoAlerta" class="badge rounded-pill p-2 px-3 bg-secondary">CONSULTANDO...</span>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            
+            <div class="modal-body p-4">
+                <div class="search-box-custom mb-4">
+                  <label class="small fw-bold mb-2 text-muted uppercase">Seleccionar Convenio Activo</label>
+                  <div class="input-group">
+                      <span class="input-group-text bg-white border-end-0" style="border-radius: 15px 0 0 15px; border-color: #d2b4de;">
+                          <i class="fi fi-rr-user" style="color: #8e44ad;"></i>
+                      </span>
+                      <select id="selectConvenioParaPago" class="form-select" style="border-radius: 0 15px 15px 0; border-color: #d2b4de;" onchange="buscarConvenioParaCargar()">
+                          <option value="" disabled selected>-- Busque el cliente aquí --</option>
+                      </select>
+                  </div>
+              </div>
+
+                <div id="infoPagoConvenio" class="d-none animate__animated animate__fadeIn">
+                    <div class="card border-0 shadow-sm p-3 mb-4" style="background: #fdf2fa; border-radius: 20px;">
+                        <div class="row align-items-center">
+                            <div class="col-md-8">
+                            </div>
+                            <div class="col-md-4 text-end">
+                                <span id="pago_estadoAlerta" class="badge rounded-pill p-2 px-3">---</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <div class="cuota-card text-center p-3 border" style="border-radius: 15px;" id="card_cuota1">
+                                <span class="d-block small text-muted fw-bold">CUOTA 1</span>
+                                <span id="val_cuota1" class="d-block my-2 fw-bold text-primary">0.00 JUS</span>
+                                <button id="btn_pago1" class="btn-volver-glass-pro w-60 rounded-pill btn-outline-fucsia" onclick="confirmarPago(1)">COBRAR</button>
+                                <small id="venc_cuota1" class="d-block mt-2 text-muted" style="font-size: 0.7rem;">Vence: --/--</small>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="cuota-card text-center p-3 border" style="border-radius: 15px;" id="card_cuota2">
+                                <span class="d-block small text-muted fw-bold">CUOTA 2</span>
+                                <span id="val_cuota2" class="d-block my-2 fw-bold text-primary">0.00 JUS</span>
+                                <button id="btn_pago2" class="btn-volver-glass-pro w-60 rounded-pill btn-outline-fucsia" onclick="confirmarPago(2)">COBRAR</button>
+                                <small id="venc_cuota2" class="d-block mt-2 text-muted" style="font-size: 0.7rem;">Vence: --/--</small>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="cuota-card text-center p-3 border" style="border-radius: 15px;" id="card_cuota3">
+                                <span class="d-block small text-muted fw-bold">CUOTA 3</span>
+                                <span id="val_cuota3" class="d-block my-2 fw-bold text-primary">0.00 JUS</span>
+                                <button id="btn_pago3" class="btn-volver-glass-pro w-60 rounded-pill btn-outline-fucsia" onclick="confirmarPago(3)">COBRAR</button>
+                                <small id="venc_cuota3" class="d-block mt-2 text-muted" style="font-size: 0.7rem;">Vence: --/--</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!----FIN MODAL GESTOR PAGOS-------------->
+
+<div class="row justify-content-center mt-3 mb-2">
+  <div class="col-auto">
+    <button type="button" class="btn-volver-glass-pro" onclick="loadContent('convenios'); return false;">
+      <i class="fi fi-br-angle-double-left"></i><span>VOLVER</span>
+    </button>
+  </div>
+</div>
+
+<script>
+let modalPagosBS = null;
+
+function abrirModalCargaPagos() {
+    if (!modalPagosBS) {
+        modalPagosBS = new bootstrap.Modal(document.getElementById('modalCargaPagos'));
+    }
+    
+    const select = document.getElementById('selectConvenioParaPago');
+    select.innerHTML = '<option disabled selected>Cargando convenios...</option>';
+    document.getElementById('infoPagoConvenio').classList.add('d-none');
+    modalPagosBS.show();
+
+    google.script.run
+        .withSuccessHandler(lista => {
+            select.innerHTML = '<option value="" disabled selected>-- SELECCIONE CLIENTE --</option>';
+            if (lista && lista.length > 0) {
+                lista.forEach(c => {
+                    let opt = document.createElement('option');
+                    opt.value = c.id;
+                    opt.textContent = `${c.cliente} (${c.id})`;
+                    select.appendChild(opt);
+                });
+            } else {
+                select.innerHTML = '<option disabled>No hay convenios activos</option>';
+            }
+        })
+        .withFailureHandler(err => {
+            Swal.fire('Error', 'No se pudo cargar la lista: ' + err, 'error');
+        })
+        .getListaConveniosParaPago();
+}
+
+function buscarConvenioParaCargar() {
+    const id = document.getElementById('selectConvenioParaPago').value;
+    if (!id) return;
+
+    const infoDiv = document.getElementById('infoPagoConvenio');
+    infoDiv.classList.add('d-none');
+    
+    Swal.fire({
+        title: 'Buscando datos...',
+        allowOutsideClick: false,
+        didOpen: () => { Swal.showLoading(); }
+    });
+
+    google.script.run
+        .withSuccessHandler(data => {
+            Swal.close();
+            if (!data) {
+                Swal.fire('Atención', 'No se encontraron datos para este ID', 'warning');
+                return;
+            }
+            
+            CONVENIO_SELECCIONADO_DATA = data;
+            document.getElementById('infoPagoConvenio').classList.remove('d-none');
+            document.getElementById('pago_nombreCliente').textContent = data.cliente;
+            
+          // Configurar tarjetas de cuotas
+            configurarCardCuota(1, data.valorCuota, data.venc1, data.pago1);
+            configurarCardCuota(2, data.valorCuota, data.venc2, data.pago2);
+            configurarCardCuota(3, data.valorCuota, data.venc3, data.pago3);
+        })
+        .getDetalleConvenioPorId(id);
+}
+
+function configurarCardCuota(num, valor, venc, pago) {
+    const btn = document.getElementById(`btn_pago${num}`);
+    const vencTxt = document.getElementById(`venc_cuota${num}`);
+    const valTxt = document.getElementById(`val_cuota${num}`);
+    const card = document.getElementById(`card_cuota${num}`);
+
+    valTxt.textContent = `${valor} JUS`;
+
+    if (pago && pago !== "") {
+     // CUOTA PAGADA
+        btn.innerHTML = '<i class="fi fi-rr-check"></i> PAGADO';
+        btn.disabled = true;
+        btn.className = "btn btn-sm w-100 rounded-pill btn-success";
+        card.style.background = "#e8f5e9";
+        card.style.borderColor = "#2e7d32";
+        vencTxt.textContent = `Pagado el: ${pago}`;
+        vencTxt.style.color = "#2e7d32";
+    } else {
+     // CUOTA PENDIENTE
+        const estado = calcularEstado(venc, pago);
+        btn.disabled = false;
+        btn.textContent = "COBRAR";
+        
+        if (estado.texto === "MOROSO") {
+            card.style.background = "#fff1f0";
+            card.style.borderColor = "#ffa39e";
+            btn.className = "btn btn-sm w-100 rounded-pill btn-danger animate__animated animate__pulse animate__infinite";
+            vencTxt.innerHTML = `<strong>MORA:</strong> ${venc}`;
+            vencTxt.style.color = "#cf1322";
+        } else if (estado.texto === "EN GRACIA") {
+            card.style.background = "#fffbe6";
+            card.style.borderColor = "#ffe58f";
+            btn.className = "btn btn-sm w-100 rounded-pill btn-warning";
+            vencTxt.innerHTML = `Vence: ${venc}`;
+            vencTxt.style.color = "#856404";
+        } else {
+            card.style.background = "#ffffff";
+            card.style.borderColor = "#d2b4de";
+            btn.className = "btn btn-sm w-100 rounded-pill btn-outline-primary";
+            vencTxt.textContent = `Vence: ${venc}`;
+            vencTxt.style.color = "#6c757d";
+        }
+    }
+}
+</script>

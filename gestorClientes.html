@@ -1,0 +1,135 @@
+<!----gestorClientes.html---->
+<div class="animate__animated animate__fadeIn">
+    <div class="d-flex justify-content-between align-items-center mb-4 bg-white p-3 shadow-sm" style="border-radius: 15px; border-left: 8px solid #ED6AFF;">
+        <div>
+            <h4 class="fw-bold mb-0" style="color: #ED6AFF;"><i class="fi fi-rr-address-book"></i> GESTOR DE CLIENTES</h4>
+            <span class="text-muted small">Listado de fichas profesionales</span>
+        </div>
+        <div style="width: 300px;">
+            <div class="input-group">
+                <span class="input-group-text bg-light border-0"><i class="fi fi-rr-search text-muted"></i></span>
+                <input type="text" id="buscarCliente" class="form-control border-0 bg-light shadow-none" 
+                       placeholder="Buscar por nombre o DNI..." onkeyup="filtrarKardex()">
+            </div>
+        </div>
+    </div>
+
+    <div id="contenedorKardex" class="row g-4">
+        <div class="text-center py-5">
+            <div class="spinner-border" style="color: #ED6AFF;"></div>
+            <p class="mt-2 text-muted">Consultando archivo de clientes...</p>
+        </div>
+    </div>
+
+<div class="row justify-content-center mt-3 mb-2">
+  <div class="col-auto">
+    <button type="button" class="btn-volver-glass-pro" onclick="loadContent('clientes'); return false;">
+      <i class="fi fi-br-angle-double-left"></i><span>VOLVER</span>
+    </button>
+  </div>
+</div>
+
+<script>
+(function() {
+    console.log("KARDEX: Iniciando sincronización...");
+    cargarKardexPremium();
+})();
+
+function cargarKardexPremium() {
+    const container = document.getElementById('contenedorKardex');
+    if (!container) return;
+
+    console.log("--- LOG DE RASTREO ---");
+
+    google.script.run.withSuccessHandler(idConf => {
+        console.log("TRAZA: El backend apunta al ID: " + idConf);
+    }).obtenerConfiguracionId(); 
+
+    google.script.run
+        .withSuccessHandler(clientes => {
+            console.log("TRAZA: Datos crudos recibidos:", clientes);
+
+            container.innerHTML = ''; 
+            if (clientes === null) {
+                console.error("TRAZA: Error Crítico - El servidor devolvió NULL");
+                container.innerHTML = `<div class="alert alert-warning text-center">Error: El servidor no respondió. Revisa los permisos del Script.</div>`;
+                return;
+            }
+
+            if (clientes.length > 0 && clientes[0].nombre === "ERROR DE CARGA") {
+                container.innerHTML = `<div class="alert alert-danger text-center"><strong>Error:</strong> ${clientes[0].expediente}</div>`;
+                return;
+            }
+
+            if (clientes.length === 0) {
+                container.innerHTML = `
+                    <div class="col-12 text-center py-5">
+                        <i class="fi fi-rr-box-open fs-1" style="color: #ED6AFF; opacity: 0.5;"></i>
+                        <h5 class="mt-3 text-muted">Archivo de clientes vacío</h5>
+                        <p>No hay datos en la hoja <strong>baseClientes</strong>.</p>
+                        <button class="btn btn-sm text-white rounded-pill px-4" style="background-color: #ED6AFF;" onclick="loadContent('nuevoCliente')">REGISTRAR PRIMER CLIENTE</button>
+                    </div>`;
+                return;
+            }
+
+            // Renderiza tarjetas
+            clientes.forEach(cli => {
+                const cardHtml = `
+                    <div class="col-md-6 col-lg-4 card-item-cli" data-search="${cli.nombre.toLowerCase()} ${cli.dni}">
+                        <div class="kardex-ficha shadow-sm h-100">
+                            <div class="kardex-header d-flex justify-content-between align-items-center" style="background-color: #ED6AFF; padding: 10px; border-radius: 15px 15px 0 0;">
+                                <span class="small fw-bold text-white"><i class="fi fi-rr-id-badge"></i> ${cli.id}</span>
+                            </div>
+                            <div class="kardex-body p-3">
+                                <h6 class="fw-bold mb-3 text-uppercase" style="color: #333; letter-spacing: 0.5px; font-size: 0.9rem;">${cli.nombre}</h6>
+                                <div class="row g-0 mb-2">
+                                    <div class="col-6 small">
+                                        <div style="font-size: 0.7rem; color: #AD46FF; font-weight: bold;">DNI / CUIT</div>
+                                        <div>${cli.dni || '---'}</div>
+                                    </div>
+                                    <div class="col-6 text-end small">
+                                        <div style="font-size: 0.7rem; color: #AD46FF; font-weight: bold;">ALTA</div>
+                                        <div>${formatearFecha(cli.fecha)}</div>
+                                    </div>
+                                </div>
+                                <div style="font-size: 0.7rem; color: #AD46FF; font-weight: bold;">EXPEDIENTE VINCULADO</div>
+                                <div class="p-2 rounded mt-1 text-truncate" style="background: #f8f0ff; color: #AD46FF; font-size: 0.8rem; border-left: 3px solid #AD46FF;">
+                                    <i class="fi fi-rr-folder-open me-1"></i> ${cli.expediente}
+                                </div>
+                                <div class="mt-3 pt-2 border-top d-flex justify-content-between align-items-center">
+                                    <span class="small text-muted"><i class="fi fi-rr-phone-call me-1"></i> ${cli.tel}</span>
+                                    <button class="btn btn-link btn-sm p-0 text-decoration-none" style="color: #ED6AFF; font-size: 0.75rem;" onclick="loadContent('convenios')">
+                                        CONVENIOS <i class="fi fi-rr-arrow-right"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>`;
+                container.innerHTML += cardHtml;
+            });
+            console.log("TRAZA: Renderizado exitoso.");
+        })
+        .withFailureHandler(err => {
+            console.error("Fallo crítico:", err);
+            container.innerHTML = "Error de conexión con el servidor.";
+        })
+        .obtenerClientes();
+}
+
+function formatearFecha(fechaStr) {
+    if(!fechaStr || fechaStr === "") return '---';
+    try {
+        const fecha = new Date(fechaStr);
+        if (isNaN(fecha)) return fechaStr; // Retorna el string original si no es fecha
+        return fecha.toLocaleDateString('es-AR', { day: '2-digit', month: '2-digit', year: 'numeric' });
+    } catch(e) { return fechaStr; }
+}
+
+window.filtrarKardex = function() {
+    const q = document.getElementById('buscarCliente').value.toLowerCase();
+    document.querySelectorAll('.card-item-cli').forEach(card => {
+        const busqueda = card.getAttribute('data-search');
+        card.style.display = busqueda.includes(q) ? 'block' : 'none';
+    });
+}
+</script>

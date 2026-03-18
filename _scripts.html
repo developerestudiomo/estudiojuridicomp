@@ -1,0 +1,234 @@
+<!------------------_scripts.html--------------------------->
+<script>
+    // Variable global del ID de la hoja activa
+     if (typeof currentSpreadsheetId === 'undefined') {
+    var currentSpreadsheetId = null;
+  }
+
+/*Carga dinámicamente el contenido de una página.*/
+function loadContent(page, spreadsheetId = null) {
+  console.log(`CLIENT (loadContent): Cargando página: ${page}.html`);
+
+  // 1. Manejo del ID de Hoja
+  if (spreadsheetId) {
+    currentSpreadsheetId = spreadsheetId;
+    sessionStorage.setItem('activeSpreadsheetId', spreadsheetId);
+    console.log(`CLIENT (loadContent): ID de hoja guardado: ${currentSpreadsheetId}`);
+  } else {
+    currentSpreadsheetId = sessionStorage.getItem('activeSpreadsheetId');
+    // Solo logueamos si realmente hay algo, para evitar ruidos en consola
+    if (currentSpreadsheetId) console.log(`CLIENT (loadContent): ID de hoja recuperado: ${currentSpreadsheetId}`);
+  }
+
+  // 2. Páginas Globales (No necesitan ID de expediente)
+  if (['home', 'clientes', 'nuevoCliente', 'gestorClientes', 'eventos', 'cargarEventos', 'gestionarEventos', 'tareas', 'gestorTareas', 'turnos'].includes(page)) {
+    currentSpreadsheetId = null;
+    sessionStorage.removeItem('activeSpreadsheetId');
+    console.log(`CLIENT (loadContent): ID de hoja omitido para página global: ${page}`);
+  }
+
+  const contentDiv = document.getElementById('content');
+  if (!contentDiv) {
+    console.error("ERROR: Elemento con ID 'content' no encontrado.");
+    return;
+  }
+
+  // 3. Spinner de carga
+  contentDiv.innerHTML = `
+    <div class="d-flex flex-column justify-content-center align-items-center" style="min-height: 200px;">
+      <div class="spinner-border text-primary" role="status"><span class="visually-hidden">Cargando...</span></div>
+      <p class="ms-3 mt-2">Cargando ${page}...</p>
+    </div>`;
+
+  // Cerrar menú móvil
+  const offcanvasElement = document.getElementById('offcanvasDarkNavbar');
+  if (offcanvasElement) {
+    const offcanvasInstance = bootstrap.Offcanvas.getInstance(offcanvasElement);
+    if (offcanvasInstance) offcanvasInstance.hide();
+  }
+
+  // 4. Llamada al Servidor
+  google.script.run
+    .withSuccessHandler(html => {
+      contentDiv.innerHTML = html;
+
+      // Inyectar y ejecutar scripts contenidos en el HTML cargado
+      const tempDiv = document.createElement('div');
+      tempDiv.innerHTML = html;
+      const scripts = tempDiv.querySelectorAll('script');
+
+      scripts.forEach(oldScript => {
+        const newScript = document.createElement('script');
+        Array.from(oldScript.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value));
+        newScript.textContent = oldScript.textContent;
+        document.body.appendChild(newScript);
+      });
+
+      initializeBootstrapComponents();
+
+      // --- INICIALIZACIÓN ESPECÍFICA POR PÁGINA --- //
+
+      if (page === 'dataExpedientes' && typeof initializeDataTable === 'function') {
+        initializeDataTable(currentSpreadsheetId);
+      }
+
+      if (page === 'modificarExpedientes' && typeof initModificarExpediente === 'function') {
+        initModificarExpediente();
+      }
+
+      if (page === 'registrarExpediente' && typeof initRegistrarExpediente === 'function') {
+        initRegistrarExpediente();
+      }
+
+      // CORRECCIÓN PARA TURNOS: Llamamos a la función correcta
+      if (page === 'turnos') {
+        console.log('CLIENT: Inicializando Bandeja de Turnos...');
+        if (typeof cargarEventosBandeja === 'function') {
+          cargarEventosBandeja();
+        } else {
+          console.warn("La función cargarEventosBandeja no se encontró en el primer intento.");
+        }
+      }
+    })
+    .withFailureHandler(error => {
+      contentDiv.innerHTML = `<div class="alert alert-danger">Error al cargar la página: ${error.message}</div>`;
+      console.error('CLIENT: Error al cargar la página:', error);
+    })
+    .loadPage(page);
+}
+
+    function setActiveLink(clickedElement) {
+        document.querySelectorAll('.navbar-nav .nav-link, .navbar-brand, .dropdown-item').forEach(link => {
+            link.classList.remove('active');
+        });
+        if (clickedElement) {
+            clickedElement.classList.add('active');
+            const parentDropdown = clickedElement.closest('.dropdown');
+            if (parentDropdown) {
+                const dropdownToggle = parentDropdown.querySelector('.dropdown-toggle');
+                if (dropdownToggle) dropdownToggle.classList.add('active');
+            }
+        }
+    }
+
+    function showAlert(message, type) {
+        const alertPlaceholder = document.getElementById('alertPlaceholder');
+        if (!alertPlaceholder) {
+            console.error("No se encontró el elemento 'alertPlaceholder' en el DOM.");
+            return;
+        }
+        const wrapper = document.createElement('div');
+        wrapper.innerHTML = `
+            <div class="alert alert-${type} alert-dismissible fade show" role="alert">
+                <div>${message}</div>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+            </div>`;
+        alertPlaceholder.append(wrapper);
+        const bsAlert = new bootstrap.Alert(wrapper.querySelector('.alert'));
+        setTimeout(() => bsAlert.close(), 5000);
+    }
+
+    function initializeBootstrapComponents() {
+        const tooltips = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        tooltips.map(el => new bootstrap.Tooltip(el));
+
+        const dropdowns = [].slice.call(document.querySelectorAll('.dropdown-toggle'));
+        dropdowns.map(el => new bootstrap.Dropdown(el));
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        console.log('CLIENT: DOMContentLoaded - inicializando aplicación...');
+        currentSpreadsheetId = sessionStorage.getItem('activeSpreadsheetId');
+        loadContent('_home'); // Cambiá a 'seleccionarExpedientes' si preferís esa como inicio
+
+        const initialActiveLink = document.querySelector('.navbar-nav .nav-link[onclick*="home"]');
+        if (initialActiveLink) {
+            setActiveLink(initialActiveLink);
+        } else {
+            const homeLink = document.querySelector('.navbar-brand[data-page="home"]');
+            if (homeLink) setActiveLink(homeLink);
+        }
+
+        initializeBootstrapComponents();
+        console.log('CLIENT: Aplicación inicializada.');
+    });
+
+
+function showAlert(message, type = 'success') {
+  const alertPlaceholder = document.getElementById('alertPlaceholder');
+  if (!alertPlaceholder) return;
+  alertPlaceholder.innerHTML = `
+    <div class="alert alert-${type} alert-dismissible fade show" role="alert">
+      ${message}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  `;
+}
+
+function setGeneratedId() {
+  const idField = document.getElementById('idExpte');
+  if (idField) {
+    idField.value = 'ID-EXP-' + generateAlphaNumeric(5);
+  }
+}
+
+function initRegistrarExpediente() {
+  setGeneratedId();
+
+  const form = document.getElementById('expedienteForm');
+  if (!form) {
+    console.error('Formulario expediente no encontrado.');
+    return;
+  }
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    if (!currentSpreadsheetId) {
+      showAlert('Error: No se ha seleccionado un archivo. Vuelve a la selección de expedientes.', 'danger');
+      return;
+    }
+
+    const formData = {};
+    const elements = form.elements;
+
+    for (let i = 0; i < elements.length; i++) {
+      const el = elements[i];
+      if (el.name) {
+        formData[el.name] = el.value;
+      }
+    }
+
+    google.script.run
+      .withSuccessHandler((response) => {
+        showAlert(response, 'success');
+        form.reset();
+        setGeneratedId();
+      })
+      .withFailureHandler((error) => {
+        showAlert('Error al registrar: ' + error.message, 'danger');
+        console.error('Error al registrar expediente:', error);
+      })
+      .registerRecord(currentSpreadsheetId, formData);
+  });
+}
+window.addEventListener('message', function(event) {
+    if (!event.origin.includes(".googleusercontent.com")) { 
+        return; 
+    }
+    const data = event.data;
+    if (data && data.action === 'navigate') {
+        const { templateName, spreadsheetId } = data.payload;
+        
+        console.log(`[INDEX/RECEIVER] Mensaje recibido: Navegando a ${templateName}`);
+        
+        // Ejecutamos la navegación con la función loadContent global//
+        if (typeof loadContent === 'function') {
+            loadContent(templateName, spreadsheetId);
+        } else {
+            console.error("[INDEX/RECEIVER] loadContent no está definida. Recarga forzada.");
+            window.top.location.href = window.top.location.href.split('?')[0];
+        }
+    }
+});
+</script>

@@ -1,0 +1,283 @@
+<!----------gestionarEventos.html----->
+<div class="container animate__animated animate__fadeIn">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h3 class="display-6 fw-bold" style="color: #ED6AFF;"><i class="bi bi-calendar3"></i> AGENDA JURÍDICA</h3>
+            <p class="text-muted mb-0">Gestión de plazos y registro histórico</p>
+        </div>
+        <button class="btn-nav-universal" onclick="loadContent('cargarEvento'); return false;">
+            <i class="bi bi-plus-circle"></i><span> NUEVO EVENTO </span>
+        </button>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-12 d-flex justify-content-center">
+            <div class="btn-group p-1 bg-light rounded-pill shadow-sm" style="border: 1px solid #eee;">
+                <button id="btnVistaPendientes" class="btn btn-primary rounded-pill px-4 active" onclick="cambiarVista('pendientes')">
+                    <i class="fi fi-rr-time-fast me-2"></i> PENDIENTES
+                </button>
+                <button id="btnVistaHistorial" class="btn btn-outline-secondary border-0 rounded-pill px-4" onclick="cambiarVista('historial')">
+                    <i class="fi fi-rr-history me-2"></i> HISTORIAL
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="contenedorEventos" class="row g-4">
+        <div class="text-center py-5 w-100">
+            <div class="spinner-border text-primary" role="status"></div>
+            <p class="mt-2 text-muted">Sincronizando agenda...</p>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalDetalleEvento" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="border-radius: 15px; border: none; overflow: hidden;">
+            <div class="modal-header text-white border-0" style="background: linear-gradient(45deg, #ED6AFF, #AD46FF);">
+                <h5 class="modal-title fw-bold"><i class="fi fi-rr-eye me-2"></i> Detalle del Evento</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4" id="bodyDetalleEvento">
+                </div>
+            <div class="modal-footer border-0 bg-light">
+                <button type="button" class="btn-close rounded-pill px-4" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row justify-content-center mt-3 mb-2">
+  <div class="col-auto">
+    <button type="button" class="btn-volver-glass-pro" onclick="loadContent('eventos'); return false;">
+      <i class="fi fi-br-angle-double-left"></i><span>VOLVER</span>
+    </button>
+  </div>
+</div>
+<script>
+(function() {
+    const contenedor = document.getElementById('contenedorEventos');
+    let vistaActual = 'pendientes';
+    let listaEventosGlobal = [];
+
+    // CAMBIAR ENTRE PENDIENTES E HISTORIAL
+    window.cambiarVista = function(vista) {
+        vistaActual = vista;
+        document.getElementById('btnVistaPendientes').className = vista === 'pendientes' ? 'btn btn-primary rounded-pill px-4 active' : 'btn btn-outline-secondary border-0 rounded-pill px-4';
+        document.getElementById('btnVistaHistorial').className = vista === 'historial' ? 'btn btn-primary rounded-pill px-4 active' : 'btn btn-outline-secondary border-0 rounded-pill px-4';
+        cargarAgenda();
+    };
+
+    // CARGAR DATOS DESDE EL SERVIDOR
+    function cargarAgenda() {
+        contenedor.innerHTML = '<div class="text-center py-5 w-100"><div class="spinner-border text-warning"></div><p class="mt-2 text-muted">Cargando sector...</p></div>';
+        
+        const successHandler = (eventos) => {
+            listaEventosGlobal = eventos;
+            renderizarCards(eventos);
+        };
+        
+        const failureHandler = (err) => {
+            contenedor.innerHTML = `<div class="alert alert-danger mx-3">Error al obtener datos: ${err.message}</div>`;
+        };
+
+        // Ejecución explícita para evitar errores de Uncaught TypeError
+        if (vistaActual === 'pendientes') {
+            google.script.run
+                .withSuccessHandler(successHandler)
+                .withFailureHandler(failureHandler)
+                .obtenerEventos();
+        } else {
+            google.script.run
+                .withSuccessHandler(successHandler)
+                .withFailureHandler(failureHandler)
+                .obtenerHistorial();
+        }
+    }
+
+    // DIBUJAR LAS TARJETAS
+  function renderizarCards(eventos) {
+    if (!eventos || eventos.length === 0) {
+        contenedor.innerHTML = `
+            <div class="col-12 text-center mt-5 py-5 bg-light rounded-4">
+                <i class="fi fi-rr-calendar-exclamation" style="font-size: 3rem; color: #ccc;"></i>
+                <p class="text-muted mt-3">No hay registros en ${vistaActual}.</p>
+            </div>`;
+        return;
+    }
+
+    contenedor.innerHTML = '';
+    eventos.forEach(ev => {
+        const fechaObj = new Date(ev.fecha);
+        const dia = fechaObj.getDate();
+        const mes = fechaObj.toLocaleDateString('es-AR', { month: 'short' }).replace('.', '');
+        const hora = fechaObj.toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' });
+        
+        // Lógica de Semáforo
+        let claseSemaforo = 'bg-semaforo-verde'; // Por defecto verde (Citas)
+        if (ev.motivo === 'Audiencia' || ev.motivo === 'Vencimiento') {
+            claseSemaforo = 'bg-semaforo-rojo';
+        } else if (ev.motivo === 'Pericia') {
+            claseSemaforo = 'bg-semaforo-amarillo';
+        }
+
+        // Si es historial, todo va a gris
+        if (vistaActual === 'historial') claseSemaforo = 'bg-semaforo-gris';
+
+        const ramaClase = ev.tipoRama === 'ANNYA' ? 'rama-annya' : 'rama-particular';
+
+        const card = `
+            <div class="col-md-12 col-lg-6 animate__animated animate__fadeIn">
+                <div class="cal-card-modern shadow-sm" onclick="verDetalle('${ev.id}')">
+                    <div class="cal-date-block ${claseSemaforo}">
+                        <span class="cal-month">${mes}</span>
+                        <span class="cal-day">${dia}</span>
+                        <span class="cal-time"><i class="bi bi-clock"></i> ${hora}</span>
+                    </div>
+
+                    <div class="cal-info-block">
+                        <div>
+                            <span class="badge ${ramaClase} badge-rama-small text-uppercase">${ev.tipoRama}</span>
+                            <h5 class="cal-title text-truncate">${ev.motivo}</h5>
+                            <div class="cal-subtitle mb-2">
+                                <i class="fi fi-rr-folder-open me-1"></i> ${ev.expediente || 'Sin Exp.'}
+                            </div>
+                            <p class="small text-muted mb-0" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.2;">
+                                ${ev.detalle || '<em>Sin observaciones adicionales</em>'}
+                            </p>
+                        </div>
+                        
+                        <div class="d-flex justify-content-between align-items-center mt-2 pt-2 border-top">
+                            <span class="small fw-bold text-secondary text-truncate" style="max-width: 180px;">
+                                <i class="fi fi-rr-bank me-1"></i> ${ev.juzgado || 'S/D'}
+                            </span>
+                            <div onclick="event.stopPropagation();">
+                                ${vistaActual === 'pendientes' ? `
+                                    <button class="btn btn-link p-0 me-2" onclick="marcarRealizado('${ev.id}', '${ev.calId}')">
+                                        <i class="fi fi-rr-badge-check text-success" style="font-size: 1.4rem;"></i>
+                                    </button>
+                                    <button class="btn btn-link p-0" onclick="confirmarEliminar('${ev.id}', '${ev.calId}')">
+                                        <i class="fi fi-rr-trash text-danger" style="font-size: 1.1rem;"></i>
+                                    </button>
+                                ` : `<i class="fi fi-rr-check-circle text-success"></i>`}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>`;
+        contenedor.innerHTML += card;
+    });
+}
+
+    // VER DETALLE COMPLETO EN MODAL
+    window.verDetalle = function(id) {
+        const ev = listaEventosGlobal.find(e => e.id === id);
+        if(!ev) return;
+        const body = document.getElementById('bodyDetalleEvento');
+        body.innerHTML = `
+            <div class="mb-3">
+                <label class="text-muted small d-block text-uppercase fw-bold">Motivo</label>
+                <h4 class="fw-bold" style="color: #AD46FF;">${ev.motivo}</h4>
+            </div>
+            <div class="row mb-3">
+                <div class="col-6">
+                    <label class="text-muted small d-block">FECHA Y HORA</label>
+                    <p class="fw-bold"><i class="bi bi-calendar-event"></i> ${new Date(ev.fecha).toLocaleString()}</p>
+                </div>
+                <div class="col-6 text-end">
+                    <label class="text-muted small d-block">SECTOR</label>
+                    <span class="badge ${ev.tipoRama === 'ANNYA' ? 'rama-annya' : 'rama-particular'} badge-rama">${ev.tipoRama}</span>
+                </div>
+            </div>
+            <hr>
+            <div class="mb-3">
+                <label class="text-muted small d-block">EXPEDIENTE</label>
+                <p class="p-2 border rounded bg-light fw-bold shadow-inner">${ev.expediente}</p>
+            </div>
+            <div class="mb-3">
+                <label class="text-muted small d-block">UBICACIÓN</label>
+                <p class="small mb-1"><strong>Fuero:</strong> ${ev.fuero}</p>
+                <p class="small"><strong>Juzgado:</strong> ${ev.juzgado}</p>
+            </div>
+            <div class="mb-0">
+                <label class="text-muted small d-block">DETALLES COMPLETOS</label>
+                <div class="p-3 bg-light rounded italic shadow-inner" style="border-left: 4px solid #ED6AFF;">
+                    ${ev.detalle || 'Sin observaciones adicionales.'}
+                </div>
+            </div>`;
+        const modalElement = document.getElementById('modalDetalleEvento');
+        const modalInstancia = new bootstrap.Modal(modalElement);
+        modalInstancia.show();
+    };
+
+    // MARCAR COMO REALIZADO
+    window.marcarRealizado = function(id, calId) {
+    Swal.fire({
+        title: '¿Confirmar finalización?',
+        text: "El evento se marcará como REALIZADO y se moverá al historial.",
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#28a745', // Verde éxito
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: 'Sí, finalizar',
+        cancelButtonText: 'Cancelar',
+        customClass: { popup: 'rounded-4' }
+    }).then((result) => {
+        if (result.isConfirmed) {
+            
+            Swal.fire({
+                title: 'Procesando...',
+                html: 'Actualizando agenda e historial',
+                allowOutsideClick: false,
+                didOpen: () => { Swal.showLoading(); }
+            });
+
+            google.script.run
+                .withSuccessHandler(res => {
+                    Swal.close();
+
+                    if(res.success) { 
+                        Swal.fire({
+                            icon: 'success',
+                            title: '🏆 ¡Evento finalizado!',
+                            text: 'Se ha movido correctamente al historial.',
+                            timer: 2000,
+                            showConfirmButton: false,
+                            customClass: { popup: 'rounded-4' }
+                        });
+                        
+                        if(typeof cargarAgenda === 'function') cargarAgenda(); 
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'No se pudo finalizar',
+                            text: 'Error: ' + res.error,
+                            confirmButtonColor: '#8e44ad'
+                        });
+                    }
+                })
+                .withFailureHandler(err => {
+                    Swal.fire('❌ Error de red', 'Fallo crítico al conectar con el servidor', 'error');
+                })
+                .finalizarEvento(id, calId);
+        }
+    });
+};
+
+    // ELIMINAR PERMANENTEMENTE
+    window.confirmarEliminar = function(id, calId) {
+        if(confirm("¿Eliminar definitivamente este evento de la agenda y de Google Calendar?")) {
+            google.script.run
+                .withSuccessHandler(res => {
+                    if(res.success) { 
+                        if(typeof showAlert === 'function') showAlert("🗑️ Evento eliminado", "success");
+                        cargarAgenda(); 
+                    }
+                })
+                .eliminarEvento(id, calId);
+        }
+    };
+
+    // Ejecución inicial
+    cargarAgenda();
+})();
+</script>
