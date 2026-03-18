@@ -84,7 +84,7 @@
 </div>
 <div class="row justify-content-center mt-3 mb-2">
   <div class="col-auto">
-    <button type="button" class="btn-volver-glass-pro" onclick="loadContent('eventos'); return false;">
+    <button type="button" class="btn-volver-glass-pro" onclick="loadContent('Calendario/eventos'); return false;">
       <i class="fi fi-br-angle-double-left"></i><span>VOLVER</span>
     </button>
   </div>
@@ -191,7 +191,7 @@
             if(res.success) {
                 showAlert("✅ Evento registrado con éxito", "success");
                 form.reset();
-                setTimeout(() => loadContent('eventos'), 1500);
+                setTimeout(() => loadContent('Calendario/eventos'), 1500);
             } else {
                 showAlert("❌ Error: " + res.error, "danger");
                 btn.disabled = false;

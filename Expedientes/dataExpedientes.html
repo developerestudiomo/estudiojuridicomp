@@ -43,7 +43,7 @@
 
 <div class="row justify-content-center mt-3 mb-2">
     <div class="col-auto">
-        <button type="button" class="btn-volver-glass-pro" onclick="loadContent('gestionExpte'); return false;">
+        <button type="button" class="btn-volver-glass-pro" onclick="loadContent('Expedientes/gestionExpte'); return false;">
             <i class="fi fi-br-angle-double-left"></i><span>VOLVER</span>
         </button>
     </div>
@@ -196,7 +196,7 @@
 
 function verDetalle(nro) {
     sessionStorage.setItem('activeSheetName', nro);
-    if (typeof loadContent === 'function') loadContent('verExpediente');
-    else if (parent && typeof parent.loadContent === 'function') parent.loadContent('verExpediente');
+    if (typeof loadContent === 'function') loadContent('Expedientes/verExpediente');
+    else if (parent && typeof parent.loadContent === 'function') parent.loadContent('Expedientes/verExpediente');
 }
 </script>

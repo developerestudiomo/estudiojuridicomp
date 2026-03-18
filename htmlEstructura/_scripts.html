@@ -21,7 +21,7 @@ function loadContent(page, spreadsheetId = null) {
   }
 
   // 2. Páginas Globales (No necesitan ID de expediente)
-  if (['home', 'clientes', 'nuevoCliente', 'gestorClientes', 'eventos', 'cargarEventos', 'gestionarEventos', 'tareas', 'gestorTareas', 'turnos'].includes(page)) {
+  if (['htmlEstructura/_home', 'Clientes/clientes', 'Clientes/nuevoCliente', 'Clientes/gestorClientes', 'Calendario/eventos', 'Calendario/cargarEventos', 'Calendario/gestionarEventos', 'Tareas/tareas', 'Tareas/gestorTareas', 'PageExterna/turnos'].includes(page)) {
     currentSpreadsheetId = null;
     sessionStorage.removeItem('activeSpreadsheetId');
     console.log(`CLIENT (loadContent): ID de hoja omitido para página global: ${page}`);
@@ -139,7 +139,7 @@ function loadContent(page, spreadsheetId = null) {
     document.addEventListener('DOMContentLoaded', () => {
         console.log('CLIENT: DOMContentLoaded - inicializando aplicación...');
         currentSpreadsheetId = sessionStorage.getItem('activeSpreadsheetId');
-        loadContent('_home'); // Cambiá a 'seleccionarExpedientes' si preferís esa como inicio
+        loadContent('htmlEstructura/_home'); // Cambiá a 'seleccionarExpedientes' si preferís esa como inicio
 
         const initialActiveLink = document.querySelector('.navbar-nav .nav-link[onclick*="home"]');
         if (initialActiveLink) {

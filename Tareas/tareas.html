@@ -22,7 +22,7 @@
           </div>
           <h5 class="fw-bold" style="color: #A813B7;">Gestión de Tareas</h5>
           <p class="mb-4 text-center" style="color: #A813B7; max-width: 80%;">Gestión, verificación y finalización de tareas.</p>
-          <button class="btn-menu rounded-pill px-4" onclick="loadContent('gestorTareas')">- GESTOR DE TAREAS -</button>
+          <button class="btn-menu rounded-pill px-4" onclick="loadContent('Tareas/gestorTareas')">- GESTOR DE TAREAS -</button>
         </div>
       </div>
     </div>
@@ -30,7 +30,7 @@
 
   <div class="row justify-content-center mt-5 mb-2">
     <div class="col-auto">
-      <button type="button" class="btn-volver-glass-pro" onclick="loadContent('_home'); return false;">
+      <button type="button" class="btn-volver-glass-pro" onclick="loadContent('htmlEstructura/_home'); return false;">
         <i class="fi fi-br-angle-double-left"></i><span>VOLVER</span>
       </button>
     </div>
@@ -257,10 +257,10 @@ function procesarGuardarTarea() {
                 const modalInstance = bootstrap.Modal.getInstance(modalElement);
                 if (modalInstance) modalInstance.hide();
                 try {
-                        loadContent('gestorTareas'); 
+                        loadContent('Tareas/gestorTareas'); 
                     } catch (e) {
                         console.error("Error al redirigir al gestor:", e);
-                        loadContent('_home'); // Redirección de respaldo
+                        loadContent('Tareas/tareas'); // Redirección de respaldo
                     }
 
                 

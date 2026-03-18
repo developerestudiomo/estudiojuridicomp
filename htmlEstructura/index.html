@@ -4,13 +4,13 @@
   <head>
     <base target="_top">
     <!--Incluye las etiquetas del head-->
-    <?!= include('CSS'); ?>
-    <?!= include('_head'); ?>
+    <?!= include('htmlEstructura/CSS'); ?>
+    <?!= include('htmlEstructura/_head'); ?>
 
   </head>
   <body>
     <!--Incluye la barra de navegación -->
-    <?!= include('_navbar'); ?>
+    <?!= include('htmlEstructura/_navbar'); ?>
 
     <!--Contenedor para las alertas-->
     <div id="alertPlaceholder" style="position: fixed; top: 70px; right: 20px; z-index: 2000; width: 350px;"></div>
@@ -18,11 +18,11 @@
           <!-- Contenedor principal donde se cargará todo el contenido dinámico -->
           <main id="content" class="container">
 
-            <?!= include('_home'); ?>
+            <?!= include('htmlEstructura/_home'); ?>
           </main>
 
     <!--Incluye el pie de página -->
-    <?!= include('_footer'); ?>
+    <?!= include('htmlEstructura/_footer'); ?>
 
 
 
@@ -32,7 +32,7 @@
         <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
 
 
-         <?!= include('_scripts'); ?>
+         <?!= include('htmlEstructura/_scripts'); ?>
   </body>
 </html>
 

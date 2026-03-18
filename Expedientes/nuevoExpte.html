@@ -162,7 +162,7 @@
             </div>
 
             <div class="neu-modal-footer">
-                <button class="neu-button btn-clean w-auto px-8" onclick="loadContent('gestionExpte')">
+                <button class="neu-button btn-clean w-auto px-8" onclick="loadContent('Expedientes/gestionExpte')">
                     <span class="btn-text">LUEGO</span>
                 </button>
                 <button class="neu-button btn-save w-auto px-8" onclick="window.startUploadProcess()">
@@ -212,7 +212,7 @@
               </div>
 
               <div class="neu-modal-footer">
-                  <button class="neu-button btn-clean w-auto px-8" onclick="loadContent('gestionExpte')">FINALIZAR</button>
+                  <button class="neu-button btn-clean w-auto px-8" onclick="loadContent('Expedientes/gestionExpte')">FINALIZAR</button>
                   <button class="neu-button btn-save w-auto px-8" id="uploadFilesBtn" style="--principal: #7e22ce; --principal-dark: #6b21a8;">
                       SUBIR ARCHIVOS
                   </button>
@@ -424,7 +424,7 @@
                                               const modalUpload = bootstrap.Modal.getInstance(document.getElementById('uploadFilesModal'));
                                               if(modalUpload) modalUpload.hide();
                                               if (typeof loadContent === 'function') {
-                                                  loadContent('gestionExpte'); 
+                                                  loadContent('Expedientes/gestionExpte'); 
                                               } else {
                                                   window.location.reload();
                                               }
