@@ -38,7 +38,7 @@ function doGet(e) {
 
   // 2. Caso para cargar la Web App (HTML)
   try {
-    return HtmlService.createTemplateFromFile('index')
+    return HtmlService.createTemplateFromFile('htmlEstructura/index')
       .evaluate()
       .setTitle('Gestión Estudio Jurídico')
       .setFaviconUrl('https://img.icons8.com/ios-filled/50/000000/law.png')
@@ -357,7 +357,7 @@ function handleFormSubmission(formData) {
       "modo": formData["accionExpediente"] // El radio button
     };
     guardarCambiosExpediente(spreadsheetId, data); 
-    return HtmlService.createTemplateFromFile('dataExpedientes')
+    return HtmlService.createTemplateFromFile('Expedientes/dataExpedientes')
         .evaluate()
         .setSandboxMode(HtmlService.SandboxMode.IFRAME);
 
