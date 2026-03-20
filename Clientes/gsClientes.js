@@ -80,17 +80,68 @@ function obtenerClientes() {
 
 
 /*FUNCIÓN AUXILIAR PARA EVITAR REPETIR CÓDIGO*/
-function listarSubcarpetas(folderId) {
+const PREFIJO_NOMBRES = {
+    'MO': 'MORON', 'LM': 'LA MATANZA', 'SI': 'SAN ISIDRO', 'SM': 'SAN MARTIN',
+    'MZ': 'MERCEDES LUJÁN', 'CA': 'CABA', 'AV': 'AVELLANEDA', 
+    'MGRZ': 'MORENO GRAL RODRIGUEZ', 'LZ': 'LOMAS DE ZAMORA' 
+};
+
+/** 1. Obtiene Fueros (Subcarpetas de la Rama) */
+function getFuerosDesdeDrive(tipo) {
+  const folderId = (tipo === "ANNYA") ? FOLDER_ANNYA : FOLDER_PARTICULAR;
+  const folder = DriveApp.getFolderById(folderId);
+  const sub = folder.getFolders();
+  let res = [];
+  while (sub.hasNext()) {
+    res.push(sub.next().getName());
+  }
+  return res.sort();
+}
+
+/** 2. Obtiene Deptos (Subcarpetas del Fuero) */
+function getDepartamentosJudiciales(fueroNombre, tipo) {
+  const rootId = (tipo === "ANNYA") ? FOLDER_ANNYA : FOLDER_PARTICULAR;
+  const rootFolder = DriveApp.getFolderById(rootId);
+  const fueroFolder = rootFolder.getFoldersByName(fueroNombre).next();
+  
+  const sub = fueroFolder.getFolders();
+  let res = [];
+  while (sub.hasNext()) {
+    res.push(sub.next().getName());
+  }
+  return res.sort();
+}
+
+/** 3. Obtiene los JUZGADOS (Que son archivos de Google Sheets) */
+function getExpedientesFromDrive(fuero, depto, tipo) {
+  const rootId = (tipo === "ANNYA") ? FOLDER_ANNYA : FOLDER_PARTICULAR;
+  const fueroFolder = DriveApp.getFolderById(rootId).getFoldersByName(fuero).next();
+  const deptoFolder = fueroFolder.getFoldersByName(depto).next();
+  
+  const files = deptoFolder.getFilesByType(MimeType.GOOGLE_SHEETS);
+  let res = [];
+  while (files.hasNext()) {
+    let f = files.next();
+    res.push({ id: f.getId(), name: f.getName() });
+  }
+  return res.sort((a, b) => a.name.localeCompare(b.name));
+}
+
+/** 4. EXTRAE LA LISTA DE EXPEDIENTES DESDE EL INTERIOR DEL SHEET */
+function getListaExptesdeId(spreadsheetId) {
   try {
-    const folder = DriveApp.getFolderById(folderId);
-    const sub = folder.getFolders();
-    let res = [];
-    while (sub.hasNext()) {
-      let f = sub.next();
-      res.push({ id: f.getId(), name: f.getName() });
+    const ss = SpreadsheetApp.openById(spreadsheetId);
+    const sheet = ss.getSheets()[0]; 
+    const data = sheet.getDataRange().getValues();
+    
+    // Asumimos que la columna 'EXPEDIENTE' es la segunda (índice 1)
+    // Saltamos la cabecera (fila 0)
+    let expedientes = [];
+    for (let i = 1; i < data.length; i++) {
+      if (data[i][1]) expedientes.push(data[i][1].toString());
     }
-    return res.sort((a, b) => a.name.localeCompare(b.name));
+    return [...new Set(expedientes)].sort(); 
   } catch (e) {
-    return [];
+    return ["Error al leer archivo del juzgado"];
   }
 }
