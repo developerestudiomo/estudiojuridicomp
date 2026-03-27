@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"name": "Estudio-Juridico",
+			"path": ".."
+		},
+		{
+			"name": "public",
+			"path": "../../page estudio/estudio-web/public"
+		}
+	],
+	"settings": {}
+}

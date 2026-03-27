@@ -13,9 +13,8 @@ function obtenerNovedadesSheet() {
     })
     .map(function(fila) {
       let imagenLink = fila[3] ? fila[3].toString().trim() : "";
-      
-      // Si el campo tiene texto pero no es un link, buscamos en Drive
-      if (imagenLink && !imagenLink.toLowerCase().startsWith("http")) {
+
+      if (imagenLink && !imagenLink.toLowerCase().startsWith("https")) {
         imagenLink = obtenerLinkImagenDirecto(imagenLink);
       }
 
@@ -27,22 +26,28 @@ function obtenerNovedadesSheet() {
       };
     });
 }
-
 // --- BUSCADOR DE IMÁGENES EN DRIVE ---
 function obtenerLinkImagenDirecto(nombreArchivo) {
+  if (!nombreArchivo) return "";
   try {
-    const carpeta = DriveApp.getFolderById(folderIdNovedades);
+    const carpeta = DriveApp.getFolderById(folderIdNovedades.trim());
     const archivos = carpeta.getFilesByName(nombreArchivo.toString().trim());
     
     if (archivos.hasNext()) {
       const archivo = archivos.next();
       archivo.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
       
-      // ESTA ES LA URL SECRETA QUE MEJOR FUNCIONA PARA IMÁGENES DE FONDO
-      return "https://lh3.googleusercontent.com/d/" + archivo.getId();
+      const id = archivo.getId();
+      
+      // --- NUEVA URL DE RENDERIZADO (LH3) ---
+      // Esta URL es la que usa Google para sus propios servicios y no da error 403
+      return "https://lh3.googleusercontent.com/d/" + id;
     }
   } catch (e) {
-    console.error("Error: " + e.toString());
+    console.error("Error en Drive: " + e.toString());
   }
   return "";
+}
+function pruebaRapida() {
+  console.log("Resultado: " + obtenerLinkImagenDirecto("SERVICIOS NUEVO 2026.jpg"));
 }
