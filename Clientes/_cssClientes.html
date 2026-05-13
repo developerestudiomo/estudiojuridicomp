@@ -1,0 +1,280 @@
+<style>
+    /*----------------INICIO CSS NUEVO CLIENTE---*/
+/* Contenedor Principal estilo Ficha */
+.lex-registro-container {
+    background: #f0f0f3;
+    border-radius: 20px;
+    padding: 2rem;
+    box-shadow: 10px 10px 20px #bebebe, -10px -10px 20px #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Pestaña superior de Fichero */
+.lex-registro-container::before {
+    content: "FICHA CLIENTE";
+    position: absolute;
+    top: 0;
+    left: 20px;
+    background: #682ed5;
+    color: white;
+    padding: 5px 20px;
+    font-size: 0.7rem;
+    font-weight: bold;
+    border-radius: 0 0 10px 10px;
+    box-shadow: 3px 3px 6px #bebebe;
+}
+
+.lex-registro-header {
+    border-bottom: 2px solid #682ed5;
+    margin-bottom: 25px;
+    padding-bottom: 10px;
+}
+
+.lex-registro-header h5 {
+    color: #555;
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+
+/* Inputs Neumórficos */
+.lex-registro-input {
+    width: 100%;
+    border: none;
+    padding: 12px 15px;
+    border-radius: 12px;
+    background: #f0f0f3;
+    box-shadow: inset 5px 5px 10px #d1d1d4, inset -5px -5px 10px #ffffff;
+    transition: all 0.3s ease;
+    color: #444;
+    outline: none;
+}
+
+/* Efecto FOCUS destacado */
+.lex-registro-input:focus {
+    box-shadow: 5px 5px 10px #bebebe, -5px -5px 10px #ffffff;
+    transform: translateY(-2px);
+    background: #ffffff;
+    border: 1px solid #682ed5;
+}
+
+.lex-registro-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--accent-plum);
+    margin-bottom: 8px;
+    display: block;
+    text-transform: uppercase;
+}
+
+/* Sector Expediente como sub-ficha */
+.lex-registro-subsector {
+    background: #f8f0ff;
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: inset 2px 2px 5px #e0dae6, inset -2px -2px 5px #ffffff;
+    border-left: 5px solid var(--accent-plum);
+}
+
+/* Botones Premium */
+.lex-btn-premium {
+    background: #f0f0f3;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 50px;
+    box-shadow: 6px 6px 12px #bebebe, -6px -6px 12px #ffffff;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Rebote elegante */
+    font-weight: 700;
+    color: #666;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    outline: none;
+}
+
+/* HOVER: El botón se estira y brilla un poco */
+.lex-btn-premium:hover {
+    box-shadow: 8px 8px 16px #b1b1b1, -8px -8px 16px #ffffff;
+    transform: translateY(-3px); /* Se levanta de la ficha */
+    color: #8e44ad; /* Color LexTech al texto */
+}
+
+/* ACTIVE: El efecto "Hundido" (Pulsación real) */
+.lex-btn-premium:active {
+    box-shadow: inset 4px 4px 8px #bebebe, inset -4px -4px 8px #ffffff;
+    transform: translateY(1px); /* Se hunde al presionar */
+}
+
+/* BOTÓN GUARDAR (Variante Destacada) */
+.lex-btn-save {
+    background: #8e44ad; /* Violeta LexTech */
+    color: white !important;
+    box-shadow: 6px 6px 12px #bebebe, -6px -6px 12px #ffffff;
+}
+
+.lex-btn-save:hover {
+    background: #9b59b6; /* Un tono más claro al pasar el mouse */
+    color: white !important;
+}
+
+.lex-btn-save:active {
+    background: #8e44ad;
+    box-shadow: inset 6px 6px 12px #732d91, inset -6px -6px 12px #a959ce;
+}
+
+/* BOTÓN VOLVER/CANCELAR (Más sobrio) */
+.lex-btn-cancel {
+    background: #f0f0f3;
+    color: #999;
+}
+/*-------------------FIN CSS NUEVO CLIENTE---*/
+
+/*--------CSS GESTOR CLIENTES------*/
+.form-control::placeholder {
+    color: #a0a5ab;
+    font-size: 0.9rem;
+}
+
+.input-group:focus-within {
+    box-shadow: inset 4px 4px 8px #bebebe, 
+                inset -4px -4px 8px #ffffff,
+                0 0 8px rgba(237, 106, 255, 0.2) !important;
+}
+#contenedorKardex {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)) !important;
+    gap: 30px !important;
+    background-color: #e0e5ec !important;  
+    padding: 2rem;
+    border-radius: 20px;
+    min-height: 400px;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.n-title-bordo, .kardex-header span, #contenedorKardex h4 {
+    color: var(--bordo-principal) !important;
+    text-shadow: 1px 1px 0px #ffffff;
+}
+
+/* Iconos en general */
+.fi-rr-id-badge, .fi-sr-star-octagon, .fi-rr-folder-open, .fi-rr-phone-call, .fi-rr-search {
+    color: var(--bordo-principal) !important;
+}
+
+/* Badge del ID con bajorrelieve */
+.n-badge-id {
+    background: transparent !important;
+    color: var(--bordo-principal) !important;
+    padding: 0.5rem 1rem;
+    border-radius: 50px;
+    font-weight: 700;
+    box-shadow: inset 2px 2px 5px #b8b9be, 
+                inset -2px -2px 5px #ffffff !important;
+}
+
+.kardex-ficha {
+    background-color: #e0e5ec !important;
+    border: none !important;
+    border-radius: 30px !important;
+    padding: 20px;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 10px 10px 20px #bebebe, 
+               -10px -10px 20px #ffffff !important;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    position: relative;
+    min-height: 280px;
+}
+.kardex-ficha h6, 
+.kardex-ficha .fw-bold, 
+.kardex-ficha .text-dark {
+    color: #800000 !important; /* Color Bordó */
+}
+.h6,.h4{
+color: var(--principal-dark)!important;
+}
+
+.kardex-ficha p, 
+.kardex-ficha span, 
+.kardex-ficha div {
+    color: #550000; /* Un bordó más suave para datos secundarios */
+}
+.kardex-ficha:hover {
+    transform: translateY(-12px) scale(1.03);
+    box-shadow: 20px 20px 40px #bebebe, 
+               -20px -20px 40px #ffffff !important;
+    border: 1px solid rgba(237, 106, 255, 0.2);
+}
+.kardex-header {
+    background: #e0e5ec !important; /* Mismo color de fondo */
+    box-shadow: inset 3px 3px 6px #b8b9be, 
+               inset -3px -3px 6px #ffffff;
+    margin: 10px;
+    border-radius: 15px;
+    color: #ED6AFF !important; /* El color de marca solo en texto/iconos */
+}
+
+.kardex-header span {
+    color: #ED6AFF !important;
+    font-weight: 800;
+}
+.expediente-badge {
+    background: var(--gris-neu) !important;
+    box-shadow: inset 3px 3px 7px #bebebe, 
+               inset -3px -3px 7px #ffffff !important;
+    border-radius: 15px;
+    padding: 12px;
+    border: none !important;
+    color: var(--bordo-principal) !important;
+}
+.btn-convenios-neu {
+    background: var(--gris-neu);
+    border-radius: 10px;
+    box-shadow: 4px 4px 8px #b8b9be, 
+               -4px -4px 8px #ffffff;
+    border: none;
+    color: var(--bordo-principal) !important;
+    padding: 5px 15px;
+    font-weight: bold;
+    transition: 0.2s;
+}
+.btn-convenios-neu:hover {
+    color: var(--bordo-suave) !important;
+    box-shadow: 6px 6px 12px #bebebe, 
+               -6px -6px 12px #ffffff;
+}
+
+.btn-convenios-neu:active {
+    box-shadow: inset 3px 3px 6px #bebebe, 
+               inset -3px -3px 6px #ffffff;
+    transform: scale(0.98);
+}
+.input-neu {
+    background: #e0e5ec !important;
+    box-shadow: inset 2px 2px 5px #bebebe, 
+               inset -2px -2px 5px #ffffff !important;
+    border: none !important;
+    border-radius: 10px;
+}
+
+.card-item-cli {
+    animation: fadeInScale 0.6s ease forwards;
+    opacity: 0;
+}
+
+@keyframes fadeInScale {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+/* Delay para cada tarjeta (puedes añadir más si esperas muchos clientes) */
+.card-item-cli:nth-child(1) { animation-delay: 0.1s; }
+.card-item-cli:nth-child(2) { animation-delay: 0.2s; }
+.card-item-cli:nth-child(3) { animation-delay: 0.3s; }
+/*----FIN GESTOR CLIENTES----*/
+
+</style>

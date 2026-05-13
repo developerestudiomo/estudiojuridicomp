@@ -1,0 +1,149 @@
+<script>
+(function() {
+    // Configuración inicial de botones
+    document.getElementById('btnVolver').onclick = function() {
+        const dest = 'seleccionarExpedientes';
+        if (typeof loadContent === 'function') loadContent(dest);
+        else if (parent && typeof parent.loadContent === 'function') parent.loadContent(dest);
+    };
+
+    const ssId = sessionStorage.getItem('activeSpreadsheetId');
+    const juzgadoNombre = sessionStorage.getItem('activeJuzgadoName');
+    
+    if (juzgadoNombre) document.getElementById('juzgadoLabel').textContent = juzgadoNombre;
+
+    // Disparar carga si hay ID
+    if (ssId) {
+        cargarDatos(ssId);
+    } else {
+        Swal.fire({
+            icon: 'error',
+            title: 'Sin Juzgado',
+            text: 'No se detectó un ID de juzgado válido.',
+            confirmButtonColor: '#A813B7'
+        });
+    }
+
+    function cargarDatos(id) {
+        // Mostrar loader y ocultar tabla anterior
+        document.getElementById('loadingMessage').style.display = 'block';
+        document.getElementById('tableContainer').style.display = 'none';
+
+        google.script.run
+            .withSuccessHandler(function(res) {
+                if (res && res.success) {
+                    renderTable(res.headers, res.data);
+                } else {
+                    document.getElementById('loadingMessage').innerHTML = `<p class="text-danger">Error: ${res.error}</p>`;
+                    Swal.fire('Error', res.error || 'Fallo en la lectura', 'error');
+                }
+            })
+            .withFailureHandler(err => {
+                document.getElementById('loadingMessage').innerHTML = `<p class="text-danger">Fallo crítico</p>`;
+                Swal.fire('Fallo de Conexión', err.toString(), 'error');
+            })
+            .getData(id, 'INDICE');
+    }
+
+    function renderTable(headers, data) {
+        const tableElement = $('#tableExpedientes');
+        
+        // Limpieza de instancia previa
+        if ($.fn.DataTable.isDataTable('#tableExpedientes')) {
+            tableElement.DataTable().destroy();
+            tableElement.empty();
+        }
+
+        // Preparar Columnas
+        const columns = headers.map(h => ({ title: h.toUpperCase() }));
+        columns.push({ title: "ACCIONES", orderable: false, className: "text-center" });
+
+        // Preparar Datos con Botones
+        const tableData = data.map(fila => {
+            const expte = fila[0]; 
+            const btn = `
+                <div class="d-flex justify-content-center gap-2">
+                    <button class="btn-view" onclick="verDetalle('${expte}')" title="Ver Detalle">
+                        <i class="bi bi-eye"></i>
+                    </button>
+                    <button class="btn-marca" data-nro="${expte}" title="Eliminar">
+                        <i class="bi bi-trash3"></i>
+                    </button>
+                </div>`;
+            return [...fila, btn];
+        });
+
+        // Inicializar DataTable
+        const table = tableElement.DataTable({
+            data: tableData,
+            columns: columns,
+            language: { url: 'https://cdn.datatables.net/plug-ins/1.10.21/i18n/Spanish.json' },
+            dom: 'rtip',
+            pageLength: 10,
+            responsive: true,
+            drawCallback: function() {
+                // Re-vincular eventos de eliminación en cada redibujado
+                $('.btn-delete-accion').off('click').on('click', function() {
+                    confirmarEliminar($(this).data('nro'));
+                });
+            }
+        });
+
+        // Buscador personalizado
+        document.getElementById('customSearch').onkeyup = function() { 
+            table.search(this.value).draw(); 
+        };
+
+        // Filtro de año dinámico
+        const select = document.getElementById('filterAnio');
+        const anios = [...new Set(data.map(f => {
+            const partes = f[0].split('-'); 
+            return partes.length > 1 ? partes.pop() : null;
+        }))].filter(Boolean).sort((a,b) => b-a);
+
+        select.innerHTML = '<option value="">Todos los años</option>';
+        anios.forEach(a => select.innerHTML += `<option value="${a}">${a}</option>`);
+        
+        select.onchange = function() { 
+            table.column(0).search(this.value).draw(); 
+        };
+
+        // Alternar visibilidad final
+        document.getElementById('loadingMessage').style.display = 'none';
+        document.getElementById('tableContainer').style.display = 'block';
+    }
+
+    function confirmarEliminar(nroExpte) {
+        Swal.fire({
+            title: '¿Eliminar expediente?',
+            text: `Se borrará el registro ${nroExpte} de forma permanente.`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Sí, eliminar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const ssId = sessionStorage.getItem('activeSpreadsheetId');
+                google.script.run
+                    .withSuccessHandler(res => {
+                        if(res.success) {
+                            Swal.fire('Eliminado', 'El expediente ha sido borrado.', 'success');
+                            cargarDatos(ssId); 
+                        } else {
+                            Swal.fire('Error', res.error, 'error');
+                        }
+                    })
+                    .eliminarExpedienteCompleto(ssId, nroExpte);
+            }
+        });
+    }
+})();
+
+function verDetalle(nro) {
+    sessionStorage.setItem('activeSheetName', nro);
+    if (typeof loadContent === 'function') loadContent('Expedientes/verExpediente');
+    else if (parent && typeof parent.loadContent === 'function') parent.loadContent('Expedientes/verExpediente');
+}
+</script>

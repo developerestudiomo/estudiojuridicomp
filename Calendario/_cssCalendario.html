@@ -1,0 +1,624 @@
+<style>
+/*----ESTILOS CALENDARIO----*/
+
+:root {
+    --bg-cal: #e0e5ec;
+    --shadow-light: #ffffff;
+    --shadow-dark: #a3b1c6;
+    --accent: #800000; /* Bordó principal */
+    --text-main: #444;
+    --particular-color: #0d9488; /* Verde Esmeralda */
+    --annya-color: #b07d8a;      /* Dusty Rose */
+}
+
+/* --- CONTENEDOR PRINCIPAL --- */
+.calendar-wrapper {
+    background: var(--bg-cal);
+    padding: 30px;
+    border-radius: 30px;
+    box-shadow: 20px 20px 60px var(--shadow-dark), -20px -20px 60px var(--shadow-light);
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    max-width: 1100px;
+    margin: 20px auto;
+}
+
+/* --- CABECERA Y NAVEGACIÓN --- */
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.calendar-title {
+    color: var(--accent);
+    font-weight: 800;
+    font-size: 1.6rem;
+    letter-spacing: 1px;
+    margin: 0;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.05);
+}
+
+.calendar-nav {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.btn-cal-nav {
+    border: none;
+    background: var(--bg-cal);
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    box-shadow: 6px 6px 12px var(--shadow-dark), -6px -6px 12px var(--shadow-light);
+    cursor: pointer;
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    transition: all 0.2s ease;
+}
+
+.btn-cal-nav:active {
+    box-shadow: inset 4px 4px 8px var(--shadow-dark), inset -4px -4px 8px var(--shadow-light);
+    transform: scale(0.95);
+}
+
+.btn-add-event {
+    background: var(--accent);
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 50px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 6px 6px 15px rgba(128, 0, 0, 0.3);
+    transition: 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-add-event:hover {
+    transform: translateY(-2px);
+    box-shadow: 8px 8px 20px rgba(128, 0, 0, 0.4);
+}
+
+/* --- GRILLA DE DÍAS --- */
+.calendar-weekdays {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    text-align: center;
+    font-weight: 800;
+    color: var(--accent);
+    margin-bottom: 15px;
+    font-size: 0.85rem;
+    opacity: 0.8;
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 15px;
+}
+
+.day {
+    min-height: 110px;
+    background: var(--bg-cal);
+    border-radius: 20px;
+    padding: 12px;
+    box-shadow: inset 4px 4px 8px var(--shadow-dark), inset -4px -4px 8px var(--shadow-light);
+    position: relative;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.day:hover:not(.day-off) {
+    box-shadow: 8px 8px 16px var(--shadow-dark), -8px -8px 16px var(--shadow-light);
+    transform: scale(1.03);
+    z-index: 10;
+}
+
+.day-number {
+    font-weight: 700;
+    color: var(--text-main);
+    font-size: 0.95rem;
+    background: rgba(255,255,255,0.4);
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+.day.today {
+    border: 2px solid var(--accent);
+}
+
+.day.today .day-number {
+    background: var(--accent);
+    color: white;
+}
+
+.day-off {
+    opacity: 0.3;
+    cursor: default;
+}
+
+/* --- MODAL Y FORMULARIO --- */
+.modal-overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(8px);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    padding: 20px;
+}
+
+.neumorphic-card {
+    background: var(--bg-cal);
+    border-radius: 30px;
+    padding: 35px;
+    box-shadow: 20px 20px 60px rgba(0,0,0,0.2), -20px -20px 60px var(--shadow-light);
+    width: 100%;
+    max-width: 750px;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.modal-header-form {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+    padding-bottom: 15px;
+}
+
+.title-modal {
+    color: var(--accent);
+    margin: 0;
+    font-size: 1.3rem;
+}
+
+.close-modal {
+    background: none;
+    border: none;
+    font-size: 2rem;
+    color: var(--accent);
+    cursor: pointer;
+    line-height: 1;
+}
+
+/* --- ELEMENTOS DEL FORMULARIO --- */
+.label-premium {
+    display: block;
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: var(--accent);
+    margin-bottom: 8px;
+    margin-top: 15px;
+}
+
+.input-premium {
+    width: 100%;
+    padding: 12px 18px;
+    border: none;
+    border-radius: 15px;
+    background: var(--bg-cal);
+    box-shadow: inset 3px 3px 6px var(--shadow-dark), inset -3px -3px 6px var(--shadow-light);
+    color: var(--text-main);
+    font-weight: 600;
+    outline: none;
+    transition: 0.3s;
+}
+
+.input-premium:focus {
+    box-shadow: inset 1px 1px 2px var(--shadow-dark), inset -1px -1px 2px var(--shadow-light);
+    border: 1px solid rgba(128, 0, 0, 0.2);
+}
+
+/* --- RADIOS DE TIPO EXPEDIENTE --- */
+.radio-group-premium {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.radio-group-premium input[type="radio"] {
+    display: none;
+}
+
+.label-radio {
+    flex: 1;
+    padding: 15px;
+    text-align: center;
+    border-radius: 15px;
+    background: var(--bg-cal);
+    box-shadow: 5px 5px 10px var(--shadow-dark), -5px -5px 10px var(--shadow-light);
+    cursor: pointer;
+    font-weight: 800;
+    transition: 0.3s;
+    color: #777;
+}
+
+#radioParticular:checked + .label-radio {
+    background: linear-gradient(135deg, var(--particular-color), #065f46);
+    color: white;
+    box-shadow: inset 4px 4px 8px rgba(0,0,0,0.3);
+}
+
+#radioAnnya:checked + .label-radio {
+    background: linear-gradient(135deg, var(--annya-color), #8a5a67);
+    color: white;
+    box-shadow: inset 4px 4px 8px rgba(0,0,0,0.3);
+}
+
+/* --- COLORES ESPECÍFICOS PARA SELECTORES --- */
+#selectFuero { border-left: 5px solid #800080; } /* Ciruela */
+#selectDepto { border-left: 5px solid #ff8c00; } /* Naranja */
+#selectJuzgado { border-left: 5px solid #ff1493; } /* Rosa */
+
+.btn-submit {
+    background: var(--accent);
+    color: white;
+    border: none;
+    padding: 15px;
+    border-radius: 50px;
+    width: 100%;
+    font-weight: 800;
+    font-size: 1rem;
+    cursor: pointer;
+    margin-top: 30px;
+    box-shadow: 6px 6px 15px rgba(128, 0, 0, 0.3);
+}
+
+.footer-actions {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.btn-volver {
+    background: var(--bg-cal);
+    border: none;
+    padding: 10px 25px;
+    border-radius: 50px;
+    box-shadow: 4px 4px 8px var(--shadow-dark), -4px -4px 8px var(--shadow-light);
+    color: var(--accent);
+    font-weight: 700;
+    cursor: pointer;
+}
+.swal2-popup {
+    background: var(--bg-cal) !important;
+    border-radius: 25px !important;
+    box-shadow: 15px 15px 30px var(--shadow-dark), -15px -15px 30px var(--shadow-light) !important;
+    font-family: 'Segoe UI', sans-serif !important;
+}
+
+.swal2-title {
+    color: var(--accent) !important;
+}
+
+.swal2-styled.swal2-confirm {
+    background-color: var(--accent) !important;
+    border-radius: 50px !important;
+    padding: 12px 30px !important;
+    font-weight: bold !important;
+}
+
+.swal2-backdrop-show {
+    backdrop-filter: blur(5px);
+}
+/*---FIN CALENDARIO----*/
+/* ---- ESTILOS ESPECÍFICOS GESTOR DE EVENTOS (ev-) ---- */
+
+:root {
+    /* Mantenemos los colores base para consistencia, pero con nombres específicos de sección */
+    --ev-bg: #e0e5ec;
+    --ev-shadow-out-dark: #a3b1c6;
+    --ev-shadow-out-light: #ffffff;
+    --ev-shadow-in-dark: rgba(163, 177, 198, 0.6);
+    --ev-shadow-in-light: rgba(255, 255, 255, 0.8);
+    
+    --ev-accent: #800000; /* Bordó */
+    --ev-text-heavy: #333333;
+    --ev-text-soft: #666666;
+    
+    /* Semáforos */
+    --ev-color-urgente: #ff4d4d;
+    --ev-color-aviso: #ffcc00;
+    --ev-color-normal: #2ecc71;
+    --ev-color-archivo: #95a5a6;
+}
+
+/* Contenedor principal del Gestor */
+.ev-gestor-wrapper {
+    background: var(--ev-bg);
+    border-radius: 40px;
+    padding: 25px;
+    box-shadow: 20px 20px 60px var(--ev-shadow-out-dark), -20px -20px 60px var(--ev-shadow-out-light);
+}
+
+/* Switcher Neumórfico (Pendientes / Historial) */
+.ev-switch-container {
+    background: var(--ev-bg);
+    padding: 10px;
+    border-radius: 50px;
+    box-shadow: inset 8px 8px 16px var(--ev-shadow-in-dark), inset -8px -8px 16px var(--ev-shadow-in-light);
+    display: inline-flex;
+    gap: 5px;
+}
+
+.ev-btn-pill {
+    border: none;
+    padding: 12px 30px;
+    border-radius: 50px;
+    background: transparent;
+    color: var(--ev-text-soft);
+    font-weight: 700;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+}
+
+.ev-btn-pill.ev-active {
+    color: var(--ev-accent);
+    background: var(--ev-bg);
+    box-shadow: 5px 5px 10px var(--ev-shadow-out-dark), -5px -5px 10px var(--ev-shadow-out-light);
+}
+
+/* La Fila de la Tarea (Task Row) */
+.ev-task-row {
+    background: var(--ev-bg);
+    border-radius: 25px;
+    margin-bottom: 20px;
+    padding: 18px 25px;
+    display: flex;
+    align-items: center;
+    box-shadow: 10px 10px 20px var(--ev-shadow-out-dark), -10px -10px 20px var(--ev-shadow-out-light);
+    transition: transform 0.2s ease;
+    cursor: pointer;
+    border-left: 10px solid transparent;
+}
+
+.ev-task-row:hover {
+    transform: translateY(-3px);
+}
+
+/* Variantes de Borde (Semáforo) */
+.ev-border-urgente { border-left-color: var(--ev-color-urgente); }
+.ev-border-aviso { border-left-color: var(--ev-color-aviso); }
+.ev-border-normal { border-left-color: var(--ev-color-normal); }
+.ev-border-historial { border-left-color: var(--ev-color-archivo); opacity: 0.8; }
+
+/* Bloque de Fecha lateral */
+.ev-date-box {
+    min-width: 70px;
+    text-align: center;
+    border-right: 2px solid rgba(0,0,0,0.05);
+    margin-right: 20px;
+    padding-right: 15px;
+}
+
+.ev-date-day { font-size: 1.6rem; font-weight: 900; color: var(--ev-accent); display: block; line-height: 1; }
+.ev-date-month { font-size: 0.75rem; font-weight: 700; color: var(--ev-text-soft); text-transform: uppercase; }
+
+/* Contenido de la tarea */
+.ev-task-body { flex-grow: 1; min-width: 0; }
+.ev-task-title { font-weight: 800; color: var(--ev-text-heavy); margin: 0 0 4px 0; font-size: 1.1rem; }
+.ev-task-meta { font-size: 0.85rem; color: var(--ev-text-soft); font-weight: 600; display: flex; gap: 15px; }
+
+/* Botones de acción circulares */
+.ev-btn-action {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background: var(--ev-bg);
+    border: none;
+    box-shadow: 5px 5px 10px var(--ev-shadow-out-dark), -5px -5px 10px var(--ev-shadow-out-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--ev-text-soft);
+    margin-left: 12px;
+    transition: 0.2s;
+}
+
+.ev-btn-action:active {
+    box-shadow: inset 3px 3px 6px var(--ev-shadow-in-dark), inset -3px -3px 6px var(--ev-shadow-in-light);
+}
+
+.ev-btn-action.ev-check:hover { color: var(--ev-color-normal); }
+.ev-btn-action.ev-trash:hover { color: var(--ev-color-urgente); }
+
+/* Badge de Rama Neumórfico */
+.ev-badge-rama {
+    font-size: 0.65rem;
+    padding: 4px 10px;
+    border-radius: 50px;
+    font-weight: 900;
+    box-shadow: inset 2px 2px 5px var(--ev-shadow-in-dark), inset -2px -2px 5px var(--ev-shadow-in-light);
+    margin-right: 10px;
+}
+
+.ev-header-section {
+    margin-bottom: 40px;
+    padding: 20px;
+    border-radius: 25px;
+    background: var(--ev-bg);
+    /* Efecto de placa neumórfica sutil */
+    box-shadow: 10px 10px 20px var(--ev-shadow-out-dark), -10px -10px 20px var(--ev-shadow-out-light);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.ev-main-title {
+    font-size: 1.8rem;
+    font-weight: 900;
+    color: var(--ev-accent);
+    margin: 0;
+    letter-spacing: -0.5px;
+    text-transform: uppercase;
+}
+
+.ev-main-subtitle {
+    font-size: 0.9rem;
+    color: var(--ev-text-soft);
+    font-weight: 600;
+    margin: 0;
+}
+
+/* Contenedor del Switcher (Botones de Alternado) */
+.ev-view-selector {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 35px;
+}
+
+.ev-switch-base {
+    background: var(--ev-bg);
+    padding: 8px;
+    border-radius: 50px;
+    /* Base hundida */
+    box-shadow: inset 6px 6px 12px var(--ev-shadow-in-dark), 
+                inset -6px -6px 12px var(--ev-shadow-in-light);
+    display: inline-flex;
+    gap: 8px;
+}
+
+/* Clase base del botón Pill */
+.ev-btn-pill {
+    border: none;
+    outline: none;
+    padding: 10px 28px;
+    border-radius: 50px;
+    background: transparent;
+    color: var(--ev-text-soft);
+    font-weight: 700;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Estado Activo: El botón "sale" hacia afuera */
+.ev-btn-pill.ev-active {
+    color: var(--ev-accent);
+    background: var(--ev-bg);
+    box-shadow: 5px 5px 10px var(--ev-shadow-out-dark), 
+                -5px -5px 10px var(--ev-shadow-out-light);
+    transform: scale(1.02);
+}
+
+/* Iconos dentro de los botones */
+.ev-btn-pill i {
+    font-size: 1.1rem;
+}
+
+/* Botón "NUEVO EVENTO" Universal */
+.ev-btn-add-main {
+    background: var(--ev-accent);
+    color: white;
+    border: none;
+    padding: 12px 22px;
+    border-radius: 18px;
+    font-weight: 800;
+    font-size: 0.9rem;
+    cursor: pointer;
+    box-shadow: 5px 5px 15px rgba(128, 0, 0, 0.3);
+    transition: 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.ev-btn-add-main:hover {
+    transform: translateY(-2px);
+    box-shadow: 7px 7px 20px rgba(128, 0, 0, 0.4);
+}
+
+.ev-btn-add-main:active {
+    transform: translateY(1px);
+}
+
+/* --- MODAL DETALLE ESTILO MALEWICZ (ev-mdl) --- */
+
+.ev-mdl-content {
+    background: var(--ev-bg) !important;
+    border-radius: 35px !important;
+    border: none !important;
+    box-shadow: 20px 20px 60px var(--ev-shadow-out-dark), 
+                -20px -20px 60px var(--ev-shadow-out-light) !important;
+    padding: 10px;
+}
+
+.ev-mdl-header {
+    border: none !important;
+    padding: 25px 30px 10px 30px !important;
+}
+
+.ev-mdl-title {
+    color: var(--ev-accent) !important;
+    font-weight: 900 !important;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.ev-mdl-body {
+    padding: 20px 35px 35px 35px !important;
+}
+
+/* Contenedores de información hundidos (Shadow Inner) */
+.ev-mdl-info-card {
+    background: var(--ev-bg);
+    border-radius: 20px;
+    padding: 15px;
+    box-shadow: inset 6px 6px 12px var(--ev-shadow-in-dark), 
+                inset -6px -6px 12px var(--ev-shadow-in-light);
+    margin-bottom: 20px;
+    border: 1px solid rgba(255,255,255,0.4);
+}
+
+.ev-mdl-label {
+    font-size: 0.7rem;
+    font-weight: 800;
+    color: var(--ev-accent);
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 5px;
+    opacity: 0.8;
+}
+
+.ev-mdl-text {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--ev-text-heavy);
+    margin: 0;
+}
+
+/* Botón de cierre personalizado */
+.ev-mdl-btn-close {
+    background: var(--ev-bg);
+    border: none;
+    padding: 12px 30px;
+    border-radius: 50px;
+    box-shadow: 5px 5px 10px var(--ev-shadow-out-dark), 
+                -5px -5px 10px var(--ev-shadow-out-light);
+    color: var(--ev-accent);
+    font-weight: 800;
+    transition: 0.2s;
+}
+
+.ev-mdl-btn-close:active {
+    box-shadow: inset 3px 3px 6px var(--ev-shadow-in-dark), 
+                inset -3px -3px 6px var(--ev-shadow-in-light);
+}
+</style>

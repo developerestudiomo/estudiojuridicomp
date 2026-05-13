@@ -1,4 +1,6 @@
-<!--nuevoExpte.html-->
+ <!--nuevoExpte.html-->
+<!--Incluye los estilos propios de la página -->
+ <?!= include('Expedientes/_cssExpedientes'); ?>
 <div id="nuevoExpedienteContainer" class="flex flex-col items-center justify-center">
       <div class="login-card">
           <div class="login-header">
@@ -228,6 +230,15 @@
 <input type="hidden" id="selectedJuzgadoName">
 <input type="hidden" id="selectedJuzgadoFolderId">
 <input type="hidden" id="expedienteFolderId">
+
+      <div class="row justify-content-center mt-3 mb-2">
+          <div class="col-auto">
+              <button type="button" class="btn-volver-glass-pro" onclick="loadContent('Expedientes/gestionExpte'); return false;">
+                  <i class="fi fi-br-angle-double-left"></i> 
+                  <span>VOLVER</span>
+              </button>
+          </div>
+      </div>
 
 <script>
 (function() {

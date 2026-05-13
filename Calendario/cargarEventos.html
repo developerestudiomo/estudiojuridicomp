@@ -1,33 +1,55 @@
 <!---cargarEventos.html---->
-<div class="card card-data-premium animate__animated animate__fadeIn">
-    <div class="card-header text-white d-flex justify-content-between align-items-center" style="background-color: #ED6AFF;">
-        <h5 class="mb-0"><i class="fi fi-rr-file-chart-pie"></i> VINCULAR EVENTO A EXPEDIENTE</h5>
-    </div>
-    <div class="card-body">
-        <div class="tipo-expediente-container mb-4">
-            <label class="labelInputFormNew d-block text-center">¿TIPO DE EXPEDIENTE?</label>
-            <div class="btn-group-select d-flex gap-2 justify-content-center" role="group">
-                <input type="radio" class="btn-check" name="tipoCasoMaestro" id="radioParticular" value="PARTICULAR" autocomplete="off">
-                <label class="btn-menu rounded-pill px-4" for="radioParticular" id="labelParticular">
-                    <i class="fi fi-tr-hr-person"></i> PARTICULAR
-                </label>
+<!--Incluye los estilos propios de la página -->
+ <?!= include('Calendario/_cssCalendario'); ?>
+ <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-                <input type="radio" class="btn-check" name="tipoCasoMaestro" id="radioAnnya" value="ANNYA" autocomplete="off">
-                <label class="btn-menu rounded-pill px-4" for="radioAnnya" id="labelAnnya">
-                    <i class="fi fi-rr-hands-holding-child"></i> ANNYA
-                </label>
-            </div>
+<div class="calendar-wrapper">
+    <div class="calendar-header">
+        <div class="calendar-nav">
+            <button class="btn-cal-nav" onclick="cambiarMes(-1)"><i class="fi fi-rr-angle-small-left"></i></button>
+            <h2 id="mesAnioTitulo" class="calendar-title">MARZO 2026</h2>
+            <button class="btn-nav" onclick="cambiarMes(1)"><i class="fi fi-rr-angle-small-right"></i></button>
+        </div>
+        <button class="btn-add-event" onclick="abrirModal()">
+            <i class="fi fi-rr-add"></i> NUEVO
+        </button>
+    </div>
+
+    <div class="calendar-weekdays">
+        <div>LUN</div><div>MAR</div><div>MIÉ</div><div>JUE</div><div>VIE</div><div>SÁB</div><div>DOM</div>
+    </div>
+
+    <div id="calendarGrid" class="calendar-grid">
+    </div>
+</div>
+
+<div id="modalEvento" class="modal-overlay">
+    <div class="modal-content neumorphic-card">
+        <div class="modal-header-form">
+            <h5 class="title-modal"><i class="fi fi-rr-file-chart-pie"></i> VINCULAR EVENTO A EXPEDIENTE</h5>
+            <button class="close-modal" onclick="cerrarModal()">&times;</button>
         </div>
 
-        <form id="formNuevoEvento">
-            <div class="row mb-3">
-                <div class="col-md-6">
-                    <label class="labelInputFormNew">Fecha y Hora:</label>
-                    <input type="datetime-local" id="fechaEvento" class="input-form-premium" required>
+        <div class="modal-body-form">
+            <div class="tipo-expediente-container">
+                <label class="label-premium">¿TIPO DE EXPEDIENTE?</label>
+                <div class="radio-group-premium">
+                    <input type="radio" name="tipoCasoMaestro" id="radioParticular" value="PARTICULAR">
+                    <label for="radioParticular" class="label-radio"><i class="fi fi-tr-hr-person"></i> PARTICULAR</label>
+
+                    <input type="radio" name="tipoCasoMaestro" id="radioAnnya" value="ANNYA">
+                    <label for="radioAnnya" class="label-radio"><i class="fi fi-rr-hands-holding-child"></i> ANNYA</label>
                 </div>
-                <div class="col-md-6">
-                    <label class="labelInputFormNew">Motivo / Tipo:</label>
-                    <select id="motivoEvento" class="input-form-premium rounded-pill px-4" required>
+            </div>
+
+            <form id="formNuevoEvento" class="form-grid">
+                <div class="form-group">
+                    <label class="label-premium">Fecha y Hora:</label>
+                    <input type="datetime-local" id="fechaEvento" class="input-premium" required>
+                </div>
+                <div class="form-group">
+                    <label class="label-premium">Motivo / Tipo:</label>
+                    <select id="motivoEvento" class="input-premium" required>
                         <option value="" disabled selected>-- SELECCIONE --</option>
                         <option value="Audiencia">Audiencia</option>
                         <option value="Pericia">Pericia</option>
@@ -35,53 +57,49 @@
                         <option value="Vencimiento">Vencimiento Término</option>
                     </select>
                 </div>
-            </div>
 
-            <hr>
-
-            <div class="row mb-3">
-                <div class="col-md-6">
-                    <label class="labelInputFormNew">Fuero:</label>
-                    <select id="selectFuero" class="input-form-premium rounded-pill px-4" required disabled>
+                <div class="form-group">
+                    <label class="label-premium">Fuero:</label>
+                    <select id="selectFuero" class="input-premium" required disabled>
                         <option value="">Seleccione tipo primero...</option>
                     </select>
                 </div>
-                <div class="col-md-6">
-                    <label class="labelInputFormNew">Depto. Judicial:</label>
-                    <select id="selectDepto" class="input-form-premium rounded-pill px-4" required disabled>
+                <div class="form-group">
+                    <label class="label-premium">Depto. Judicial:</label>
+                    <select id="selectDepto" class="input-premium" required disabled>
                         <option value="">Seleccione Fuero primero...</option>
                     </select>
                 </div>
-            </div>
 
-            <div class="row mb-3">
-                <div class="col-md-5">
-                    <label class="labelInputFormNew">Juzgado:</label>
-                    <select id="selectJuzgado" class="input-form-premium rounded-pill px-4" required disabled>
+                <div class="form-group">
+                    <label class="label-premium">Juzgado:</label>
+                    <select id="selectJuzgado" class="input-premium" required disabled>
                         <option value="">Seleccione Depto...</option>
                     </select>
                 </div>
-                <div class="col-md-7">
-                    <label class="labelInputFormNew">Seleccionar Expediente:</label>
-                    <select id="selectExpediente" class="input-form-premium rounded-pill px-4" required disabled style="border-color: #AD46FF;">
-                        <option value="">Esperando selección de juzgado...</option>
+                <div class="form-group">
+                    <label class="label-premium">Seleccionar Expediente:</label>
+                    <select id="selectExpediente" class="input-premium" required disabled style="border-left: 4px solid #800000;">
+                        <option value="">Esperando juzgado...</option>
                     </select>
                 </div>
-            </div>
 
-            <div class="mb-3">
-                <label class="labelInputFormNew">Detalles del evento:</label>
-                <textarea id="detalleEvento" class="input-form-premium" rows="3" placeholder="Información adicional..."></textarea>
-            </div>
+                <div class="form-group full-width">
+                    <label class="label-premium">Detalles del evento:</label>
+                    <textarea id="detalleEvento" class="input-premium" rows="3" placeholder="Información adicional..."></textarea>
+                </div>
 
-            <div class="text-end">
-                <button type="submit" id="btnSubmitEvento" class="btn-menu rounded-pill px-4">
-                    <i class="fi fi-rr-file-signature"></i> REGISTRAR Y SINCRONIZAR
-                </button>
-            </div>
-        </form>
+                <div class="form-actions full-width">
+                    <button type="submit" id="btnSubmitEvento" class="btn-submit">
+                        <i class="fi fi-rr-file-signature"></i> REGISTRAR Y SINCRONIZAR
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
+
+
 <div class="row justify-content-center mt-3 mb-2">
   <div class="col-auto">
     <button type="button" class="btn-volver-glass-pro" onclick="loadContent('Calendario/eventos'); return false;">
@@ -92,62 +110,127 @@
 
 <script>
 (function() {
-    const form = document.getElementById('formNuevoEvento');
-    const btn = document.getElementById('btnSubmitEvento');
-    const radios = document.getElementsByName('tipoCasoMaestro');
+    // ---VARIABLES DE ESTADO Y DOM ---
+    let fechaActual = new Date();
+    const modal = document.getElementById('modalEvento');
+    const grid = document.getElementById('calendarGrid');
+    const tituloMes = document.getElementById('mesAnioTitulo');
     
+    const form = document.getElementById('formNuevoEvento');
+    const btnSubmit = document.getElementById('btnSubmitEvento');
     const sFuero = document.getElementById('selectFuero');
     const sDepto = document.getElementById('selectDepto');
     const sJuzgado = document.getElementById('selectJuzgado');
     const sExpediente = document.getElementById('selectExpediente');
-
+    const radios = document.getElementsByName('tipoCasoMaestro');
     let tipoSeleccionado = "";
 
+    // ---LÓGICA DEL CALENDARIO ---
+    function renderizarCalendario() {
+        if (!grid) return;
+        grid.innerHTML = '';
+        
+        const anio = fechaActual.getFullYear();
+        const mes = fechaActual.getMonth();
+        const meses = ["ENERO", "FEBRERO", "MARZO", "ABRIL", "MAYO", "JUNIO", "JULIO", "AGOSTO", "SEPTIEMBRE", "OCTUBRE", "NOVIEMBRE", "DICIEMBRE"];
+        
+        tituloMes.innerText = `${meses[mes]} ${anio}`;
+        const primerDiaSemana = new Date(anio, mes, 1).getDay();
+        const ajusteInicio = (primerDiaSemana === 0) ? 6 : primerDiaSemana - 1;
+        const diasEnMes = new Date(anio, mes + 1, 0).getDate();
+        const diasMesAnterior = new Date(anio, mes, 0).getDate();
+
+        // Días mes anterior
+        for (let i = ajusteInicio; i > 0; i--) {
+            const div = document.createElement('div');
+            div.className = 'day day-off';
+            div.innerHTML = `<span class="day-number">${diasMesAnterior - i + 1}</span>`;
+            grid.appendChild(div);
+        }
+
+        // Días mes actual
+        for (let d = 1; d <= diasEnMes; d++) {
+            const div = document.createElement('div');
+            div.className = 'day';
+            const hoy = new Date();
+            
+            if(d === hoy.getDate() && mes === hoy.getMonth() && anio === hoy.getFullYear()) {
+                div.classList.add('today');
+            }
+            
+            div.innerHTML = `<span class="day-number">${d}</span>`;
+            div.onclick = () => abrirModalConFecha(d, mes, anio);
+            grid.appendChild(div);
+        }
+    }
+
+    window.cambiarMes = (dir) => {
+        fechaActual.setMonth(fechaActual.getMonth() + dir);
+        renderizarCalendario();
+    };
+
+    // --- LÓGICA DEL MODAL ---
+    window.abrirModalConFecha = (d, m, a) => {
+        const fechaInput = document.getElementById('fechaEvento');
+        const mesPad = String(m + 1).padStart(2, '0');
+        const diaPad = String(d).padStart(2, '0');
+        // Setea por defecto a las 09:00 AM
+        fechaInput.value = `${a}-${mesPad}-${diaPad}T09:00`;
+        abrirModal();
+    };
+
+    window.abrirModal = () => {
+        if (modal) modal.style.display = 'flex';
+    };
+
+    window.cerrarModal = () => {
+        if (modal) modal.style.display = 'none';
+    };
+
+    // ---SELECTORES EN CASCADA (Integración GAS) ---
     radios.forEach(r => {
         r.onchange = () => {
             tipoSeleccionado = r.value;
             limpiarTodo();
-            sFuero.innerHTML = '<option>Cargando fueros...</option>';
-            google.script.run
-                .withSuccessHandler(f => {
-                    llenarSelector(sFuero, f, "Seleccione Fuero...");
-                    sFuero.disabled = false;
-                })
-                .getFuerosDriveRaiz(tipoSeleccionado); 
+            sFuero.innerHTML = '<option>Cargando...</option>';
+            google.script.run.withSuccessHandler(f => {
+                llenarSelector(sFuero, f, "Seleccione Fuero...");
+                sFuero.disabled = false;
+            }).getFuerosDriveRaiz(tipoSeleccionado);
         };
     });
 
     sFuero.onchange = () => {
         limpiarDesde(sDepto);
-        google.script.run.withSuccessHandler(d => { 
-            llenarSelector(sDepto, d, "Seleccione Depto..."); 
-            sDepto.disabled = false; 
+        google.script.run.withSuccessHandler(d => {
+            llenarSelector(sDepto, d, "Seleccione Depto...");
+            sDepto.disabled = false;
         }).getDeptosJudiciales(sFuero.value, tipoSeleccionado);
     };
 
     sDepto.onchange = () => {
         limpiarDesde(sJuzgado);
-        google.script.run.withSuccessHandler(j => { 
-            llenarSelector(sJuzgado, j, "Seleccione Juzgado..."); 
-            sJuzgado.disabled = false; 
+        google.script.run.withSuccessHandler(j => {
+            llenarSelector(sJuzgado, j, "Seleccione Juzgado...");
+            sJuzgado.disabled = false;
         }).getExptesFromDrive(sFuero.value, sDepto.value, tipoSeleccionado);
     };
 
     sJuzgado.onchange = () => {
-        sExpediente.disabled = true;
-        sExpediente.innerHTML = '<option>Cargando expedientes...</option>';
-        google.script.run.withSuccessHandler(expedientes => {
-            llenarSelector(sExpediente, expedientes, "Seleccione el expediente...");
+        sExpediente.innerHTML = '<option>Cargando...</option>';
+        google.script.run.withSuccessHandler(exptes => {
+            llenarSelector(sExpediente, exptes, "Seleccione el expediente...");
             sExpediente.disabled = false;
-        }).getListaExptesdeId(sJuzgado.value); 
+        }).getListaExptesdeId(sJuzgado.value);
     };
 
+    // Helpers de Selectores
     function llenarSelector(select, datos, placeholder) {
         select.innerHTML = `<option value="">${placeholder}</option>`;
         if (!datos || !Array.isArray(datos)) return;
         datos.forEach(d => {
-            let texto = (typeof d === 'object' && d !== null) ? (d.name || d.nombre || "Sin nombre") : d;
-            let valor = (typeof d === 'object' && d !== null) ? (d.id || texto) : d;
+            let texto = (typeof d === 'object') ? (d.name || d.nombre) : d;
+            let valor = (typeof d === 'object') ? (d.id || texto) : d;
             select.innerHTML += `<option value="${valor}">${texto}</option>`;
         });
     }
@@ -156,49 +239,65 @@
         select.innerHTML = '<option value="">Cargando...</option>';
         select.disabled = true;
         if(select === sDepto) limpiarDesde(sJuzgado);
-        if(select === sJuzgado) { sExpediente.innerHTML = '<option>--</option>'; sExpediente.disabled = true; }
+        if(select === sJuzgado) { 
+            sExpediente.innerHTML = '<option value="">--</option>'; 
+            sExpediente.disabled = true; 
+        }
     }
 
     function limpiarTodo() {
         [sFuero, sDepto, sJuzgado, sExpediente].forEach(s => {
-            s.innerHTML = '<option value="">Esperando tipo...</option>';
+            s.innerHTML = '<option value="">Esperando selección...</option>';
             s.disabled = true;
         });
     }
 
-    form.onsubmit = (e) => {
-    e.preventDefault();
-    btn.disabled = true;
-    btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> PROCESANDO...';
+form.onsubmit = (e) => {
+        e.preventDefault();
 
-    // CAPTURA DE TEXTOS
-    const fueroNombre = sFuero.options[sFuero.selectedIndex].text;
-    const deptoNombre = sDepto.options[sDepto.selectedIndex].text;
-    const juzgadoNombre = sJuzgado.options[sJuzgado.selectedIndex].text;
+        btnSubmit.disabled = true;
+        btnSubmit.innerHTML = '<i class="fi fi-rr-spinner"></i> PROCESANDO...';
 
-    const datos = {
-        fecha: document.getElementById('fechaEvento').value,
-        motivo: document.getElementById('motivoEvento').value,
-        fuero: fueroNombre,
-        tipoRama: tipoSeleccionado,
-        juzgadoInfo: `${deptoNombre} - ${juzgadoNombre}`, 
-        expediente: sExpediente.value,
-        detalle: document.getElementById('detalleEvento').value
-    };
+        const datos = {
+            fecha: document.getElementById('fechaEvento').value,
+            motivo: document.getElementById('motivoEvento').value,
+            fuero: sFuero.options[sFuero.selectedIndex].text,
+            tipoRama: tipoSeleccionado,
+            juzgadoInfo: `${sDepto.options[sDepto.selectedIndex].text} - ${sJuzgado.options[sJuzgado.selectedIndex].text}`,
+            expediente: sExpediente.value,
+            detalle: document.getElementById('detalleEvento').value
+        };
 
-    google.script.run
-        .withSuccessHandler(res => {
+        google.script.run.withSuccessHandler(res => {
             if(res.success) {
-                showAlert("✅ Evento registrado con éxito", "success");
+                Swal.fire({
+                    icon: 'success',
+                    title: '¡Evento Registrado!',
+                    text: 'La cita se ha vinculado correctamente al expediente.',
+                    confirmButtonText: 'EXCELENTE',
+                    timer: 3000 // Se cierra solo en 3 segundos
+                });
+
+                cerrarModal();
                 form.reset();
-                setTimeout(() => loadContent('Calendario/eventos'), 1500);
+                renderizarCalendario(); 
             } else {
-                showAlert("❌ Error: " + res.error, "danger");
-                btn.disabled = false;
-                btn.innerHTML = '<i class="fi fi-rr-file-signature"></i> REGISTRAR Y SINCRONIZAR';
+                // ERROR: Alerta de falla
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Hubo un problema: ' + (res.error || "Error desconocido"),
+                    confirmButtonText: 'REINTENTAR',
+                    confirmButtonColor: '#800000'
+                });
             }
-        })
-        .guardarEvento(datos);
+            btnSubmit.disabled = false;
+            btnSubmit.innerHTML = '<i class="fi fi-rr-file-signature"></i> REGISTRAR Y SINCRONIZAR';
+        }).guardarEvento(datos);
     };
+
+
+    renderizarCalendario();
+
 })();
 </script>

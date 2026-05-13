@@ -1,0 +1,1481 @@
+<!--------ESTILOS DE LAS PAGINAS DE EXPEDIENTES---->
+<style>
+/* --------------- ESTILOS SELECCION DE EXPEDIENTES----------------------- */
+
+.card-form-glass {
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    border-radius: 20px;
+    transition: all 0.3s ease;
+    overflow: hidden; 
+}
+
+/* Títulos de pasos */
+.barras-titles {
+    background: linear-gradient(135deg, var(--btn-dark, #3d1536) 0%, var(--accent-color, #b07dac) 100%);
+    color: #ffffff;
+    padding: 12px 25px;
+    border-radius: 25px 25px 5px 5px;
+    font-size: 0.85rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.5rem !important;
+}
+.barras-titles .pasos{
+    background: var(--principal);
+}
+#selectorSection .card-body {
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    position: relative;
+}
+.icon-circle-3D.i-selector{
+    display: flex !important;
+    align-items: center !important;
+
+    width: 50px !important;
+    height: 50px !important;
+    padding: 5px !important;
+    flex-shrink: 0;
+}
+.icon-clr-pink.selector-i{
+    font-size: 1.8rem !important; 
+    line-height: 1 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin: 0 !important;
+}
+
+.n-overtitle {
+    margin-top: 1.5rem !important;
+    font-weight: 900 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.1em !important;
+    font-size: 0.75rem !important;
+    color: #800000 !important;
+    opacity: 0.8 !important;
+}
+
+h2.title-expediente {
+    font-size: 1.8rem !important;
+    letter-spacing: -0.05em !important;
+    margin-bottom: 1.5rem !important;
+    padding-bottom: 10px;
+    padding-top: 30px;
+    color: var(--acento-malva);
+}
+.subtitle-expediente{
+    color: var(--principal-dark);
+    font-size: 1.875rem !important;
+    letter-spacing: -0.05em !important;
+    margin-bottom: 1.5rem !important;
+    padding-bottom: 10px;
+}
+#selectorSection:has(.btn-check:checked) .label-step:not(:has(+ .btn-check:checked)) {
+    opacity: 0.5;
+    filter: grayscale(0.5) blur(0.5px);
+    transform: scale(0.95);
+    box-shadow: 2px 2px 5px #d1d5db, -2px -2px 5px #ffffff;
+}
+
+/* --- PARTICULAR SELECCIONADO (Verde Esmeralda) --- */
+#btnParticular:checked + #labelParticular {
+    background: linear-gradient(135deg, #0d9488 0%, #065f46 100%) !important;
+    color: white !important;
+    transform: scale(1.05);
+    opacity: 1 !important;
+    filter: none !important;
+    box-shadow: 0 10px 20px rgba(13, 148, 136, 0.4);
+}
+
+/* --- ANNYA SELECCIONADO (Rosa Viejo / Dusty Rose) --- */
+#btnAnnya:checked + #labelAnnya {
+    background: linear-gradient(135deg, #b07d8a 0%, #8a5a67 100%) !important;
+    color: white !important;
+    transform: scale(1.05);
+    opacity: 1 !important; 
+    filter: none !important;
+    box-shadow: 0 10px 20px rgba(138, 90, 103, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+/* --- DETALLE DE ICONOS --- */
+.btn-check:checked + .label-step i {
+    color: white !important;
+    transform: scale(1.1);
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+}
+
+/*---FORMULARIO SELECCIONAR EXPTE-----*/
+.form-select-juz, .input-form-premium {
+    border: 2px solid #f1f5f9;
+    border-radius: 16px;
+    padding: 12px 18px;
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    background: #ffffff;
+    color: #444;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+}
+
+/* --- TIPO FUERO (Color Ciruela / Plum) --- */
+.sel-fuero {
+    border-left: 5px solid #800080;
+}
+.sel-fuero:focus:not(:disabled) {
+    border-color: #800080;
+    box-shadow: 0 10px 20px -10px rgba(128, 0, 128, 0.3);
+    transform: translateY(-2px);
+    outline: none;
+}
+
+/* --- TIPO DEPTO (Color Naranja Vibrante) --- */
+.sel-depto {
+    border-left: 5px solid #ff8c00;
+}
+.sel-depto:focus:not(:disabled) {
+    border-color: #ff8c00;
+    box-shadow: 0 10px 20px -10px rgba(255, 140, 0, 0.3);
+    transform: translateY(-2px);
+    outline: none;
+}
+
+/* --- TIPO JUZGADO (Color Rosa Intenso) --- */
+.sel-juzgado {
+    border-left: 5px solid #ff1493;
+}
+.sel-juzgado:focus:not(:disabled) {
+    border-color: #ff1493;
+    box-shadow: 0 10px 20px -10px rgba(255, 20, 147, 0.3);
+    transform: translateY(-2px);
+    outline: none;
+}
+
+/* Estado Desactivado (Universal) */
+.form-select-juz:disabled {
+    background-color: #fcfcfc;
+    border-color: #f1f1f1;
+    border-left-color: #d1d1d1; /* Gris sutil solo cuando está bloqueado */
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none !important;
+}
+
+/*----ESTILOS PARA LOS FORM DE INGRESO DE NUEVOS EXPTE---*/
+.input-form-premium:focus {
+    border-color: #7e22ce;
+    box-shadow: 0 0 15px rgba(126, 34, 206, 0.15);
+    outline: none;
+}
+
+.labelFormsTitle {
+    font-size: 0.65rem !important;
+    font-weight: 900 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.15em !important;
+    color: #94a3b8 !important; 
+    display: block;
+}
+/*----CIRCULO QUE PULSA EN LAS BARRAS---*/
+.bg-pulse-yellow {background: #F2E811 !important; 
+    border: 2px solid hsl(45, 86%, 45%) !important; 
+    display: inline-block !important;
+    width: 16px !important;
+    height: 16px !important;
+    vertical-align: middle;
+    margin-right: 8px;
+    box-shadow: 0 0 8px rgba(242, 232, 17, 0.5);
+    box-sizing: border-box !important;
+    border-radius: 50% !important;
+}
+.bg-pulse-green {background: #198754 !important; 
+    border: 2px solid #016630 !important;
+    display: inline-block !important;
+    width: 16px !important;
+    height: 16px !important;
+    vertical-align: middle;
+    margin-right: 8px;
+    box-shadow: 0 0 8px rgba(242, 232, 17, 0.5);
+    box-sizing: border-box !important;
+    border-radius: 50% !important;
+}
+.bg-pulse-blue {background: #2196F3 !important; 
+    border: 2px solid #1C398E !important;
+    display: inline-block !important;
+    width: 16px !important;
+    height: 16px !important;
+    vertical-align: middle;
+    margin-right: 8px;
+    box-shadow: 0 0 8px rgba(242, 232, 17, 0.5);
+    box-sizing: border-box !important; 
+    border-radius: 50% !important;
+}
+.bg-pulse-red {background: #f44336 !important; 
+    border: 2px solid #82181A !important;
+    display: inline-block !important;
+    width: 16px !important;
+    height: 16px !important;
+    vertical-align: middle;
+    margin-right: 8px;
+    box-shadow: 0 0 8px rgba(242, 232, 17, 0.5);
+    box-sizing: border-box !important;
+    border-radius: 50% !important;
+}
+.bg-clr-orange {background: #ff9800 !important; 
+    border: 2px solid #7E2A0C !important;
+    display: inline-block !important;
+    width: 16px !important;
+    height: 16px !important;
+    vertical-align: middle;
+    margin-right: 8px;
+    box-shadow: 0 0 8px rgba(242, 232, 17, 0.5);
+    box-sizing: border-box !important;
+    border-radius: 50% !important;
+}
+.bg-pulse-ciruel {background: #b07dac !important; 
+    border: 2px solid #8B0836 !important;
+    display: inline-block !important;
+    width: 16px !important;
+    height: 16px !important;
+    vertical-align: middle;
+    margin-right: 8px;
+    box-shadow: 0 0 8px rgba(242, 232, 17, 0.5);
+    box-sizing: border-box !important;
+    border-radius: 50% !important;
+}
+.bg-pulse-pink {background: #d81b60 !important; 
+    border: 2px solid #E61876 !important;
+    display: inline-block !important;
+    width: 16px !important;
+    height: 16px !important;
+    vertical-align: middle;
+    margin-right: 8px;
+    box-shadow: 0 0 8px rgba(242, 232, 17, 0.5);
+    box-sizing: border-box !important;
+    border-radius: 50% !important;
+}
+.bg-pulse-teal {background: #00897b !important; 
+    border: 2px solid #075F5A !important;
+    display: inline-block !important;
+    width: 16px !important;
+    height: 16px !important;
+    vertical-align: middle;
+    margin-right: 8px;
+    box-shadow: 0 0 8px rgba(242, 232, 17, 0.5);
+    box-sizing: border-box !important;
+    border-radius: 50% !important;
+}
+
+/*---FIN CIRCULO---*/
+
+.btn-actions {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    border: none;
+    background: var(--principal-dark); 
+    color: white !important;
+    box-shadow: 
+        0 8px 20px rgba(163, 109, 122, 0.5), 
+        inset 0 -4px 0 rgba(0,0,0,0.15);
+}
+
+.btn-actions i {
+    color: white !important;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+    transition: all 0.3s ease;
+}
+
+/* --- TRANSICIÓN AL PASAR POR ENCIMA (EXPLOSIÓN DE LUZ) --- */
+.btn-actions:hover:not(:disabled) {
+    transform: scale(1.2) translateY(-10px) rotate(5deg);
+    background: linear-gradient(135deg, #c28997 0%, #8a5a67 100%);
+    box-shadow: 
+        0 20px 40px rgba(163, 109, 122, 0.7), 
+        0 0 25px rgba(163, 109, 122, 0.4);
+}
+
+.btn-actions:hover:not(:disabled) i {
+    transform: scale(1.1) rotate(-10deg);
+}
+
+.btn-actions:active:not(:disabled) {
+    transform: scale(0.9) translateY(0);
+    box-shadow: 0 5px 10px rgba(163, 109, 122, 0.8);
+}
+
+.btn-actions:disabled {
+    background: #cbd5e1 !important;
+    box-shadow: none !important;
+    opacity: 0.7;
+    cursor: not-allowed;
+    transform: none !important;
+}
+/* Badge de Lujo Animado */
+#gestionBadge.badge-sunset, 
+#expedienteTipoLabel.badge-sunset,
+.badge-sunset {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    padding: 6px 14px !important;
+    border-radius: 50px !important;
+    background: linear-gradient(135deg, #ff8c00 0%, #ffb347 100%) !important;
+    color: white !important;
+    font-size: 0.7rem !important; /* Un poquito más grande para que se lea bien */
+    font-weight: 900 !important; /* Más peso, más vida */
+    letter-spacing: 0.05em !important;
+    text-transform: uppercase !important;
+    box-shadow: 0 4px 12px rgba(255, 140, 0, 0.4) !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    transition: all 0.3s ease !important;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.1); /* Un toque de relieve al texto */
+}
+
+/* Efecto de Pulso para que tenga "Vida" */
+.badge-pulse {
+    position: relative;
+}
+
+.badge-pulse::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    border-radius: 50px;
+    background: rgba(255, 140, 0, 0.4);
+    z-index: -1;
+    animation: badge-glow 2s infinite;
+}
+
+@keyframes badge-glow {
+    0% { transform: scale(1); opacity: 0.8; }
+    100% { transform: scale(1.4); opacity: 0; }
+}
+
+/* Hover sutil */
+.badge-sunset:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 15px rgba(255, 140, 0, 0.4) !important;
+}
+
+/* --- TABLAS DE EXPEDIENTES + ELEMENTOS --- */
+/* Contenedor Principal con Efecto Cristal */
+.card-data-premium {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.05);
+    padding: 1rem;
+    overflow-x: auto;
+}
+
+/* Rediseño de la Tabla */
+#tableSelectExpt {
+    border-collapse: separate;
+    border-spacing: 0 10px; /* Separa las filas para que parezcan tarjetas */
+    margin-top: -10px;
+}
+
+/* Encabezados Estilo "Crown" */
+#tableSelectExpt thead th {
+    background: transparent !important;
+    color: var(--principal-dark) !important;
+    border: none !important;
+    padding: 20px 15px;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    font-weight: 900;
+}
+
+/* Filas como Tarjetas Independientes */
+#tableSelectExpt tbody tr {
+    background: white !important;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    border-radius: 12px;
+}
+
+#tableSelectExpt tbody td {
+    padding: 18px 15px !important;
+    border: none !important;
+    vertical-align: middle;
+}
+
+/* Bordes redondeados para las celdas de los extremos */
+#tableSelectExpt tbody td:first-child { border-radius: 12px 0 0 12px; }
+#tableSelectExpt tbody td:last-child { border-radius: 0 12px 12px 0; }
+
+/* Hover con Resplandor Malva */
+#tableSelectExpt tbody tr:hover {
+    transform: scale(1.015) translateY(-4px); /* Elevación más pronunciada */
+    background: white !important;
+    position: relative;
+    z-index: 10;
+    /* Sombras multicapa para efecto de iluminación */
+    box-shadow: 
+        0 10px 30px -5px rgba(221, 160, 221, 0.4), 
+        0 4px 10px -2px rgba(221, 160, 221, 0.2) !important;
+}
+
+/* Pequeño detalle: borde izquierdo de color al hacer hover */
+#tableSelectExpt tbody tr:hover td:first-child {
+    border-left: 4px solid var(--acento-malva) !important;
+}
+
+/* Botones de Acción Estilo Píldora */
+.btn-group-acciones {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 10px !important;
+}
+
+.btn-view, .btn-marca {
+    border: none !important;
+    border-radius: 20px !important;
+    padding: 5px !important;
+    font-size: 8.2rem !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    cursor: pointer;
+}
+
+/* Botón VER (Color Ciruela / Principal) */
+.btn-view {
+    background: linear-gradient(135deg, var(--principal) 0%, #a21caf 100%) !important;
+    color: white !important;
+    box-shadow: 0 4px 15px rgba(126, 34, 206, 0.25);
+}
+
+.btn-view:hover {
+    transform: scale(1.1) rotate(2deg);
+    box-shadow: 0 8px 20px rgba(126, 34, 206, 0.4) !important;
+    background: linear-gradient(135deg, #a21caf 0%, var(--principal) 100%) !important;
+    transform: translateY(-5px) scale(1.1);
+}
+
+/* Botón MARCA (Color Naranja/Rosa para variar) */
+.btn-marca {
+    background: linear-gradient(135deg, #f97316 0%, #ed8936 100%) !important;
+    color: white !important;
+    box-shadow: 0 4px 15px rgba(249, 115, 22, 0.25);
+}
+
+.btn-marca:hover {
+    transform: scale(1.1) rotate(-2deg);
+    box-shadow: 0 8px 20px rgba(249, 115, 22, 0.4) !important;
+    transform: translateY(-5px) scale(1.1);
+}
+
+/* Ajuste para los iconos dentro de los botones */
+.btn-view i, .btn-marca i {
+    font-size: 1.2rem !important;
+    color: white !important;
+    margin: 2 !important;
+    display: flex !important;
+}
+
+/* Contenedor de Paginación */
+.pagination {
+    gap: 5px;
+}
+
+.page-item.active .page-link {
+    background-color: var(--principal) !important;
+    border-color: var(--principal) !important;
+    color: white !important;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(126, 34, 206, 0.3);
+}
+
+.page-link {
+    border: none !important;
+    color: var(--principal-dark) !important;
+    background: #f8fafc !important;
+    padding: 10px 16px !important;
+    border-radius: 8px !important;
+    font-weight: 700;
+    transition: all 0.3s ease;
+}
+
+.page-link:hover {
+    background: var(--acento-malva) !important;
+    color: white !important;
+    transform: translateY(-2px);
+}
+/* Texto informativo "Showing 1 to 10..." */
+.dataTables_info {
+    font-size: 0.8rem !important;
+    font-weight: 700 !important;
+    color: #94a3b8 !important;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/*---spinner de carga---*/
+.loader-wrapper {
+    position: relative;
+    width: 60px;
+    height: 60px;
+    margin: 0 auto;
+}
+
+.custom-spinner {
+    width: 100%;
+    height: 100%;
+    border: 4px solid #f3f4f6;
+    border-top: 4px solid var(--principal); /* Color Ciruela */
+    border-right: 4px solid var(--acento-malva); /* Color Malva */
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+.spinner-dot {
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 8px; height: 8px;
+    background: var(--principal);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    animation: pulse-dot 1.5s ease-in-out infinite;
+}
+
+@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+@keyframes pulse-dot { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
+/*-----------FIN TABLES-------------------------------*/
+
+/* Estilo para el Modal */
+.modal-content-premium {
+    border-radius: 30px;
+    border: none;
+    overflow: hidden;
+}
+.animate-fade-in {
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Evitar colapso de columnas Bootstrap en Grid Tailwind */
+.grid .col-md-2, .grid .col-md-3, .grid .col-md-4, .grid .col-md-6, .grid .col-md-9 {
+    width: 100% !important;
+}
+
+/* Animación del Icono Principal */
+.scale-up-center {
+    animation: scale-up-center 0.5s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+}
+
+@keyframes scale-up-center {
+    0% { transform: scale(0.5); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+.animate-bounce-slow {
+    animation: bounce 2s infinite;
+}
+
+.btn-modal-primary-sm {
+    background: #f97316;
+    color: white;
+    padding: 0.6rem 1.2rem;
+    border-radius: 50px;
+    font-weight: 800;
+    font-size: 0.7rem;
+    letter-spacing: 0.03em;
+    border: none;
+    box-shadow: 0 4px 12px rgba(249, 115, 22, 0.2);
+    transition: all 0.2s ease;
+}
+
+.btn-modal-primary-sm:hover {
+    background: #ea580c;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(249, 115, 22, 0.3);
+}
+
+/* Botón Secundario Pequeño */
+.btn-modal-secondary-sm {
+    background: #f1f5f9;
+    color: #64748b;
+    padding: 0.6rem 1.2rem;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 0.7rem;
+    border: 1px solid #e2e8f0;
+    transition: all 0.2s ease;
+}
+
+.btn-modal-secondary-sm:hover {
+    background: #e2e8f0;
+    color: #475569;
+}
+/*----ESTILO NUEVO EXPEDIENTE NEUFORMICO-----------------*/
+.login-card {
+    background: #e0e5ec;
+    border-radius: 30px;
+    padding: 50px 40px;
+    box-shadow: 
+        20px 20px 60px #bec3cf,
+        -20px -20px 60px #ffffff;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.login-card:hover {
+    transform: translateY(-5px);
+}
+
+.login-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.neu-icon {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 24px;
+    background: #e0e5ec;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 
+        8px 8px 20px #bec3cf,
+        -8px -8px 20px #ffffff,
+        inset 0 0 0 #bec3cf,
+        inset 0 0 0 #ffffff;
+    transition: all 0.3s ease;
+}
+
+.neu-icon:hover {
+    box-shadow: 
+        4px 4px 10px #bec3cf,
+        -4px -4px 10px #ffffff,
+        inset 4px 4px 10px #bec3cf,
+        inset -4px -4px 10px #ffffff;
+}
+
+.icon-inner {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #6c7293;
+}
+
+.icon-inner svg {
+    width: 100%;
+    height: 100%;
+}
+
+.login-header h2 {
+    color: #3d4468;
+    font-size: 2rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.login-header p {
+    color: #9499b7;
+    font-size: 15px;
+    font-weight: 400;
+}
+
+/* Neumorphic Input Styles */
+.form-group {
+    margin-bottom: 28px;
+    position: relative;
+}
+
+.neu-input {
+    position: relative;
+    background: #e0e5ec;
+    border-radius: 15px;
+    box-shadow: inset 8px 8px 16px #bec3cf, inset -8px -8px 16px #ffffff;
+    margin-bottom: 1.5rem; /* Espaciado entre inputs */
+    overflow: hidden;
+}
+
+.neu-input input, 
+.neu-input textarea {
+    width: 100%;
+    background: transparent;
+    border: none;
+    padding: 28px 24px 12px 24px; /* Aumentamos padding superior para dejar espacio al label */
+    color: #3d4468;
+    font-size: 16px;
+    font-weight: 600;
+    outline: none;
+    display: block;
+}
+
+/* Ajuste para inputs tipo fecha y número que tienen iconos internos */
+.neu-input input[type="date"] {
+    min-height: 60px;
+}
+
+.neu-input label {
+    position: absolute;
+    left: 24px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #9499b7;
+    font-size: 14px;
+    pointer-events: none;
+    transition: all 0.3s ease;
+    margin: 0; /* Elimina márgenes de Bootstrap que rompen la posición */
+}
+
+/* Animación: Cuando hay foco o el input no está vacío */
+.neu-input input:focus + label,
+.neu-input input:not(:placeholder-shown) + label,
+.neu-input textarea:focus + label,
+.neu-input textarea:not(:placeholder-shown) + label {
+    top: 12px;
+    font-size: 11px;
+    color: #6c7293;
+    transform: translateY(0);
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.input-icon {
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+    color: #9499b7;
+    transition: all 0.3s ease;
+}
+
+.input-icon svg {
+    width: 100%;
+    height: 100%;
+}
+
+.neu-input:focus-within .input-icon {
+    color: #6c7293;
+}
+
+/* Neumorphic Button */
+.neu-button {
+    width: 100%;
+    background: #e0e5ec;
+    border: 2px solid transparent; /* Reservamos espacio para el borde iluminado */
+    border-radius: 15px;
+    padding: 18px 32px;
+    color: #3d4468;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    position: relative;
+    margin-bottom: 30px;
+    box-shadow: 8px 8px 20px #bec3cf, -8px -8px 20px #ffffff;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+/* El icono dentro del botón */
+.neu-button i {
+    transition: all 0.4s ease;
+}
+.btn-save .btn-clean{
+font-size: 18px !important;
+}
+/* --- VARIANTE GUARDAR (TEAL) --- */
+.btn-save:hover {
+    border-bottom-color: rgba(0, 137, 123, 0.3); /* Borde sutil teal */
+    color: #00897b;
+    box-shadow: 
+        0 8px 30px 5px rgba(0, 137, 123, 0.2), /* Brillo perimetral */
+        8px 8px 20px #bec3cf, 
+        -8px -8px 20px #ffffff;
+}
+
+.btn-save:hover i {
+    color: #00897b;
+    /* Iluminación interna del icono */
+    filter: drop-shadow(0 0 5px rgba(0, 137, 123, 0.6));
+}
+
+/* --- VARIANTE LIMPIEZA (#d81b60) --- */
+.btn-clean:hover {
+    border-bottom-color: rgba(216, 27, 96, 0.3); /* Borde sutil rosa */
+    color: #d81b60;
+    box-shadow: 
+        0 8px 30px 5px rgba(216, 27, 96, 0.2), /* Brillo perimetral */
+        8px 8px 20px #bec3cf, 
+        -8px -8px 20px #ffffff;
+}
+
+.btn-clean:hover i {
+    color: #d81b60;
+    /* Iluminación interna del icono */
+    filter: drop-shadow(0 0 5px rgba(216, 27, 96, 0.6));
+}
+
+/* --- EFECTO DE CLICK (HUNDIDO CON COLOR) --- */
+.btn-save:active {
+    box-shadow: inset 4px 4px 10px #bec3cf, inset -4px -4px 10px #ffffff;
+    background: #e6ecef;
+}
+
+.btn-clean:active {
+    box-shadow: inset 4px 4px 10px #bec3cf, inset -4px -4px 10px #ffffff;
+    background: #fce4ec;
+}
+
+/* Mantener el efecto de brillo pasando (brillo blanco) */
+.neu-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+    transition: left 0.6s ease;
+}
+
+.neu-spinner {
+    width: 20px;
+    height: 20px;
+    border: 3px solid #bec3cf;
+    border-top: 3px solid #6c7293;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+/* Divider */
+.divider {
+    display: flex;
+    align-items: center;
+    margin: 30px 0;
+    gap: 16px;
+}
+
+.divider-line {
+    flex: 1;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #bec3cf, transparent);
+}
+
+.divider span {
+    color: #9499b7;
+    font-size: 13px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+/* Mobile Responsive */
+@media (max-width: 480px) {
+    body {
+        padding: 16px;
+    }
+    
+    .login-card {
+        padding: 35px 25px;
+        border-radius: 20px;
+    }
+    
+    .login-header h2 {
+        font-size: 1.75rem;
+    }
+    
+    .neu-input input {
+        padding: 18px 20px;
+        padding-left: 50px;
+    }
+    
+    .neu-input label {
+        left: 50px;
+    }
+    
+}
+/* Ajuste específico para SELECT dentro de .neu-input */
+.neu-input select.input-form-premium {
+    appearance: none;
+    background-color: transparent;
+    border: 2px solid transparent;
+    padding: 28px 24px 10px 24px;
+    color: #3d4468;
+    font-size: 15px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+.neu-input select.input-form-premium {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%239499b7'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 20px bottom 18px; /* Ajuste para que no choque con el label */
+    background-size: 16px;
+}
+.neu-input select:focus {
+    outline: none;
+    border-bottom-color: var(--principal-alpha, rgba(0, 137, 123, 0.4));
+    background-color: rgba(255, 255, 255, 0.2); /* Sutil aclarado de la superficie */
+    box-shadow: 
+        inset 4px 4px 8px #bec3cf, 
+        inset -4px -4px 8px #ffffff,
+        0 10px 20px -10px var(--principal-alpha); /* Brillo externo suave abajo */
+}
+.neu-input select option {
+    background-color: #e0e5ec;
+    color: #3d4468;
+    padding: 15px;
+}
+.neu-input select:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+    filter: grayscale(1);
+}
+/* El label flotante para los selectores */
+.neu-input select + .labelFormsTitle {
+    position: absolute;
+    left: 24px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #9499b7;
+    font-size: 14px;
+    pointer-events: none;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Animación: Si el select tiene foco o una opción válida elegida */
+.neu-input select:focus + .labelFormsTitle,
+.neu-input select:valid + .labelFormsTitle,
+.neu-input select:not([disabled]) + .labelFormsTitle {
+    top: 12px;
+    font-size: 11px;
+    color: var(--principal, #00897b);
+    transform: translateY(0);
+    font-weight: 700;
+}
+.neu-input:hover {
+    /* Iluminación perimetral muy sutil */
+    box-shadow: 
+        inset 2px 2px 5px #bec3cf, 
+        inset -2px -2px 5px #ffffff,
+        0 0 10px rgba(255, 255, 255, 0.5);
+    transform: translateY(-1px);
+}
+.neu-input select::selection {
+    background: var(--principal-alpha);
+    color: var(--principal-dark);
+}
+.neu-input select option {
+    background-color: #e0e5ec; /* Fondo gris neumórfico */
+    color: #3d4468;
+    padding: 12px;
+}
+.neu-input select option:checked,
+.neu-input select option:hover {
+    box-shadow: 0 0 10px 100px var(--principal) inset; /* Fuerza el color de marca */
+    color: white !important;
+}
+
+/* Estilo para los botones de radio Neumórficos */
+.neu-radio-container {
+    position: relative;
+}
+
+.hidden-radio {
+    display: none;
+}
+
+.neu-button-label {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 30px;
+    border-radius: 50px;
+    background: #e0e5ec;
+    color: #718096;
+    font-weight: 700;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    /* Efecto de relieve hacia afuera (concavo) */
+    box-shadow: 6px 6px 12px #bec3cf, -6px -6px 12px #ffffff;
+}
+.hidden-radio:checked + .neu-button-label {
+    color: var(--principal) !important;
+    /* Efecto hundido (convexo) */
+    box-shadow: inset 4px 4px 8px #bec3cf, inset -4px -4px 8px #ffffff;
+    transform: scale(0.98);
+}
+.neu-input select:not([value=""]):valid + label,
+.neu-input select:focus + label {
+    top: 12px;
+    font-size: 11px;
+    color: #6c7293;
+    transform: translateY(0);
+}
+.neu-input textarea + label {
+    top: 25px;
+}
+.hidden-radio:checked + .neu-button-label {
+    color: white !important;
+    background: var(--principal-bg-dynamic) !important;
+    box-shadow: inset 6px 6px 12px rgba(0,0,0,0.2), 
+                inset -6px -6px 12px rgba(255,255,255,0.1);
+    border: none;
+}
+.neu-button-label:hover {
+    transform: translateY(-4px);
+}
+.neu-input select.input-form-premium {
+    padding-top: 25px;
+}
+.neu-input select + .labelFormsTitle {
+    position: absolute;
+    left: 24px;
+    top: 50%;
+    transform: translateY(-50%);
+    transition: all 0.3s ease;
+}
+.neu-input select:focus + .labelFormsTitle,
+.neu-input select:valid + .labelFormsTitle {
+    top: 12px;
+    font-size: 11px;
+    color: #6c7293;
+    transform: translateY(0);
+    font-weight: bold;
+}
+.neu-input select:invalid {
+    color: transparent;
+}
+.neu-input select:focus, 
+.neu-input select:valid {
+    color: #3d4468;
+}
+
+/* Contenedor Principal del Modal */
+.neu-modal-container {
+    background: #e0e5ec !important;
+    border-radius: 2rem !important;
+    border: none !important;
+    box-shadow: 20px 20px 60px #bec3cf, -20px -20px 60px #ffffff !important;
+    overflow: hidden;
+}
+
+/* Cabecera con relieve invertido (hundido) */
+.neu-modal-header {
+    padding: 30px;
+    text-align: center;
+    background: #e0e5ec;
+    border-bottom: 1px solid rgba(255,255,255,0.3);
+}
+
+.neu-icon-circle {
+    width: 60px;
+    height: 60px;
+    margin: 0 auto 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: #e0e5ec;
+    /* Efecto botón circular neumórfico */
+    box-shadow: 6px 6px 12px #bec3cf, -6px -6px 12px #ffffff;
+    color: var(--principal, #00897b);
+    font-size: 1.8rem;
+    animation: icon-pulse 2s infinite;
+}
+@keyframes icon-pulse {
+    0% {
+        box-shadow: 6px 6px 12px #bec3cf, -6px -6px 12px #ffffff, 0 0 0 0px var(--principal-alpha);
+    }
+    70% {
+        box-shadow: 6px 6px 12px #bec3cf, -6px -6px 12px #ffffff, 0 0 0 15px rgba(255, 255, 255, 0);
+    }
+    100% {
+        box-shadow: 6px 6px 12px #bec3cf, -6px -6px 12px #ffffff, 0 0 0 0px rgba(255, 255, 255, 0);
+    }
+}
+.neu-badge-text {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: 800;
+    color: #9499b7;
+    margin: 0;
+}
+
+/* Cuerpo con texto suave */
+.neu-modal-body {
+    padding: 40px 30px;
+    text-align: center;
+    background: #e0e5ec;
+}
+
+.neu-main-question {
+    color: #3d4468;
+    font-weight: 800;
+    line-height: 1.4;
+    font-size: 1.2rem;
+}
+
+.highlight-text {
+    color: var(--principal, #00897b);
+    display: block;
+    margin-top: 5px;
+    filter: drop-shadow(0px 2px 2px rgba(0,0,0,0.05));
+}
+
+.neu-modal-footer {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    padding-bottom: 40px;
+    background: #e0e5ec;
+}
+
+.neu-modal-footer .neu-button {
+    margin-bottom: 0;
+    font-size: 14px;
+    padding: 15px 25px;
+}
+
+@keyframes neu-elastic-in {
+    0% {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+    60% {
+        transform: scale(1.05);
+        opacity: 1;
+    }
+    80% {
+        transform: scale(0.98);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.modal.fade .neu-modal-container {
+    transition: none;
+}
+
+.modal.show .neu-modal-container {
+    animation: neu-elastic-in 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+.modal-backdrop.show {
+    opacity: 0.4 !important;
+    backdrop-filter: blur(4px);
+    background-color: #bec3cf !important;
+}
+
+.neu-upload-zone {
+    display: block;
+    padding: 30px;
+    background: #e0e5ec;
+    border-radius: 1.5rem;
+    box-shadow: inset 6px 6px 12px #bec3cf, inset -6px -6px 12px #ffffff;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 2px dashed #bec3cf;
+}
+
+.neu-upload-zone:hover {
+    border-color: #7e22ce;
+    transform: scale(1.02);
+}
+
+.neu-upload-icon-box {
+    width: 60px;
+    height: 60px;
+    margin: 0 auto 15px;
+    background: #e0e5ec;
+    border-radius: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 4px 4px 8px #bec3cf, -4px -4px 8px #ffffff;
+}
+
+/* Barra de progreso neumórfica */
+.neu-progress-bg {
+    height: 12px;
+    background: #e0e5ec;
+    border-radius: 10px;
+    box-shadow: inset 2px 2px 4px #bec3cf, inset -2px -2px 4px #ffffff;
+    overflow: hidden;
+    padding: 2px;
+}
+
+.neu-progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #7e22ce, #a855f7);
+    border-radius: 10px;
+    transition: width 0.4s ease;
+}
+/*-----FIN FORMULARIO NUEVO EXPEDIENTE----------*/
+
+
+/*---ESTILOS PARA TABLAS DE SELECCION DE EXPEDIENTES---*/
+/* Cabeceras estilo premium */
+.custom-header {
+    background: #e0e5ec !important;
+    color: #9499b7 !important;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.5) !important;
+    padding: 15px !important;
+    font-weight: 800 !important;
+}
+
+#novedadesTablet {
+    border-collapse: separate;
+    border-spacing: 0 10px;
+    margin-top: -10px;
+}
+
+/* Encabezados Estilo "Crown" */
+#novedadesTable thead th {
+    background: transparent !important;
+    color: var(--principal-dark) !important;
+    border: none !important;
+    padding: 20px 15px;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    font-weight: 900;
+}
+
+/* Filas como Tarjetas Independientes */
+#novedadesTable tbody tr {
+    background: white !important;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    border-radius: 12px;
+}
+
+#novedadesTable tbody td {
+    padding: 18px 15px !important;
+    border: none !important;
+    vertical-align: middle;
+}
+
+#novedadesTable tbody td:first-child { border-radius: 12px 0 0 12px; }
+#novedadesTable tbody td:last-child { border-radius: 0 12px 12px 0; }
+
+/* Hover con Resplandor Malva */
+#novedadesTable tbody tr:hover {
+    transform: scale(1.015) translateY(-4px);
+    background: white !important;
+    position: relative;
+    z-index: 10;
+    box-shadow: 
+        0 10px 30px -5px rgba(221, 160, 221, 0.4), 
+        0 4px 10px -2px rgba(221, 160, 221, 0.2) !important;
+}
+
+#novedadesTable tbody tr:hover td:first-child {
+    border-left: 4px solid var(--acento-malva) !important;
+}
+.btn-actions-barra {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    border: none;
+    background: #FDC745; 
+    color: white !important;
+    box-shadow: 
+        0 8px 20px rgba(0, 0, 0, 0.5), 
+        inset 0 -4px 0 rgba(0,0,0,0.15);
+}
+
+.btn-actions-barra i {
+    color: white !important;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+    transition: all 0.3s ease;
+    font-size: 1.8rem;
+}
+
+/* --- TRANSICIÓN AL PASAR POR ENCIMA (EXPLOSIÓN DE LUZ) --- */
+.btn-actions-barra:hover:not(:disabled) {
+    transform: scale(1.2) translateY(-10px) rotate(5deg);
+    background: linear-gradient(135deg, #FDC745 0%, #FF8904 100%);
+    box-shadow: 
+        0 20px 40px rgba(0, 0, 0, 0.2), 
+        0 0 25px rgba(255, 137, 4, 0.3);
+}
+
+.btn-actions-barra:hover:not(:disabled) i {
+    transform: scale(1.1) rotate(-10deg);
+}
+
+.btn-actions-barra:active:not(:disabled) {
+    transform: scale(0.9) translateY(0);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.4);
+}
+
+.btn-actions-barra:disabled {
+    background: #cbd5e1 !important;
+    box-shadow: none !important;
+    opacity: 0.7;
+    cursor: not-allowed;
+    transform: none !important;
+}
+
+.tooltip-custom {
+    position: relative;
+    cursor: pointer;
+}
+.tooltip-custom::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 125%; /* Aparece arriba del botón */
+    left: 50%;
+    transform: translateX(-50%) scale(0);
+    background-color: #800000;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 0.75rem;
+    white-space: nowrap;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    transition: all 0.3s ease;
+    pointer-events: none;
+    opacity: 0;
+    z-index: 999;
+}
+
+.tooltip-custom::before {
+    content: "";
+    position: absolute;
+    bottom: 110%;
+    left: 50%;
+    transform: translateX(-50%) scale(0);
+    border-width: 6px;
+    border-style: solid;
+    border-color: #800000 transparent transparent transparent;
+    transition: all 0.3s ease;
+    opacity: 0;
+}
+
+.tooltip-custom:hover::after,
+.tooltip-custom:hover::before {
+    transform: translateX(-50%) scale(1);
+    opacity: 1;
+}
+
+.neu-modal-card {
+  background: var(--neu-bg);
+  border-radius: 30px;
+  box-shadow: 20px 20px 60px #bebebe, -20px -20px 60px #ffffff;
+  border: none;
+}
+
+/* Inputs y Selects Hundidos */
+.neu-input-field {
+  background: var(--neu-bg);
+  border: none;
+  border-radius: 10px;
+  box-shadow: inset 6px 6px 12px var(--neu-shadow), inset -6px -6px 12px var(--neu-light);
+  padding: 12px;
+  color: var(--neu-text);
+  transition: all 0.3s ease;
+}
+
+.neu-input-field:focus {
+  outline: none;
+  box-shadow: inset 2px 2px 5px var(--neu-shadow), inset -2px -2px 5px var(--neu-light);
+}
+/* Botones en Relieve */
+.neu-btn {
+  background: var(--neu-bg);
+  border: none;
+  border-radius: 15px;
+  box-shadow: 6px 6px 12px var(--neu-shadow), -6px -6px 12px var(--neu-light);
+  color: var(--neu-text);
+  font-weight: bold;
+  transition: 0.2s;
+}
+
+.neu-btn:active {
+  box-shadow: inset 4px 4px 8px var(--neu-shadow), inset -4px -4px 8px var(--neu-light);
+  transform: scale(0.98);
+}
+
+/* Tarjetas de Archivo (Gestor) */
+.file-card-neu {
+  background: var(--neu-bg);
+  border-radius: 15px;
+  box-shadow: 4px 4px 8px var(--neu-shadow), -4px -4px 8px var(--neu-light);
+  padding: 15px;
+  cursor: pointer;
+  transition: 0.3s;
+  text-align: center;
+}
+
+.file-card-neu:hover {
+  box-shadow: 8px 8px 16px var(--neu-shadow), -8px -8px 16px var(--neu-light);
+}
+
+.file-card-neu i {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+  display: block;
+}
+.hidden { display: none !important; }
+#modalArchivos {
+        display: none; 
+        position: fixed; 
+        top: 0; 
+        left: 0; 
+        width: 100%; 
+        height: 100%; 
+        z-index: 2000 !important; /* Valor alto para superar a Bootstrap */
+        background: rgba(30, 30, 30, 0.5); /* Fondo semi-oscuro para resaltar */
+        backdrop-filter: blur(8px);
+    }
+
+    .modal-visor-content {
+        z-index: 2001 !important;
+    }
+
+    /* Evitar que el scroll del fondo se mueva cuando el visor está abierto */
+    .stop-scroll {
+        overflow: hidden !important;
+    }
+
+</style>

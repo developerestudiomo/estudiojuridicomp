@@ -1,4 +1,6 @@
 <!---verExpediente.html--->
+<!--Incluye los estilos propios de la página -->
+ <?!= include('Expedientes/_cssExpedientes'); ?>
 <div id="content" class="container mt-4">
     <input type="hidden" id="expedienteFolderId">
 
@@ -14,11 +16,15 @@
         </div>
     </div>
 
-    <div id="headerInfo" class="card-form-glass shadow-xl mb-6 overflow-hidden border border-gray-100">
+    <div id="headerInfo" class="card-form-glass">
         <div class="card-body bg-white">
             <div id="loadingHeader" class="text-center my-3">
-                <div class="spinner-grow text-primary" role="status"></div>
-                <p class="mt-2 text-muted fw-bold">Sincronizando con Drive...</p>
+                <div class="loader-wrapper">
+                    <div class="custom-spinner"></div>
+                     <div class="spinner-dot"></div>
+                </div>
+
+                <p class="n-overtitle">Sincronizando con Drive...</p>
             </div>
             
             <div class="row g-0 px-4 py-6 rounded-3xl bg-white shadow-xl" id="expedienteDetails" style="display: none;">
@@ -61,10 +67,13 @@
     </div>
 
     <div class="card shadow-sm border-0">
-        <div class="barras-titles flex items-center justify-between text-white p-4 header-paso-1" style="background: var(--principal);">
-            <span class="text-white fw-bold"><i class="bi bi-journal-text me-2"></i>HISTORIAL DE ACCIONES</span>
-            <div class="justify-end">
-              <button class="btn-actions-barra rounded-pill px-4" onclick="abrirModalNovedad()" title="Agregar Novedad">
+        <div class="barras-titles pasos">
+            <span class="text-white fw-bold"><i class="bi bi-journal-text me-2"></i> HISTORIAL DE ACCIONES</span>
+<!------HASTA ACÁ ENCABEZADO DE LA PÁGINA------------------------------>            
+        <div style="flex-grow: 1;"></div>
+
+        <div class="justify-end">
+              <button class="btn-actions-barra tooltip-custom" onclick="abrirModalNovedad()"  data-tooltip="Cargar Novedad">
                   <i class="fi fi-tr-files-medical icon-clr-orange"></i>
               </button>
             </div>
@@ -76,7 +85,7 @@
                 <p class="text-xs font-bold text-gray-400 mt-2 uppercase tracking-widest">Cargando Novedades...</p>
             </div>
 
-            <div class="card-data-premium" id="novedadesTableContainer" style="display: none;">
+            <div class="card-data-premium p-3" id="novedadesTableContainer" style="display: none;">
                 <table id="novedadesTable" class="table w-100">
                     <thead></thead>
                     <tbody></tbody>
