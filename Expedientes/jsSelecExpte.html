@@ -1,0 +1,262 @@
+<script>
+(function () {
+    // Mapeo de prefijos
+    const PREFIJO_TO_NOMBRE = {
+        'MO': 'MORON', 'LM': 'LA MATANZA', 'SI': 'SAN ISIDRO', 'SM': 'SAN MARTIN',
+        'MZ': 'MERCEDES LUJÁN', 'CA': 'CABA', 'AV': 'AVELLANEDA', 'MGRZ': 'MORENO GRAL RODRIGUEZ', 'LZ': 'LOMAS DE ZAMORA' 
+    };
+
+    // Elementos del DOM
+    const fueroSelector = document.getElementById('fueroSelector');
+    const departamentoSelector = document.getElementById('departamentoSelector');
+    const archivoSelector = document.getElementById('archivoSelector');
+    const cargarExpedienteBtn = document.getElementById('cargarExpedienteBtn');
+    const radioButtons = document.querySelectorAll('input[name="tipoCasoMaestro"]');
+    const loadingMessage = document.getElementById('loadingMessage');
+    const expedientesTableContainer = document.getElementById('expedientesTableContainer');
+
+    // Auxiliar para obtener gestión activa
+    const getTipo = () => document.querySelector('input[name="tipoCasoMaestro"]:checked')?.value;
+
+    // --- FUNCIÓN DE CAMBIO DE ESTÉTICA ---
+    function setupTypeSelectors() {
+        document.querySelectorAll('input[name="tipoCasoMaestro"]').forEach(radio => {
+            radio.addEventListener('change', (e) => {
+                const val = e.target.value;
+                
+                // Definimos la paleta según el tipo
+                const isAnnya = (val === 'ANNYA');
+                const colorMain = isAnnya ? '#ef66b6' : '#00897b'; // Rosa vs Teal
+                
+                // Aplicamos cambios de color a los elementos del encabezado
+                const headers = document.querySelectorAll('.header-paso-1');
+                headers.forEach(h => h.style.backgroundColor = colorMain);
+                  const mainContent = document.getElementById('content'); 
+                if (mainContent) {
+                    const localHeaders = mainContent.querySelectorAll('.header-paso-1');
+                    localHeaders.forEach(h => h.style.backgroundColor = colorMain);                
+                }  
+                document.documentElement.style.setProperty('--principal-bg-dynamic', colorMain);
+            });
+        });
+    }
+
+    // Inicializar los selectores de tipo
+    setupTypeSelectors();
+
+    // --- EVENTO TIPO EXPTE ---//
+    radioButtons.forEach(radio => {
+        radio.addEventListener('change', function() {
+            const tipo = this.value;
+            sessionStorage.setItem('tipoGestionActiva', tipo);
+            fueroSelector.disabled = true;
+            fueroSelector.innerHTML = '<option value="">Cargando...</option>';
+            departamentoSelector.innerHTML = '<option value="">-- Elija Fuero --</option>';
+            departamentoSelector.disabled = true;
+            archivoSelector.innerHTML = '<option value="">-- Elija Depto --</option>';
+            archivoSelector.disabled = true;
+            cargarExpedienteBtn.disabled = true;
+
+            google.script.run
+                .withSuccessHandler(fueros => {
+                    fueroSelector.innerHTML = '<option value="" selected disabled>-- Seleccione Fuero --</option>';
+                    fueros.forEach(f => {
+                        let opt = new Option(f, f);
+                        fueroSelector.add(opt);
+                    });
+                    fueroSelector.disabled = false;
+                })
+                .getFuerosDesdeDrive(tipo);
+        });
+    });
+
+    // ---CAMBIO DE FUERO ---//
+    fueroSelector.addEventListener('change', function () {
+        const tipo = getTipo();
+        departamentoSelector.disabled = true;
+        departamentoSelector.innerHTML = '<option value="">Cargando...</option>';
+        
+        google.script.run
+            .withSuccessHandler(deps => {
+                departamentoSelector.innerHTML = '<option value="" selected disabled>-- Seleccione Depto Judicial --</option>';
+                deps.forEach(d => {
+                    let opt = new Option(PREFIJO_TO_NOMBRE[d] || d, d);
+                    departamentoSelector.add(opt);
+                });
+                departamentoSelector.disabled = false;
+            })
+            .getDepartamentosJudiciales(this.value, tipo);
+    });
+
+    // --- CAMBIO DE DEPARTAMENTO ---//
+    departamentoSelector.addEventListener('change', function () {
+        const tipo = getTipo();
+        archivoSelector.disabled = true;
+        archivoSelector.innerHTML = '<option value="">Buscando Juzgados...</option>';
+
+        google.script.run
+            .withSuccessHandler(archivos => {
+                archivoSelector.innerHTML = '<option value="" selected disabled>-- Seleccione Juzgado --</option>';
+                if(archivos && archivos.length > 0) {
+                    archivos.forEach(a => {
+                        let opt = new Option(a.name, a.id);
+                        opt.setAttribute('data-folder', a.folderId);
+                        archivoSelector.add(opt);
+                    });
+                    archivoSelector.disabled = false;
+                } else {
+                    archivoSelector.innerHTML = '<option value="">Sin archivos en esta ruta</option>';
+                }
+            })
+            .getExpedientesFromDrive(fueroSelector.value, this.value, tipo);
+    });
+
+    // ---SELECCIÓN DE JUZGADO ---//
+    archivoSelector.addEventListener('change', function() {
+        const sel = this.options[this.selectedIndex];
+        sessionStorage.setItem('activeSpreadsheetId', this.value);
+        sessionStorage.setItem('activeFolderId', sel.getAttribute('data-folder'));
+        sessionStorage.setItem('activeJuzgadoName', sel.text);
+        cargarExpedienteBtn.disabled = !this.value;
+    });
+
+    // --- CARGAR LISTADO(SUBMIT)---//
+    document.getElementById("selectExpedienteForm").addEventListener("submit", function (e) {
+        e.preventDefault();
+        const ssId = archivoSelector.value;
+        const juzgadoName = archivoSelector.options[archivoSelector.selectedIndex].text;
+        fetchExpedientesList(ssId, juzgadoName);
+    });
+
+    // --- LÓGICA DE DATATABLES Y OBTENCIÓN DE DATOS ---
+    window.fetchExpedientesList = function(spreadsheetId, juzgadoName) {
+        const section = document.getElementById('expedientesListSection');
+        const loadMsg = document.getElementById('loadingMessage');
+        const tableCont = document.getElementById('expedientesTableContainer');
+        const labelJuzgado = document.getElementById('juzgadoSeleccionadoNombre');
+        const labelFuero = document.getElementById('fueroSelectedName');
+        const badgeGestion = document.getElementById('tipoGestionBadge');
+
+        if (section) section.style.display = 'block';
+        if (loadMsg) loadMsg.style.display = 'block';
+        if (tableCont) tableCont.style.display = 'none';
+        if (labelJuzgado) labelJuzgado.textContent = juzgadoName;
+        
+        if (labelFuero) {
+            labelFuero.textContent = fueroSelector ? fueroSelector.value : (sessionStorage.getItem('activeFueroName') || 'FUERO');
+        }
+        
+        if (badgeGestion) {
+            badgeGestion.textContent = getTipo() || sessionStorage.getItem('tipoGestionActiva');
+        }
+
+        google.script.run
+            .withSuccessHandler(function(res) {
+                if (loadMsg) loadMsg.style.display = 'none';
+                
+                if (!res || !res.success) {
+                    showAlert(res?.error || "Error al leer INDICE", "danger");
+                    return;
+                }
+
+                if (typeof renderExpedientesTable === 'function') {
+                    renderExpedientesTable(res.headers, res.data);
+                }
+
+                if (tableCont) tableCont.style.display = 'block';
+            })
+            .withFailureHandler(err => {
+                if (loadMsg) loadMsg.style.display = 'none';
+                showAlert("Error crítico: " + err.message, "danger");
+            })
+            .getData(spreadsheetId, 'INDICE');
+    };
+
+    function renderExpedientesTable(headers, data) {
+        const tableSelector = '#tableSelectExpt';
+        
+        if ($.fn.DataTable.isDataTable(tableSelector)) {
+            $(tableSelector).DataTable().destroy();
+            $(tableSelector).empty();
+        }
+
+        const columns = headers.map(h => ({ title: h }));
+        columns.push({ title: "ACCIONES", orderable: false, className: "text-center" });
+        
+        const tableData = data.map(fila => {
+            const expte = fila[0];
+            const btnHtml = `
+                <div class="btn-group-acciones">
+                    <button class="btn-view" data-nro="${expte}" title="Ver Detalle">
+                        <i class="fi fi-rr-assessment"></i>
+                    </button>
+                    <button class="btn-marca" data-nro="${expte}" title="Eliminar">
+                        <i class="fi fi-br-delete-document"></i>
+                    </button>
+                </div>`;
+            return [...fila, btnHtml];
+        });
+
+        $(tableSelector).DataTable({
+            data: tableData,
+            columns: columns,
+            order: [[0, 'desc']],
+            responsive: true,
+            language: { url: 'https://cdn.datatables.net/plug-ins/1.10.21/i18n/Spanish.json' },
+            "headerCallback": function(thead) {
+                $(thead).find('th').addClass('custom-header');
+            }
+        });
+
+        $(tableSelector + ' tbody').off('click').on('click', '.btn-view', function() {
+            navegarADetalle($(this).data('nro'));
+        });
+
+        $(tableSelector + ' tbody').on('click', '.btn-marca', function() {
+            confirmarEliminar($(this).data('nro'));
+        });
+    }
+
+function navegarADetalle(nroExpte) {
+    // 1. Mantenemos el ID del Spreadsheet que ya tenemos en sessionStorage
+    const ssId = sessionStorage.getItem('activeSpreadsheetId');
+    
+    // 2. Guardamos el número de expediente específico que queremos ver
+    sessionStorage.setItem('activeSheetName', nroExpte);
+    
+    if (typeof loadContent === 'function') {
+        // PASAMOS EL ID DEL SPREADSHEET, no el nro de expediente
+        loadContent('Expedientes/verExpediente', ssId); 
+    } else {
+        window.location.hash = 'Expedientes/verExpediente';
+    }
+}
+
+    function confirmarEliminar(nroExpte) {
+        if (confirm(`¿Eliminar expediente ${nroExpte}?`)) {
+            const ssId = sessionStorage.getItem('activeSpreadsheetId');
+            google.script.run
+                .withSuccessHandler(res => {
+                    if(res.success) {
+                        showAlert("Eliminado correctamente", "success");
+                        fetchExpedientesList(ssId, sessionStorage.getItem('activeJuzgadoName'));
+                    }
+                })
+                .eliminarExpedienteCompleto(ssId, nroExpte);
+        }
+    }
+
+    function showAlert(msg, type) {
+        const placeholder = document.getElementById('alertPlaceholder') || document.body;
+        const div = document.createElement('div');
+        div.className = `alert alert-${type} alert-dismissible fade show shadow`;
+        div.style.position = 'fixed';
+        div.style.top = '20px';
+        div.style.right = '20px';
+        div.style.zIndex = '9999';
+        div.innerHTML = `${msg}<button type="button" class="btn-close" data-bs-dismiss="alert"></button>`;
+        placeholder.appendChild(div);
+        setTimeout(() => div.remove(), 5000);
+    }
+})();
+</script>

@@ -56,15 +56,20 @@ function include(filename) {
 }
 
 /* Carga el contenido HTML de una página.*/
-function loadPage(pageName) {
+function loadPage(page) {
   try {
-    return HtmlService.createTemplateFromFile(pageName).evaluate().getContent();
+    // Creamos el template
+    let tmp = HtmlService.createTemplateFromFile(page);
+    // Si tu página de detalles necesita datos iniciales, podrías pasarlos aquí
+    return tmp.evaluate()
+              .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL)
+              .getContent();
   } catch (e) {
-    console.error("ERROR CRÍTICO: El archivo '" + pageName + "' no existe o tiene errores. " + e.message);
-    console.error(`SERVER: Error fatal al cargar plantilla ${pageName}.html: ${e.message}`);
-    throw new Error(`No se pudo cargar la página ${pageName}.`);
+    console.error("ERROR REAL EN SERVIDOR: " + e.message);
+    throw new Error("Archivo no encontrado o error de sintaxis en " + page);
   }
-}//----------------FIN FUNCIONES DE CARGA E INICIO-----------------------//
+}
+//----------------FIN FUNCIONES DE CARGA E INICIO-----------------------//
 
 
 //-------------funciones para leer las carpetas del drive---------------//

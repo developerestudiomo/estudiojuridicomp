@@ -68,20 +68,26 @@ function loadContent(page, spreadsheetId = null) {
 
       // --- INICIALIZACIÓN ESPECÍFICA POR PÁGINA --- //
 
-      if (page === 'dataExpedientes' && typeof initializeDataTable === 'function') {
+      if (page === 'Expedientes/dataExpedientes' && typeof initializeDataTable === 'function') {
         initializeDataTable(currentSpreadsheetId);
       }
 
-      if (page === 'modificarExpedientes' && typeof initModificarExpediente === 'function') {
+      if (page === 'Expedientes/modificarExpedientes' && typeof initModificarExpediente === 'function') {
         initModificarExpediente();
       }
+      if (page === 'Expedientes/verExpediente') {
+        console.log("CLIENT: Inicializando vista de detalle para:", currentSpreadsheetId);
+        if (typeof initializeVerExpediente === 'function') {
+            initializeVerExpediente(currentSpreadsheetId);
+        }
+      }
 
-      if (page === 'registrarExpediente' && typeof initRegistrarExpediente === 'function') {
+      if (page === 'Expedientes/registrarExpediente' && typeof initRegistrarExpediente === 'function') {
         initRegistrarExpediente();
       }
 
       // CORRECCIÓN PARA TURNOS: Llamamos a la función correcta
-      if (page === 'turnos') {
+      if (page === 'PageExterna/turnos') {
         console.log('CLIENT: Inicializando Bandeja de Turnos...');
         if (typeof cargarEventosBandeja === 'function') {
           cargarEventosBandeja();
@@ -96,6 +102,9 @@ function loadContent(page, spreadsheetId = null) {
     })
     .loadPage(page);
 }
+
+
+
 
     function setActiveLink(clickedElement) {
         document.querySelectorAll('.navbar-nav .nav-link, .navbar-brand, .dropdown-item').forEach(link => {

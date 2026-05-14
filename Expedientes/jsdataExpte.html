@@ -24,7 +24,7 @@
         });
     }
 
-    function cargarDatos(id) {
+function cargarDatos(id) {
         // Mostrar loader y ocultar tabla anterior
         document.getElementById('loadingMessage').style.display = 'block';
         document.getElementById('tableContainer').style.display = 'none';
@@ -43,7 +43,7 @@
                 Swal.fire('Fallo de Conexión', err.toString(), 'error');
             })
             .getData(id, 'INDICE');
-    }
+}
 
     function renderTable(headers, data) {
         const tableElement = $('#tableExpedientes');
