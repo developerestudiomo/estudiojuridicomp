@@ -1,7 +1,7 @@
 <script>
 (function() {
     // Configuración inicial de botones
-    document.getElementById('btnVolver').onclick = function() {
+    document.getElementById('btncambiarJuzgado').onclick = function() {
         const dest = 'seleccionarExpedientes';
         if (typeof loadContent === 'function') loadContent(dest);
         else if (parent && typeof parent.loadContent === 'function') parent.loadContent(dest);
