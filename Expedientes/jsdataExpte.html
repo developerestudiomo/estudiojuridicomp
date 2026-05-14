@@ -2,7 +2,7 @@
 (function() {
     // Configuración inicial de botones
     document.getElementById('btncambiarJuzgado').onclick = function() {
-        const dest = 'seleccionarExpedientes';
+        const dest = 'Expedientes/seleccionarExpedientes';
         if (typeof loadContent === 'function') loadContent(dest);
         else if (parent && typeof parent.loadContent === 'function') parent.loadContent(dest);
     };

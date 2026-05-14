@@ -57,16 +57,15 @@ function include(filename) {
 
 /* Carga el contenido HTML de una página.*/
 function loadPage(page) {
+  console.log("Servidor intentando cargar: " + page);
   try {
-    // Creamos el template
-    let tmp = HtmlService.createTemplateFromFile(page);
-    // Si tu página de detalles necesita datos iniciales, podrías pasarlos aquí
-    return tmp.evaluate()
-              .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL)
-              .getContent();
+    return HtmlService.createTemplateFromFile(page)
+      .evaluate()
+      .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL)
+      .getContent();
   } catch (e) {
-    console.error("ERROR REAL EN SERVIDOR: " + e.message);
-    throw new Error("Archivo no encontrado o error de sintaxis en " + page);
+    // Esto te dirá en los logs de ejecuciones de Google qué falló exactamente
+    throw new Error("Error en servidor al cargar '" + page + "': " + e.message);
   }
 }
 //----------------FIN FUNCIONES DE CARGA E INICIO-----------------------//
@@ -415,4 +414,51 @@ function obtenerNovedadesSheet() {
       etiqueta: fila[2],
       imagen: fila[3]
     }));
+}
+
+
+function getListData(ssId, sheetName, fuero, depto, tipo) {
+  let response = { success: false, header: {}, novedades: [], headers: [], error: null };
+  
+  try {
+    if (!ssId || !sheetName) throw new Error("Faltan parámetros de identificación.");
+    
+    const ss = SpreadsheetApp.openById(ssId);
+    const sheet = ss.getSheetByName(sheetName);
+    
+    if (!sheet) throw new Error("No se encontró la hoja: " + sheetName);
+
+    // 1. Construir el Encabezado (mapeo con tu UI)
+    // Extraemos datos específicos de las celdas que definiste en 'actualizarListaExpedientesPorId'
+    response.header = {
+      fueroId: fuero || "S/D",
+      juzgadoName: depto || "S/D",
+      expedienteNumero: sheetName,
+      caratula: sheet.getRange("B4").getValue() || "(Sin Carátula)",
+      folderId: sheet.getRange("Z1").getValue() || "", // Supongo que guardas el ID de Drive en Z1
+      tipo: tipo || sheet.getRange("D2").getValue() || "PROCESO"
+    };
+
+    // 2. Obtener Historial de Novedades (Desde la fila 7 hacia abajo)
+    // Asumiendo Columna A: Fecha, Columna B: Detalle
+    const lastRow = sheet.getLastRow();
+    if (lastRow < 7) {
+      response.headers = ["FECHA", "ACTUACIÓN"];
+      response.novedades = [];
+    } else {
+      const dataRange = sheet.getRange(7, 1, lastRow - 6, 2).getValues();
+      response.headers = ["FECHA", "ACTUACIÓN / NOVEDAD"];
+      
+      response.novedades = dataRange.map(row => [
+        row[0] instanceof Date ? Utilities.formatDate(row[0], "GMT-3", "dd/MM/yyyy") : row[0],
+        row[1]
+      ]);
+    }
+
+    response.success = true;
+  } catch (e) {
+    console.error("Error en getListData:", e.message);
+    response.error = e.message;
+  }
+  return response;
 }
