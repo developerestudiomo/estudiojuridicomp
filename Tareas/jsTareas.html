@@ -1,0 +1,151 @@
+<script>
+const PREFIJO_D_NOMBRE = {
+    'MO': 'MORON', 'LM': 'LA MATANZA', 'SI': 'SAN ISIDRO', 'SM': 'SAN MARTIN',
+    'MZ': 'MERCEDES LUJÁN', 'CA': 'CABA', 'AV': 'AVELLANEDA', 
+    'MGRZ': 'MORENO GRAL RODRIGUEZ', 'LZ': 'LOMAS DE ZAMORA' 
+};
+
+function abrirModalNuevaTarea() {
+    try {
+        const hoy = new Date();
+        document.getElementById('t_fInicio').value = hoy.toLocaleDateString('es-AR');
+        document.getElementById('formNuevaTarea').reset();
+        toggleSeccionExpedientes();
+        const m = new bootstrap.Modal(document.getElementById('modalNuevaTarea'));
+        m.show();
+    } catch (err) {
+        Swal.fire('Error', 'No se pudo abrir el modal', 'error');
+    }
+}
+
+function toggleSeccionExpedientes() {
+    const cat = document.getElementById('t_cat').value;
+    document.getElementById('div_exp_cascada').style.display = (cat === 'Expedientes') ? 'flex' : 'none';
+    document.getElementById('div_otra_desc').style.display = (cat === 'Otras') ? 'block' : 'none';
+}
+
+function actualizarFuerosTarea() {
+    const tipo = document.getElementById('t_tipo').value;
+    const fueroSel = document.getElementById('t_fuero');
+    if (!tipo) return;
+
+    fueroSel.innerHTML = '<option>Cargando...</option>';
+    fueroSel.disabled = true;
+
+    google.script.run
+        .withSuccessHandler(fueros => {
+            fueroSel.innerHTML = '<option value="" selected disabled>-- SELECCIONE FUERO --</option>';
+            fueros.forEach(f => {
+                let opt = document.createElement('option');
+                opt.value = f; opt.textContent = f;
+                fueroSel.appendChild(opt);
+            });
+            fueroSel.disabled = false;
+        })
+        .getFuerosTarea(tipo);
+}
+
+function actualizarDeptosTarea() {
+    const tipo = document.getElementById('t_tipo').value;
+    const fuero = document.getElementById('t_fuero').value;
+    const deptoSel = document.getElementById('t_depto');
+    deptoSel.innerHTML = '<option>Cargando...</option>';
+    deptoSel.disabled = true;
+
+    google.script.run
+        .withSuccessHandler(deptos => {
+            deptoSel.innerHTML = '<option value="" selected disabled>-- SELECCIONE DPTO --</option>';
+            deptos.forEach(d => {
+                let opt = document.createElement('option');
+                opt.value = d; opt.textContent = PREFIJO_D_NOMBRE[d] || d;
+                deptoSel.appendChild(opt);
+            });
+            deptoSel.disabled = false;
+        })
+        .getDeptosTarea(tipo, fuero);
+}
+
+function actualizarExpedientesTarea() {
+    const tipo = document.getElementById('t_tipo').value;
+    const fuero = document.getElementById('t_fuero').value;
+    const depto = document.getElementById('t_depto').value;
+    const expSel = document.getElementById('t_exp_final');
+
+    expSel.innerHTML = '<option>Cargando listado...</option>';
+    expSel.disabled = true;
+
+    google.script.run
+        .withSuccessHandler(exps => {
+            expSel.innerHTML = '<option value="" selected disabled>-- SELECCIONE EXPEDIENTE --</option>';
+            exps.forEach(textoCompleto => {
+                let opt = document.createElement('option');
+                opt.value = textoCompleto; 
+                opt.textContent = textoCompleto;
+                expSel.appendChild(opt);
+            });
+            expSel.disabled = false;
+        })
+        .getExpedientesTarea(tipo, fuero, depto);
+}
+
+function procesarGuardarTarea() {
+    const cat = document.getElementById('t_cat').value;
+    const fFin = document.getElementById('t_fFin').value;
+    const detalle = document.getElementById('t_detalle').value.trim();
+
+    if (!fFin || !detalle) {
+        Swal.fire('Atención', 'Por favor, complete la fecha de vencimiento y el detalle de la tarea.', 'warning');
+        return;
+    }
+
+    // Recopilación de datos
+    const datos = {
+        fechaFin: fFin,
+        usuario: document.getElementById('t_usuario').value,
+        categoria: cat,
+        prioridad: document.getElementById('t_prioridad').value,
+        detalle: detalle,
+        referencia: (cat === 'Expedientes') ? 
+                     document.getElementById('t_exp_final').value : 
+                     document.getElementById('t_desc_manual').value
+    };
+
+    Swal.fire({
+        title: 'Guardando Tarea...',
+        text: 'Espere un momento por favor',
+        allowOutsideClick: false,
+        didOpen: () => Swal.showLoading()
+    });
+
+    google.script.run
+        .withSuccessHandler(res => {
+            if (res.success) {
+                Swal.fire({
+                    icon: 'success',
+                    title: '¡Tarea Guardada!',
+                    text: 'ID: ' + res.id,
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+
+                const modalElement = document.getElementById('modalNuevaTarea');
+                const modalInstance = bootstrap.Modal.getInstance(modalElement);
+                if (modalInstance) modalInstance.hide();
+                try {
+                        loadContent('Tareas/gestorTareas'); 
+                    } catch (e) {
+                        console.error("Error al redirigir al gestor:", e);
+                        loadContent('Tareas/tareas'); // Redirección de respaldo
+                    }
+
+                
+            } else {
+                Swal.fire('Error', 'No se pudo guardar: ' + res.error, 'error');
+            }
+        })
+        .withFailureHandler(err => {
+            Swal.fire('Error Crítico', 'Fallo en la comunicación con el servidor: ' + err.message, 'error');
+        })
+        .guardarNuevaTarea(datos);
+}
+</script>
