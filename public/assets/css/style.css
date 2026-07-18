@@ -1,27 +1,43 @@
 /* --- VARIABLES DE DISEÑO (ESTILO MALEWICZ) --- */
 :root {
-    --lila-nude: #F3EBF5;
-    --burdeos: #4A0E0E;
-    --bronce: #C58E7F;
-    --gris-oscuro: #453c3c;
-    --crema: #FFF9F3;
-    --white-glass: rgba(255, 255, 255, 0.7);
-    --soft-shadow: 0 20px 40px rgba(74, 14, 14, 0.08);
-    --inner-light: inset 0 2px 5px rgba(255, 255, 255, 0.5);
+--beige-rose: #FDF5F2;    /* Fondo suave */
+--marfil: #FAF9F6;        /* Fondo secciones */
+--rosa-empolvado: #D8B4A0; /* Acentos */
+--burdeos-suave: #6B4E48;  /* Texto institucional */
+--oro-linea: #C5A059;     /* Líneas decorativas */
+--blanco-cristal: rgba(255, 255, 255, 0.4);
 }
 
 /* --- RESET & TIPOGRAFÍA --- */
 body {
-    font-family: 'Montserrat', sans-serif;
-    background-color: var(--lila-nude);
-    color: var(--gris-oscuro);
-    overflow-x: hidden;
+font-family: 'Cormorant Garamond', serif; /* Elegancia editorial */
+background-color: var(--beige-rose);
+color: var(--burdeos-suave);
+
+    background-image: url('/public/assets/img/flor\ de\ la\ vida.png');
+    background-repeat: repeat;
+    background-size: 300px;
+    background-attachment: fixed;
+    opacity: 0.95;
 }
 
-.cinzel-title {
+.geometric-bg {
+    background-image: radial-gradient(var(--oro-linea) 0.5px, transparent 0.5px);
+    background-size: 40px 40px;
+    opacity: 0.05;
+}
+
+h1, h2, h3, .cinzel-title {
     font-family: 'Cinzel', serif;
-    color: var(--burdeos);
-    font-weight: 700;
+    color: var(--burdeos-suave);
+    letter-spacing: 1.5px;
+}
+
+.title-underline-premium {
+    width: 60px;
+    height: 1px;
+    background: var(--oro-linea);
+    margin: 15px auto;
 }
 
 /* --- NAVBAR GLASSMORPHISM --- */
@@ -43,28 +59,8 @@ body {
 }
 
 .logo-metal {
-    width: 65px; 
-    height: 68px;
-    padding-top: 2px;
-    padding-bottom: 2px;
-    padding-left: 3px;
-    padding-right: 3px;
-    background-image: url('assets/nuevologo_full.png'); 
-    background-size: contain;
-    background-position: center;
-    background-repeat: no-repeat;
-    border-radius: 50%;
-    background-color: rgba(188, 143, 143, 0.1);
-    border: 2px solid var(--bronce);
-    box-shadow: 
-    -6px -6px 12px rgba(255, 255, 255, 0.8),
-    6px 6px 12px rgba(74, 14, 14, 0.2),
-    inset -1px -1px 2px rgba(255, 255, 255, 0.3),
-    inset 1px 1px 2px rgba(0, 0, 0, 0.1);
-
-    filter: drop-shadow(0 2px 5px rgba(74, 14, 14, 0.1));
-    display: inline-block;
-    transition: all 0.3s ease;
+    border: 1px solid var(--oro-linea);
+    box-shadow: inset 0 0 10px rgba(197, 160, 89, 0.2);
 }
 .logo-metal:hover {
     transform: translateY(1px);
@@ -377,21 +373,11 @@ body {
     overflow: hidden;
 }
 .service-card-modern {
-    background: rgba(255, 255, 255, 0.5) !important;
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
-    padding: 4rem 2.5rem;
-    border-radius: 45px !important;
-    text-align: center;
-    width: 200px;
-    height:485px;
-    border: 1px solid rgba(255, 255, 255, 0.8) !important;
-    box-shadow: 
-        15px 15px 35px rgba(74, 14, 14, 0.04), 
-        -15px -15px 35px rgba(255, 255, 255, 0.8) !important;
-    transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1) !important; 
-    position: relative;
-    overflow: hidden;
+    background: var(--blanco-cristal) !important;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(216, 180, 160, 0.3) !important; /* Borde rosa suave */
+    border-radius: 0px; /* Estilo más editorial/clásico */
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
 }
 
 .service-card-modern:hover {
@@ -577,17 +563,18 @@ section::after {
     cursor: pointer;
     animation: carrousell 29s linear infinite;
 }   
-@keyframes carrousell{
-    from{
-        transform:rotateY(360deg) translateZ(590px);
+@keyframes carrousell {
+    from {
+        transform: rotateY(0deg) translateZ(590px);
         z-index: 10;
-        opacity: 0.10;
+        opacity: 1;
     }
-    50%{
+    50% {
         z-index: -10;
+        opacity: 0.2; /* Evita que las tarjetas de atrás tapen los textos del frente */
     }
-    to{
-        transform: rotateX(0deg) translateZ(590px);
+    to {
+        transform: rotateY(360deg) translateZ(590px);
     }
 }
 
