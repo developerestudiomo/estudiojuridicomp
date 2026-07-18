@@ -1,0 +1,709 @@
+/* --- VARIABLES DE DISEÑO (ESTILO MALEWICZ) --- */
+:root {
+    --lila-nude: #F3EBF5;
+    --burdeos: #4A0E0E;
+    --bronce: #C58E7F;
+    --gris-oscuro: #453c3c;
+    --crema: #FFF9F3;
+    --white-glass: rgba(255, 255, 255, 0.7);
+    --soft-shadow: 0 20px 40px rgba(74, 14, 14, 0.08);
+    --inner-light: inset 0 2px 5px rgba(255, 255, 255, 0.5);
+}
+
+/* --- RESET & TIPOGRAFÍA --- */
+body {
+    font-family: 'Montserrat', sans-serif;
+    background-color: var(--lila-nude);
+    color: var(--gris-oscuro);
+    overflow-x: hidden;
+}
+
+.cinzel-title {
+    font-family: 'Cinzel', serif;
+    color: var(--burdeos);
+    font-weight: 700;
+}
+
+/* --- NAVBAR GLASSMORPHISM --- */
+.custom-navbar {
+    background: rgba(243, 235, 245, 0.4) !important;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 1rem 0;
+    z-index: 9999 !important;
+    transition: all 0.3s ease;
+}
+
+.navbar-brand-custom {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    gap: 12px;
+}
+
+.logo-metal {
+    width: 65px; 
+    height: 68px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    padding-left: 3px;
+    padding-right: 3px;
+    background-image: url('assets/nuevologo_full.png'); 
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 50%;
+    background-color: rgba(188, 143, 143, 0.1);
+    border: 2px solid var(--bronce);
+    box-shadow: 
+    -6px -6px 12px rgba(255, 255, 255, 0.8),
+    6px 6px 12px rgba(74, 14, 14, 0.2),
+    inset -1px -1px 2px rgba(255, 255, 255, 0.3),
+    inset 1px 1px 2px rgba(0, 0, 0, 0.1);
+
+    filter: drop-shadow(0 2px 5px rgba(74, 14, 14, 0.1));
+    display: inline-block;
+    transition: all 0.3s ease;
+}
+.logo-metal:hover {
+    transform: translateY(1px);
+    box-shadow: 
+        -2px -2px 6px rgba(255, 255, 255, 0.8),
+        2px 2px 6px rgba(74, 14, 14, 0.3);
+}
+.brand-text {
+    line-height: 1.2;
+}
+
+.brand-text .main-title {
+    display: block;
+    font-family: 'Cinzel', serif;
+    color: var(--burdeos);
+    font-size: 1.1rem;
+    letter-spacing: 1px;
+}
+
+.brand-text .sub-title {
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--gris-oscuro);
+}
+.custom-toggler {
+    border: none !important;
+    background: transparent !important;
+    width: 45px;
+    height: 45px;
+    position: relative;
+}
+
+.toggler-line {
+    width: 30px;
+    height: 2px;
+    background-color: var(--burdeos);
+    display: block;
+    margin: 6px auto;
+    transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border-radius: 2px;
+}
+
+/* El botón de cierre "X" estilo Glassmorphism */
+.btn-close-custom {
+    background: var(--bronce) !important;
+    border: none;
+    color: white !important;
+    font-size: 1.5rem;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(5px);
+    transition: 0.3s;
+    cursor: pointer;
+    margin-top: 5px;
+}
+
+.btn-close-custom:hover {
+    background: var(--bronce);
+    transform: rotate(90deg);
+    filter: brightness(1.2);
+}
+
+/* --- OFF CANVAS --- */
+.offcanvas {
+    z-index: 9998 !important;
+    background: var(--burdeos) !important;
+    color: white;
+    width: 250px !important;
+    max-height: 100vh !important; 
+    border-left: 2px solid var(--bronce);
+    visibility: visible !important;
+    box-shadow: -10px 0 30px rgba(0, 0, 0, 0.3);
+}
+.offcanvas-header {
+    background: var(--burdeos) !important;
+    color: white !important;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.offcanvas-body {
+    flex-grow: 1;
+    display: flex !important;
+    flex-direction: column;
+    padding: 2rem 1.5rem;
+    height: 100% !important;
+    overflow-y: auto !important;
+    background: var(--white-glass) !important;
+}
+.offcanvas.show .offcanvas-body {
+    display: flex !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+.offcanvas-backdrop {
+    z-index: 9997 !important;
+}
+
+#menuLateral {
+    z-index: 9999 !important;
+    background-color: var(--burdeos) !important;
+    width: 280px !important;
+    border-left: 3px solid var(--bronce);
+    box-shadow: -15px 0 35px rgba(0, 0, 0, 0.8);
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    height: 750px !important; 
+    max-height: 100vh !important;
+    top: 0 !important;
+    position: fixed !important;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+#menuLateral .offcanvas-body {
+    display: flex !important;
+    flex-direction: column;
+    height: 100% !important;
+    overflow-y: auto !important;
+    padding: 2.5rem 1.5rem !important;
+}
+#menuLateral .offcanvas-body::-webkit-scrollbar {
+    width: 4px;
+}
+#menuLateral .offcanvas-body::-webkit-scrollbar-thumb {
+    background: var(--bronce);
+    border-radius: 10px;
+}
+#menuLateral .cinzel-title {
+    color: white !important;
+    border-bottom: 1px solid rgba(197, 142, 127, 0.3);
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    letter-spacing: 2px;
+}
+#menuLateral::-webkit-scrollbar {
+    display: none;
+}
+
+.nav-link-custom {
+    color: rgba(255,255,255,0.8);
+    text-decoration: none;
+    font-size: 1.2rem;
+    padding: 15px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    display: block;
+    font-family: 'Cinzel';
+}
+
+.nav-link-custom:hover {
+    color: var(--bronce);
+}
+.nav-links-wrapper {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+.nav-item-modern {
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    margin-bottom: 10px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 15px;
+    color: white !important;
+    text-decoration: none;
+    font-family: 'Cinzel', serif;
+    transition: 0.3s;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+.nav-item-modern i {
+    margin-right: 15px;
+    font-size: 1.4rem;
+    color: var(--bronce);
+}
+.nav-item-modern:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: translateX(10px);
+}
+
+/* --- SOCIAL BUTTONS --- */
+.social-icons-grid {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.social-btn {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bronce);
+    color: white;
+    border-radius: 50%;
+    font-size: 1.2rem;
+    transition: 0.4s;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+}
+
+.social-btn:hover {
+    transform: translateY(-5px);
+    background: var(--burdeos);
+    color: white;
+}
+/* --- RESPONSIVE --- */
+@media (max-width: 768px) {
+    .main-title { font-size: 0.9rem !important; }
+    .sub-title { font-size: 0.55rem !important; }
+    .logo-metal { width: 50px; height: 50px; }
+    .hero-section h1 { font-size: 2.5rem; }
+}
+/* Badge y Links elegantes */
+.badge-bronce {
+    display: inline-block;
+    padding: 5px 15px;
+    background: var(--lila-nude);
+    color: var(--bronce);
+    border: 1px solid var(--bronce);
+    border-radius: 50px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+}
+
+.link-elegant {
+    color: var(--burdeos);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.85rem;
+    letter-spacing: 1px;
+    border-bottom: 1px solid transparent;
+    transition: 0.3s;
+}
+
+.link-elegant:hover {
+    border-bottom: 1px solid var(--burdeos);
+    padding-left: 5px;
+}
+
+/*----FIN DE LA BARRA SUPERIOR-------------*/
+
+/* --- HERO SECTION --- */
+.hero-section {
+    background: linear-gradient(135deg, rgba(243, 235, 245, 0.92) 20%, rgba(243, 235, 245, 0.5) 100%), 
+                url('https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&q=80&w=1600');
+    background-size: cover;
+    background-position: center;
+    /*min-height: 90vh;*/
+    width: 100%;
+    height: 100%;
+    padding-top: 100px;
+    position: relative;
+    z-index: 1 !important;
+}
+
+.hero-section h1 {
+    font-family: 'Cinzel', serif;
+    color: var(--burdeos);
+    font-size: 3.8rem;
+    margin-bottom: 1.5rem;
+    font-weight: 400;
+    z-index: 1 !important;
+}
+
+.hero-section .lead {
+    font-weight: 300;
+    max-width: 700px;
+    margin: 0 auto;
+    color: var(--gris-oscuro);
+    z-index: 1 !important;
+}
+
+/* --- BOTONES --- */
+.btn-primary-custom {
+    background: var(--burdeos) !important;
+    color: var(--crema) !important;
+    border: none;
+    padding: 18px 45px !important;
+    border-radius: 100px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    font-size: 0.9rem;
+    box-shadow: 0 10px 25px rgba(74, 14, 14, 0.2);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.btn-primary-custom:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(74, 14, 14, 0.3);
+}
+
+
+
+/* --- CARDS SERVICIOS (SOFT UI) --- */
+#servicios-section{
+    padding: 30px 30px;
+    width: 100%;
+    height: auto;
+    margin-top: 50px;
+    background: transparent !important; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+}
+.service-card-modern {
+    background: rgba(255, 255, 255, 0.5) !important;
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    padding: 4rem 2.5rem;
+    border-radius: 45px !important;
+    text-align: center;
+    width: 200px;
+    height:485px;
+    border: 1px solid rgba(255, 255, 255, 0.8) !important;
+    box-shadow: 
+        15px 15px 35px rgba(74, 14, 14, 0.04), 
+        -15px -15px 35px rgba(255, 255, 255, 0.8) !important;
+    transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1) !important; 
+    position: relative;
+    overflow: hidden;
+}
+
+.service-card-modern:hover {
+    transform: translateY(-20px) scale(1.03) !important;
+    background: white !important;
+    box-shadow: 
+        0 40px 70px rgba(74, 14, 14, 0.12),
+        inset 0 0 0 1px rgba(197, 142, 127, 0.2) !important;
+    
+    border-color: var(--bronce) !important;
+}
+
+.icon-box {
+    font-size: 3rem;
+    color: var(--bronce) !important;
+    margin-bottom: 1.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.icon-box i {
+    color: var(--burdeos) !important;
+    font-size: 4rem;
+    display: inline-block;
+    filter: drop-shadow(0 10px 15px rgba(74, 14, 14, 0.15));
+    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+/* --- ESTADO HOVER: AQUÍ OCURRE LA MAGIA --- */
+.service-card-modern:hover .icon-box i {
+    color: var(--bronce) !important;
+    animation: heartBeat 1.5s infinite cubic-bezier(0.215, 0.61, 0.355, 1);
+    filter: drop-shadow(0 0 20px rgba(197, 142, 127, 0.5)) !important;
+}
+@keyframes heartBeat {
+    0% { transform: scale(1); }
+    14% { transform: scale(1.15); }
+    28% { transform: scale(1); }
+    42% { transform: scale(1.15); }
+    70% { transform: scale(1); }
+}
+.service-card-modern:hover .icon-box i {
+    transform: scale(1.15) rotate(5deg);
+    color: var(--bronce) !important;
+    filter: drop-shadow(0 15px 25px rgba(197, 142, 127, 0.4));
+}
+
+/* TIPOGRAFÍA DENTRO DE LA CARD */
+.service-card-modern h4, 
+.service-card-modern h5 {
+    font-family: 'Cinzel', serif;
+    color: var(--burdeos) !important;
+    font-weight: 500;
+    font-size: 1.5rem;
+    margin-bottom: 1.2rem;
+    letter-spacing: 0.5px;
+}
+
+.service-card-modern p {
+    font-size: 1rem;
+    color: var(--gris-oscuro);
+    line-height: 1.7;
+    font-weight: 200;
+    opacity: 0.9;
+}
+
+.service-card-modern::after {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, transparent 80%);
+    opacity: 0;
+    transition: 0.6s;
+    pointer-events: none;
+}
+
+.service-card-modern:hover::after {
+    opacity: 1;
+    transform: translate(20%, 30px);
+}
+
+/* Sombra de transición entre secciones */
+section::after {
+    content: "";
+    position: absolute;
+    bottom: -40px;
+    left: 10%;
+    width: 80%;
+    height: 40px;
+    background: radial-gradient(ellipse at center, rgba(74, 14, 14, 0.08) 0%, rgba(243, 235, 245, 0) 70%);
+    pointer-events: none;
+}
+
+
+/* --- FORMULARIO --- */
+.form-container-modern {
+    background:var(--white-glass) !important;
+    padding: 3rem;
+    border-radius: 30px;
+    box-shadow: var(--soft-shadow);
+}
+
+.form-control-custom, .form-select-custom {
+    border: 1px solid #E0E0E0;
+    background: var(--lila-nude);
+    padding: 15px 20px;
+    border-radius: 12px;
+    width: 100%;
+    font-family: 'Montserrat';
+}
+
+.form-label-custom {
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: var(--bronce);
+    margin-bottom: 8px;
+    display: block;
+}
+
+
+/* --- ANIMACIONES REVEAL --- */
+.reveal-hidden {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.revealed {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Custom SweetAlert */
+.swal-custom-soft {
+    border-radius: 25px !important;
+    font-family: 'Montserrat', sans-serif !important;
+}
+
+
+/*----------------NUEVO CARROUSEL ANIMADO-----------------------------*/
+#tarjetas-section {
+    padding: 30px 0;
+    margin-top: 100px;
+    background: rgba(255, 255, 255, 0.04) !important; 
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    display: flex;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    
+}
+
+.container-tarjeta{
+    width: 100%;
+    height: 480px;
+    position: relative;
+    perspective: 2580px;
+    transform-style: preserve-3d;
+    background-color: transparent !important;
+    justify-content: center;
+    }
+
+.tarjeta{
+    width: 350px;
+    height: 280px;
+    background-color: linear-gradient(135deg, rgba(188, 143, 143, 0.9) 0%, rgba(219, 175, 175, 0.4) 100%) !important;
+    font-size: 40px;
+    overflow: hidden;
+    position: absolute;
+    top: 35px;
+    margin: 50px;
+    left: 0;
+    border-radius: 30px;
+    text-align: center;
+    padding: 20px;
+    border: 1px solid rgba(255, 215, 0, 0.3);
+    cursor: pointer;
+    animation: carrousell 29s linear infinite;
+}   
+@keyframes carrousell{
+    from{
+        transform:rotateY(360deg) translateZ(590px);
+        z-index: 10;
+        opacity: 0.10;
+    }
+    50%{
+        z-index: -10;
+    }
+    to{
+        transform: rotateX(0deg) translateZ(590px);
+    }
+}
+
+#logoDamaSF{
+    background-image: url(assets/nuevologo_full.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    animation-delay: 0s;
+}
+#logoPsi{
+    background-image: url(assets/logoespacioPsicreciendo.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    animation-delay: -4s;
+}
+#contactos{
+    background-image: url(assets/CONTACTOS-26.jpg);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    animation-delay: -8s;
+}
+#psicreciendo{
+    background-image: url(assets/FALYER_PSICRECIENDO-2026.jpeg);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    animation-delay: -12s;
+}
+#materias-estudio{
+    background-image: url(assets/SERVICIOS_NUEVO_2026.jpg);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    animation-delay: -16s;
+}
+#tarjetafrente{
+    background-image: url(assets/tarejeta_nueva_prof-frente.jpg);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    animation-delay: -20s;
+}
+#tarjedorso{
+    background-image: url(assets/tarejeta_nueva_prof-dorso.jpg);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    animation-delay: -24s;
+}
+
+#logoDamaSF:hover{
+    box-shadow: 0px 0px 20px yellow;
+}
+#logoPsi:hover{
+    box-shadow: 0px 0px 20px blueviolet;
+}
+#contactos:hover{
+    box-shadow: 0px 0px 20px fuchsia;
+}
+#psicreciendo:hover{
+    box-shadow: 0px 0px 20px powderblue;
+}
+#servicios:hover{
+    box-shadow: 0px 0px 20px turquoise;
+}
+#tarjetafrente:hover{
+    box-shadow: 0px 0px 20px red;
+}
+#tarjedorso:hover{
+    box-shadow: 0px 0px 20px cornflowerblue;
+}
+
+.container-tarjeta:hover .tarjeta {
+  animation-play-state: paused;
+  box-shadow: 0px 0px 20px rgba(255,255,255,0.5)
+}
+
+/* Estilos para el contenido dinámico */
+.img-dinamica {
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    background: linear-gradient(135deg, rgba(188, 143, 143, 0.9) 0%, rgba(219, 175, 175, 0.4) 100%);
+}
+.img-dinamica:hover{
+    box-shadow: 0px 0px 20px fuchsia;
+}
+
+.txt-dinamico {
+    background: linear-gradient(135deg, rgba(188, 143, 143, 0.9) 0%, rgba(219, 175, 175, 0.4) 100%);
+    color: white;
+    background-size: contain;
+}
+.txt-dinamica:hover{
+    box-shadow: 0px 0px 20px turquoise;
+}
+
+.txt-dinamico h2 { font-size: 1.2rem; margin-bottom: 7px; }
+.txt-dinamico p { font-size: 0.9rem; line-height: 1.2; }
+
+
+.tarjeta  h3{
+color: var(--burdeos);
+font-size: 10px;
+font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+margin-top: 300px;
+background-color: var(--soft-shadow);
+}
+
+.contenedor-legal {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 300px;
+    background: transparent;
+  }

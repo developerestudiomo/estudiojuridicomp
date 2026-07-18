@@ -1,3 +1,12 @@
 node_modules/
 .clasp.json
 creds.json
+
+**/node_modules/
+yarn.lock
+package-lock.json
+
+# Filtros para la caché y configuración de Firebase
+.firebase/
+.firebaserc
+firebase.json

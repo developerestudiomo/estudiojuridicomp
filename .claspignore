@@ -1,0 +1,12 @@
+# Ignorar la carpeta de la SPA pública para que no vaya a GAS
+public/**
+
+# Ignorar archivos de configuración local y de Git
+.git/**
+.gitignore
+README.md
+
+
+# Ignorar la carpeta de animaciones y todas las dependencias de Node
+animator/**
+**/node_modules/**

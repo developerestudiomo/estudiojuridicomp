@@ -1,0 +1,15 @@
+{
+  "name": "estudio-web",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+  "setup": "haiku install",
+  "login": "haiku login",
+  "init": "haiku init",
+  "list": "haiku list"
+  },
+  "dependencies": {
+    "@haiku/core": "^5.1.2"
+  }
+}
