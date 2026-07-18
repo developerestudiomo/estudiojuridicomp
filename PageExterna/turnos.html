@@ -140,14 +140,12 @@ function prepararAgendar(item) {
   const miModal = new bootstrap.Modal(document.getElementById('modalAgendar'));
   miModal.show();
 
-  // Configurar el botón de confirmación del modal
   document.getElementById('btnConfirmarAgendar').onclick = function() {
     miModal.hide();
     ejecutarAgendar(item.idFila);
   };
 }
 
-// Función que hace la magia de la animación y el servidor
 function ejecutarAgendar(idFila) {
   const tarjeta = document.getElementById(`card-turno-${idFila}`);
   
