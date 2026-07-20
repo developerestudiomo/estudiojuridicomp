@@ -182,3 +182,14 @@ async function enviarFormulario(e) {
         });
     }
 }
+
+const toggler = document.querySelector('.custom-toggler');
+const offcanvas = document.getElementById('menuLateral');
+
+toggler.addEventListener('click', function() {
+    this.classList.toggle('is-active');
+});
+
+offcanvas.addEventListener('hidden.bs.offcanvas', function () {
+    toggler.classList.remove('is-active');
+});

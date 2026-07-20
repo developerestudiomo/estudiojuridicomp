@@ -2,17 +2,20 @@
 :root {
 --beige-rose: #FDF5F2;    /* Fondo suave */
 --marfil: #FAF9F6;        /* Fondo secciones */
---rosa-empolvado: #D8B4A0; /* Acentos */
---burdeos-suave: #6B4E48;  /* Texto institucional */
+--rosa-empolvado: #f3b2d0; /* Acentos */
+--burdeos: #8D1C4A;       /* Títulos y botones */
+--burdeos-suave: #ac748b;  /* Texto institucional */
 --oro-linea: #C5A059;     /* Líneas decorativas */
---blanco-cristal: rgba(255, 255, 255, 0.4);
+--blanco-cristal: rgba(255, 255, 255, 0.863);
+--bronce: #C59D5F;         /* Iconos y acentos */
+--lila-nude: #E6D1D9;      /* Fondos de*/
 }
 
 /* --- RESET & TIPOGRAFÍA --- */
 body {
 font-family: 'Cormorant Garamond', serif; /* Elegancia editorial */
 background-color: var(--beige-rose);
-color: var(--burdeos-suave);
+color: var(--burdeos);
 
     background-image: url('/public/assets/img/flor\ de\ la\ vida.png');
     background-repeat: repeat;
@@ -29,7 +32,7 @@ color: var(--burdeos-suave);
 
 h1, h2, h3, .cinzel-title {
     font-family: 'Cinzel', serif;
-    color: var(--burdeos-suave);
+    color: var(--burdeos);
     letter-spacing: 1.5px;
 }
 
@@ -42,107 +45,144 @@ h1, h2, h3, .cinzel-title {
 
 /* --- NAVBAR GLASSMORPHISM --- */
 .custom-navbar {
-    background: rgba(243, 235, 245, 0.4) !important;
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
-    padding: 1rem 0;
-    z-index: 9999 !important;
-    transition: all 0.3s ease;
+    background: var(--burdeos) !important;
+    /*backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);*/
+    border-bottom: 1px solid var(--burdeos);
+    padding: 0.5rem 1rem;
+    z-index: 9998 !important;
 }
+
 
 .navbar-brand-custom {
     display: flex;
     align-items: center;
     text-decoration: none;
-    gap: 12px;
+    gap: 15px;
+    margin-right: auto;
 }
 
 .logo-metal {
-    border: 1px solid var(--oro-linea);
-    box-shadow: inset 0 0 10px rgba(197, 160, 89, 0.2);
+    width: 85px;
+    height: 85px;
+    border-radius: 50%;
+    border: 2px solid var(--oro-linea);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background: var(--beige-rose);
+    transition: all 0.4s ease;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
+
 .logo-metal:hover {
-    transform: translateY(1px);
-    box-shadow: 
-        -2px -2px 6px rgba(255, 255, 255, 0.8),
-        2px 2px 6px rgba(74, 14, 14, 0.3);
+    transform: scale(1.1) rotate(5deg);
+    box-shadow: 0 0 15px var(--oro-linea);
 }
+
+.logo-img {
+    width: 98%;
+    height: 98%;
+    object-fit: contain;
+}
+
 .brand-text {
-    line-height: 1.2;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    color: white !important;
 }
 
 .brand-text .main-title {
-    display: block;
     font-family: 'Cinzel', serif;
-    color: var(--burdeos);
+    color: whitesmoke;
     font-size: 1.1rem;
     letter-spacing: 1px;
+    font-weight: 600;
+    line-height: 1;
 }
 
 .brand-text .sub-title {
     font-size: 0.65rem;
     text-transform: uppercase;
-    letter-spacing: 2px;
-    color: var(--gris-oscuro);
+    letter-spacing: 1.5px;
+    color: var(--beige-rose);
+    opacity: 0.8;
 }
+
 .custom-toggler {
-    border: none !important;
-    background: transparent !important;
-    width: 45px;
-    height: 45px;
-    position: relative;
+    margin-top: 5px !important;
+    position: relative !important;
+    width: 45px !important;
+    height: 40px !important;
+    background-color: transparent !important;
+    border: 2px solid var(--burdeos-suave) !important;
+    padding: 0 !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    z-index: 1160 !important;
+    cursor: pointer;
+    transition: all 0.3s ease;
 }
 
 .toggler-line {
-    width: 30px;
-    height: 2px;
-    background-color: var(--burdeos);
-    display: block;
-    margin: 6px auto;
-    transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    border-radius: 2px;
+    position: absolute !important;
+    width: 25px !important;
+    height: 3px !important;
+    background-color: var(--burdeos-suave) !important;
+    border-radius: 5px !important;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    transform-origin: center center;
 }
 
-/* El botón de cierre "X" estilo Glassmorphism */
-.btn-close-custom {
-    background: var(--bronce) !important;
-    border: none;
-    color: white !important;
-    font-size: 1.5rem;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    backdrop-filter: blur(5px);
-    transition: 0.3s;
-    cursor: pointer;
-    margin-top: 5px;
+#line1 { transform: translateY(-8px); }
+#line2 { opacity: 1; }
+#line3 { transform: translateY(8px); }
+
+.custom-toggler.is-active #line1 {
+    transform: translateY(0) rotate(45deg);
 }
 
-.btn-close-custom:hover {
-    background: var(--bronce);
-    transform: rotate(90deg);
-    filter: brightness(1.2);
+.custom-toggler.is-active #line2 {
+    opacity: 0;
 }
+
+.custom-toggler.is-active #line3 {
+    transform: translateY(0) rotate(-45deg);
+}
+
+.custom-toggler:hover {
+    border-color: var(--burdeos-suave) !important;
+}
+
+.custom-toggler:focus {
+    box-shadow: none !important;
+    outline: none !important;
+}
+
+.navbar-toggler-icon {
+    display: none !important;
+}
+
 
 /* --- OFF CANVAS --- */
 .offcanvas {
-    z-index: 9998 !important;
+    margin-top: 100px !important;
+    z-index: 1080 !important;
     background: var(--burdeos) !important;
     color: white;
-    width: 250px !important;
+    width: 210px !important;
     max-height: 100vh !important; 
     border-left: 2px solid var(--bronce);
     visibility: visible !important;
-    box-shadow: -10px 0 30px rgba(0, 0, 0, 0.3);
+    /*box-shadow: -10px 0 30px rgba(0, 0, 0, 0.3);*/
 }
 .offcanvas-header {
     background: var(--burdeos) !important;
     color: white !important;
-    border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+    border-bottom: 2px solid rgba(129, 14, 81, 0.2);
 }
 
 .offcanvas-body {
@@ -152,7 +192,7 @@ h1, h2, h3, .cinzel-title {
     padding: 2rem 1.5rem;
     height: 100% !important;
     overflow-y: auto !important;
-    background: var(--white-glass) !important;
+    background: var(--rosa-empolvado) !important;
 }
 .offcanvas.show .offcanvas-body {
     display: flex !important;
@@ -160,11 +200,11 @@ h1, h2, h3, .cinzel-title {
     visibility: visible !important;
 }
 .offcanvas-backdrop {
-    z-index: 9997 !important;
+    z-index: 1090 !important;
 }
 
 #menuLateral {
-    z-index: 9999 !important;
+    z-index: 9996 !important;
     background-color: var(--burdeos) !important;
     width: 280px !important;
     border-left: 3px solid var(--bronce);
@@ -203,7 +243,7 @@ h1, h2, h3, .cinzel-title {
 }
 
 .nav-link-custom {
-    color: rgba(255,255,255,0.8);
+    color: rgba(206, 73, 106, 0.8);
     text-decoration: none;
     font-size: 1.2rem;
     padding: 15px 0;
@@ -225,7 +265,7 @@ h1, h2, h3, .cinzel-title {
     align-items: center;
     padding: 20px;
     margin-bottom: 10px;
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(214, 105, 150, 0.733);
     border-radius: 15px;
     color: white !important;
     text-decoration: none;
@@ -239,7 +279,7 @@ h1, h2, h3, .cinzel-title {
     color: var(--bronce);
 }
 .nav-item-modern:hover {
-    background: rgba(255, 255, 255, 0.15);
+    background: var(--burdeos) !important;
     transform: translateX(10px);
 }
 
@@ -256,7 +296,7 @@ h1, h2, h3, .cinzel-title {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: var(--bronce);
+    background: var(--burdeos-suave);
     color: white;
     border-radius: 50%;
     font-size: 1.2rem;
@@ -309,14 +349,14 @@ h1, h2, h3, .cinzel-title {
 
 /* --- HERO SECTION --- */
 .hero-section {
-    background: linear-gradient(135deg, rgba(243, 235, 245, 0.92) 20%, rgba(243, 235, 245, 0.5) 100%), 
-                url('https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&q=80&w=1600');
+    background: linear-gradient(135deg, rgba(243, 235, 245, 0.92) 20%, rgba(219, 140, 140, 0.774) 100%), 
+                url('/public/assets/img/bannerestudio.png') no-repeat center center;
     background-size: cover;
     background-position: center;
     /*min-height: 90vh;*/
     width: 100%;
-    height: 100%;
-    padding-top: 100px;
+    height: 90%;
+    padding-top: 280px !important;
     position: relative;
     z-index: 1 !important;
 }
@@ -341,7 +381,7 @@ h1, h2, h3, .cinzel-title {
 /* --- BOTONES --- */
 .btn-primary-custom {
     background: var(--burdeos) !important;
-    color: var(--crema) !important;
+    color: var(--beige-rose) !important;
     border: none;
     padding: 18px 45px !important;
     border-radius: 100px;
@@ -350,11 +390,12 @@ h1, h2, h3, .cinzel-title {
     font-size: 0.9rem;
     box-shadow: 0 10px 25px rgba(74, 14, 14, 0.2);
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    margin-bottom: 5px !important;
 }
 
 .btn-primary-custom:hover {
     transform: translateY(-5px);
-    box-shadow: 0 15px 35px rgba(74, 14, 14, 0.3);
+    box-shadow: 0 15px 35px rgba(219, 140, 140, 0.774);
 }
 
 
@@ -693,4 +734,4 @@ background-color: var(--soft-shadow);
     align-items: center;
     height: 300px;
     background: transparent;
-  }
+}
