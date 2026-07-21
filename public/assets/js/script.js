@@ -78,7 +78,6 @@ function initNavigation() {
     });
 }
 
-/* Carga dinámica de Novedades (Corregido y Cerrado) */
 async function cargarNovedades3D() {
     const contenedor = document.getElementById('contenedorCards3D');
     if (!contenedor) return;
