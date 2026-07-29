@@ -131,7 +131,7 @@ body {
 .offcanvas {
     border-left: none !important;
     width: 280px !important;
-    height: auto !important;
+    height: 100vh !important;
     box-shadow: -10px 0 35px rgba(0, 0, 0, 0.15);
 }
 
@@ -145,7 +145,8 @@ body {
 .offcanvas-body {
     background: var(--marfil) !important;
     padding: 2rem 1.25rem !important;
-    height: auto !important;
+    height: calc(100vh - 90px) !important; 
+    overflow-y: auto !important;
 }
 
 /* --- ENLACES DE NAVEGACIÓN DINÁMICOS --- */
