@@ -36,6 +36,16 @@
     --bordo-suave: #a00000;
     --bordo-fondo: #f8f0f0;
     --gris-neu: #e0e5ec;
+
+    --beige-rose: #FDF5F2;
+    --marfil: #FAF9F6;
+    --rosa-empolvado: #f3b2d0;
+    --burdeos: #8D1C4A;
+    --burdeos-suave: #ac748b;
+    --oro-linea: #C5A059;
+    --blanco-cristal: rgba(255, 255, 255, 0.863);
+    --bronce: #C59D5F;
+    --lila-nude: #E6D1D9;
 }
 
 /* --- ESTRUCTURA BODY WEBAPP --- */
@@ -84,139 +94,201 @@ body {
 
 /* --- NAVBAR -CABECERA ------------------------------------------------------ */
 .custom-navbar {
-    background: linear-gradient(90deg, var(--principal) 0%, var(--principal-dark) 100%) !important;
-    box-shadow: 0 4px 15px var(--shadow-sobrio) !important;
-    border-bottom: 3px solid var(--acento-malva) !important;
-    padding: 0.8rem 1rem;
+    background: linear-gradient(135deg, var(--burdeos) 0%, #681235 100%) !important;
+    backdrop-filter: blur(12px);
+    border-bottom: 2px solid var(--oro-linea);
+    box-shadow: 0 4px 20px rgba(141, 28, 74, 0.25);
+    padding: 0.6rem 1rem;
     transition: all 0.3s ease;
 }
 
 .navbar-brand-custom {
-    color: #FFFFFF !important;
-    font-weight: 850 !important;
-    font-size: 1.5rem;
-    letter-spacing: 1px;
-    text-transform: uppercase;
+    color: white !important;
+    font-weight: 600;
+    font-size: 1.25rem;
+    text-decoration: none;
     display: flex;
     align-items: center;
     gap: 12px;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
-  .navbar-brand-custom i {
-    font-size: 2.2rem;
-    transition: transform 0.3s ease;
-  }
-  .navbar-brand-custom:hover i {
+
+.navbar-brand-custom i {
+    font-size: 1.6rem;
+    color: var(--oro-linea);
+    transition: transform 0.5s ease;
+}
+
+.navbar-brand-custom:hover {
+    transform: scale(1.03);
+}
+
+.navbar-brand-custom:hover i {
     transform: rotate(15deg) scale(1.1);
-  }
+}
 
 /* --- MENÚ LATERAL (Offcanvas adaptado) --- */
 .offcanvas {
     border-left: none !important;
-    width: 250px !important;
-  }
+    width: 280px !important;
+    height: auto !important;
+    box-shadow: -10px 0 35px rgba(0, 0, 0, 0.15);
+}
+
 .offcanvas-header {
-    background: var(--principal-dark) !important;
+    background: linear-gradient(135deg, var(--burdeos) 0%, #681235) !important;
     color: white !important;
-    border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+    border-bottom: 3px solid var(--oro-linea);
+    padding: 1.5rem;
 }
 
 .offcanvas-body {
-    background: var(--blanco-perla) !important;
-    padding: 2rem 1.5rem !important;
+    background: var(--marfil) !important;
+    padding: 2rem 1.25rem !important;
+    height: auto !important;
 }
 
+/* --- ENLACES DE NAVEGACIÓN DINÁMICOS --- */
 .nav-link-custom {
     background: white !important;
-    color: var(--principal-dark) !important;
-    border: 1px solid #eee !important;
-    border-left: 5px solid var(--principal) !important;
-    border-radius: 10px !important;
-    font-weight: 450 !important;
-    transition: all 0.3s ease !important;
+    color: var(--burdeos) !important;
+    border: 1px solid rgba(197, 160, 89, 0.2) !important;
+    border-left: 5px solid var(--oro-linea) !important;
+    border-radius: 14px !important;
+    font-weight: 500 !important;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.nav-link-custom i {
+    font-size: 1.15rem;
+    transition: transform 0.3s ease;
 }
 
 .nav-link-custom:hover {
-    background: var(--rosa-claro) !important;
-    color: var(--principal-dark) !important;
-    transform: translateX(8px);
+    background: var(--beige-rose) !important;
+    color: var(--burdeos) !important;
+    border-color: var(--oro-linea) !important;
+    transform: translateX(10px) scale(1.02);
+    box-shadow: 0 6px 15px rgba(141, 28, 74, 0.1);
 }
- /*Toggler*/
-  .navbar-toggler {
+
+.nav-link-custom:hover i {
+    transform: scale(1.2);
+}
+
+/* --- TOGGLER ANIMADO --- */
+.navbar-toggler {
     border: none !important;
     padding: 0;
-  }
-  .navbar-toggler:focus {
+}
+
+.navbar-toggler:focus {
     box-shadow: none !important;
-  }
-  .navbar-toggler-icon {
-    filter: invert(1);
-    width: 1.8em;
-    height: 1.8em;
-  }
+}
+
 .btn-menu-down-custom {
-    background: none !important;
-    border: none !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    border-radius: 50%;
     color: white !important;
-    font-size: 2.2rem; 
-    transition: all 0.4s ease-in-out;
-    display: flex !important; 
+    font-size: 2.2rem;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex !important;
     align-items: center;
     justify-content: center;
-    position: relative; 
-    width: 60px;
-    height: 60px;
+    position: relative;
+    width: 48px;
+    height: 48px;
     cursor: pointer;
     outline: none !important;
-    box-shadow: none !important;
-  }
-  /*Estilo base para los iconos*/
-  .btn-menu-down-custom i {
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1) !important;
+}
+
+.btn-menu-down-custom i {
     position: absolute;
     transition: all 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
     display: block !important;
-  }
-  /*ICONO INICIAL*/
-  .btn-menu-down-custom .icon-default {
+}
+
+.btn-menu-down-custom .icon-default {
     opacity: 1 !important; 
     transform: rotate(0deg) scale(1);
-    color: white !important;
-    -webkit-text-stroke: 1px white;
-    font-size: 1.8rem;
-  }
-  /*ICONO HOVER*/
-  .btn-menu-down-custom .icon-hover {
+    color: var(--oro-linea) !important;
+    font-size: 1.4rem;
+}
+
+.btn-menu-down-custom .icon-hover {
     opacity: 0 !important;
     transform: rotate(-180deg) scale(0.3);
-    font-size: 1.8rem;
-  }
-  /*--- EFECTO HOVER --- */
-  .btn-menu-down-custom:hover .icon-default {
+    font-size: 1.4rem;
+}
+
+.btn-menu-down-custom:hover {
+    background: var(--oro-linea) !important;
+    border-color: var(--oro-linea) !important;
+    transform: rotate(90deg);
+}
+
+.btn-menu-down-custom:hover .icon-default {
     opacity: 0 !important;
     transform: rotate(180deg) scale(0.3);
-  }
-  .btn-menu-down-custom:hover .icon-hover {
+}
+
+.btn-menu-down-custom:hover .icon-hover {
     opacity: 1 !important;
     transform: rotate(0deg) scale(1.1);
     color: white !important;
-    -webkit-text-stroke: 1px white;
-  }
-  .btn-close-custom {
-    background: none !important;
+}
+
+/* --- BOTÓN CERRAR OFFCANVAS --- */
+.btn-close-custom {
+    background: rgba(255, 255, 255, 0.15) !important;
     border: none;
-    color: var(--nuevo-color) !important;
-    font-size: 1.8rem;
-    transition: all 0.4s ease-in-out;
+    border-radius: 50%;
+    width: 38px;
+    height: 38px;
+    color: white !important;
+    font-size: 1.4rem;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     display: flex;
     align-items: center;
     justify-content: center;
-    opacity: 0.8;
-  }
-  .btn-close-custom:hover {
-    color: var(--blanco-perla) !important; 
-    transform: rotate(180deg) scale(1.2);
-    opacity: 1;
-  }
+    cursor: pointer;
+}
+
+.btn-close-custom:hover {
+    background: var(--oro-linea) !important;
+    transform: rotate(180deg) scale(1.15);
+    color: white !important;
+}
+
+/* --- BOTONES SOCIALES ESTILIZADOS --- */
+.btn-social-custom {
+    width: 42px;
+    height: 42px;
+    background: white;
+    border: 1px solid var(--lila-nude);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    color: var(--burdeos);
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+.btn-social-custom:hover {
+    background: var(--burdeos);
+    color: white;
+    border-color: var(--burdeos);
+    transform: translateY(-4px) scale(1.1);
+    box-shadow: 0 6px 15px rgba(141, 28, 74, 0.25);
+}
 /*-------------FIN NAVBAR---------------------*/
 
 

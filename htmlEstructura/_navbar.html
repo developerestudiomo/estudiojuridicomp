@@ -1,20 +1,20 @@
 <!-- _navbar.html -->
 <nav class="navbar fixed-top custom-navbar">
-  <div class="container-fluid">
-    <a class="navbar-brand-custom" href="#" onclick="loadContent('_home'); return false;">
+  <div class="container-fluid px-4">
+    <a class="navbar-brand-custom" href="#" onclick="loadContent('/htmlEstructura/_home'); return false;">
       <i class="fi fi-ss-civil-law"></i>
       <span>Estudio Jurídico <span style="font-weight: 200; opacity: 0.9;">MP</span></span>
     </a>
 
-      <button class="navbar-toggler btn-menu-down-custom" type="button" data-bs-toggle="offcanvas" data-bs-target="#menuLateral" aria-label="Abrir Menú">
-        <i class="fi fi-tr-dropdown icon-default"></i>
-        <i class="fi fi-tr-dropdown-bar icon-hover"></i>
-      </button>
+    <button class="navbar-toggler btn-menu-down-custom" type="button" data-bs-toggle="offcanvas" data-bs-target="#menuLateral" aria-label="Abrir Menú">
+      <i class="fi fi-tr-dropdown icon-default"></i>
+      <i class="fi fi-tr-dropdown-bar icon-hover"></i>
+    </button>
 
     <div class="offcanvas offcanvas-end" id="menuLateral">
-      <div class="offcanvas-header" style="background-color: #ED6AFF;">
-        <h5 class="offcanvas-title fw-bold text-white" id="offcanvasDarkNavbarLabel">
-          <i class="fi fi-sc-menu-burger"></i></i> MENÚ
+      <div class="offcanvas-header">
+        <h5 class="offcanvas-title fw-bold text-white d-flex align-items-center gap-2" id="offcanvasDarkNavbarLabel">
+          <i class="fi fi-sc-menu-burger"></i> MENÚ PRINCIPAL
         </h5>
         
         <button type="button" class="btn-close-custom" data-bs-dismiss="offcanvas" aria-label="Close">
@@ -23,45 +23,45 @@
       </div>
 
       <div class="offcanvas-body">
-        <div class="navbar-nav">
+        <div class="navbar-nav gap-2">
           
-          <small class="text-uppercase fw-bold text-secondary mb-2" style="font-size: 0.7rem;">SECCIONES</small>
+          <small class="text-uppercase fw-bold text-muted mb-1 px-2" style="font-size: 0.7rem; letter-spacing: 1px;">SECCIONES</small>
           
-          <a class="nav-link nav-link-custom rounded-pill px-4" href="#" onclick="loadContent('htmlEstructura/_home');" data-bs-dismiss="offcanvas">
-            <i class="bi bi-house-door-fill text-primary"></i> INICIO
+          <a class="nav-link nav-link-custom rounded-pill px-4 py-2 shadow-sm" href="#" onclick="loadContent('htmlEstructura/_home');" data-bs-dismiss="offcanvas">
+            <i class="bi bi-house-door-fill text-primary"></i> <span>INICIO</span>
           </a>
 
-          <a class="nav-link nav-link-custom rounded-pill px-4" href="#" onclick="loadContent('Expedientes/gestionExpte');" data-bs-dismiss="offcanvas">
-            <i class="bi bi-folder-fill text-warning"></i> EXPEDIENTES
+          <a class="nav-link nav-link-custom rounded-pill px-4 py-2 shadow-sm" href="#" onclick="loadContent('Expedientes/gestionExpte');" data-bs-dismiss="offcanvas">
+            <i class="bi bi-folder-fill text-warning"></i> <span>EXPEDIENTES</span>
           </a>
 
-          <a class="nav-link nav-link-custom rounded-pill px-4" href="#" onclick="loadContent('Clientes/clientes');" data-bs-dismiss="offcanvas">
-            <i class="bi bi-people-fill text-success"></i> CLIENTES
+          <a class="nav-link nav-link-custom rounded-pill px-4 py-2 shadow-sm" href="#" onclick="loadContent('Clientes/clientes');" data-bs-dismiss="offcanvas">
+            <i class="bi bi-people-fill text-success"></i> <span>CLIENTES</span>
           </a>
 
-          <a class="nav-link nav-link-custom rounded-pill px-4" href="#" onclick="loadContent('Calendario/eventos');" data-bs-dismiss="offcanvas">
-            <i class="bi bi-calendar-event-fill text-danger"></i> CALENDARIO
+          <a class="nav-link nav-link-custom rounded-pill px-4 py-2 shadow-sm" href="#" onclick="loadContent('Calendario/eventos');" data-bs-dismiss="offcanvas">
+            <i class="bi bi-calendar-event-fill text-danger"></i> <span>CALENDARIO</span>
           </a>
 
-           <a class="nav-link nav-link-custom rounded-pill px-4" href="#" onclick="loadContent('Tareas/tareas');" data-bs-dismiss="offcanvas">
-            <i class="fi fi-rr-to-do-alt text-info"></i> TAREAS
+           <a class="nav-link nav-link-custom rounded-pill px-4 py-2 shadow-sm" href="#" onclick="loadContent('Tareas/tareas');" data-bs-dismiss="offcanvas">
+            <i class="fi fi-rr-to-do-alt text-info"></i> <span>TAREAS</span>
           </a>
 
-          <hr class="my-4 text-secondary opacity-25">
+          <hr class="my-3 text-secondary opacity-25">
           
-          <small class="text-uppercase fw-bold text-secondary mb-2" style="font-size: 0.7rem;">Contacto & Redes</small>
+          <small class="text-uppercase fw-bold text-muted mb-1 px-2" style="font-size: 0.7rem; letter-spacing: 1px;">Contacto & Redes</small>
           
-          <div class="d-flex justify-content-between px-2">
-            <a href="https://instagram.com" target="_blank" class="btn btn-social-pink">
-              <i class="bi bi-instagram text-danger"></i>
+          <div class="d-flex justify-content-around px-2 pt-2">
+            <a href="https://instagram.com" target="_blank" class="btn-social-custom shadow-sm" title="Instagram">
+              <i class="bi bi-instagram"></i>
             </a>
             
-            <a href="https://facebook.com" target="_blank" class="btn btn-social-pink">
-              <i class="bi bi-facebook text-primary"></i>
+            <a href="https://facebook.com" target="_blank" class="btn-social-custom shadow-sm" title="Facebook">
+              <i class="bi bi-facebook"></i>
             </a>
             
-            <a href="https://linkedin.com" target="_blank" class="btn btn-social-pink">
-              <i class="bi bi-linkedin text-info"></i>
+            <a href="https://linkedin.com" target="_blank" class="btn-social-custom shadow-sm" title="LinkedIn">
+              <i class="bi bi-linkedin"></i>
             </a>
           </div>
 
