@@ -118,21 +118,25 @@ function getListaTareas() {
 
 function guardarNuevaTareaServidor(datos) {
   try {
-    const ss = SpreadsheetApp.getActiveSpreadsheet();
-    const hoja = ss.getSheetByName("baseTareas"); // Cambia "Tareas" por el nombre real de tu solapa
+    const ss = SpreadsheetApp.openById(SS_TAREAS_ID);
+    const hoja = ss.getSheetByName("baseTareas");
     
-    // Generar un ID único simple (puedes adaptarlo a tu lógica de IDs)
-    const idUnico = Utilities.getUuid();
+    if (!hoja) {
+      throw new Error('No se encontró la pestaña "baseTareas" en el spreadsheet.');
+    }
     
-    // Estructura de columnas típica: ID, Referencia, Responsable, Prioridad, Fecha, Detalle, Estado
+    const idTarea = "TASK-" + Math.floor(Math.random() * 1000) + "-" + new Date().getTime().toString().slice(-4);
+    
     hoja.appendRow([
-      idUnico,
-      datos.referencia,
-      datos.usuario,
-      datos.prioridad,
-      datos.fechaFin,
-      datos.detalle,
-      "PENDIENTE" // Estado inicial
+      idTarea, 
+      new Date(), 
+      datos.fechaFin, 
+      datos.usuario, 
+      datos.categoria || "GENERAL", 
+      datos.referencia, 
+      datos.prioridad, 
+      datos.detalle, 
+      "PENDIENTE"
     ]);
     
     return true;
@@ -144,11 +148,15 @@ function guardarNuevaTareaServidor(datos) {
 // Función para actualizar una tarea existente
 function actualizarTareaServidor(datos) {
   try {
-    const ss = SpreadsheetApp.getActiveSpreadsheet();
-    const hoja = ss.getSheetByName("baseTareas"); // Cambia "Tareas" por el nombre real de tu solapa
+    const ss = SpreadsheetApp.openById(SS_TAREAS_ID);
+    const hoja = ss.getSheetByName("baseTareas");
+    
+    if (!hoja) {
+      throw new Error('No se encontró la pestaña "baseTareas" en el spreadsheet.');
+    }
+    
     const rangos = hoja.getDataRange().getValues();
     
-    // Buscar la fila por ID (asumiendo que el ID está en la primera columna, índice 0)
     let filaEncontrada = -1;
     for (let i = 1; i < rangos.length; i++) {
       if (rangos[i][0].toString() === datos.id.toString()) {
@@ -158,12 +166,12 @@ function actualizarTareaServidor(datos) {
     }
     
     if (filaEncontrada !== -1) {
-      // Actualizar las celdas de esa fila según tu orden de columnas
-      hoja.getRange(filaEncontrada, 2).setValue(datos.referencia);
-      hoja.getRange(filaEncontrada, 3).setValue(datos.usuario);
-      hoja.getRange(filaEncontrada, 4).setValue(datos.prioridad);
-      hoja.getRange(filaEncontrada, 5).setValue(datos.fechaFin);
-      hoja.getRange(filaEncontrada, 6).setValue(datos.detalle);
+      hoja.getRange(filaEncontrada, 2).setValue(new Date());
+      hoja.getRange(filaEncontrada, 3).setValue(datos.fechaFin);
+      hoja.getRange(filaEncontrada, 4).setValue(datos.usuario);
+      hoja.getRange(filaEncontrada, 6).setValue(datos.referencia);
+      hoja.getRange(filaEncontrada, 7).setValue(datos.prioridad);
+      hoja.getRange(filaEncontrada, 8).setValue(datos.detalle);
       return true;
     } else {
       throw new Error("No se encontró la tarea con el ID especificado.");
