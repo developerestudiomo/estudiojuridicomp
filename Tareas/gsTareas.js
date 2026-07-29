@@ -119,7 +119,7 @@ function getListaTareas() {
 function guardarNuevaTareaServidor(datos) {
   try {
     const ss = SpreadsheetApp.getActiveSpreadsheet();
-    const hoja = ss.getSheetByName("Tareas"); // Cambia "Tareas" por el nombre real de tu solapa
+    const hoja = ss.getSheetByName("baseTareas"); // Cambia "Tareas" por el nombre real de tu solapa
     
     // Generar un ID único simple (puedes adaptarlo a tu lógica de IDs)
     const idUnico = Utilities.getUuid();
@@ -145,7 +145,7 @@ function guardarNuevaTareaServidor(datos) {
 function actualizarTareaServidor(datos) {
   try {
     const ss = SpreadsheetApp.getActiveSpreadsheet();
-    const hoja = ss.getSheetByName("Tareas"); // Cambia "Tareas" por el nombre real de tu solapa
+    const hoja = ss.getSheetByName("baseTareas"); // Cambia "Tareas" por el nombre real de tu solapa
     const rangos = hoja.getDataRange().getValues();
     
     // Buscar la fila por ID (asumiendo que el ID está en la primera columna, índice 0)
