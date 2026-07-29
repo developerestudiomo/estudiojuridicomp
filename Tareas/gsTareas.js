@@ -116,4 +116,60 @@ function getListaTareas() {
   }
 }
 
+function guardarNuevaTareaServidor(datos) {
+  try {
+    const ss = SpreadsheetApp.getActiveSpreadsheet();
+    const hoja = ss.getSheetByName("Tareas"); // Cambia "Tareas" por el nombre real de tu solapa
+    
+    // Generar un ID único simple (puedes adaptarlo a tu lógica de IDs)
+    const idUnico = Utilities.getUuid();
+    
+    // Estructura de columnas típica: ID, Referencia, Responsable, Prioridad, Fecha, Detalle, Estado
+    hoja.appendRow([
+      idUnico,
+      datos.referencia,
+      datos.usuario,
+      datos.prioridad,
+      datos.fechaFin,
+      datos.detalle,
+      "PENDIENTE" // Estado inicial
+    ]);
+    
+    return true;
+  } catch (error) {
+    throw new Error("Error al guardar en la hoja: " + error.message);
+  }
+}
+
+// Función para actualizar una tarea existente
+function actualizarTareaServidor(datos) {
+  try {
+    const ss = SpreadsheetApp.getActiveSpreadsheet();
+    const hoja = ss.getSheetByName("Tareas"); // Cambia "Tareas" por el nombre real de tu solapa
+    const rangos = hoja.getDataRange().getValues();
+    
+    // Buscar la fila por ID (asumiendo que el ID está en la primera columna, índice 0)
+    let filaEncontrada = -1;
+    for (let i = 1; i < rangos.length; i++) {
+      if (rangos[i][0].toString() === datos.id.toString()) {
+        filaEncontrada = i + 1; // Las filas en Sheets empiezan en 1
+        break;
+      }
+    }
+    
+    if (filaEncontrada !== -1) {
+      // Actualizar las celdas de esa fila según tu orden de columnas
+      hoja.getRange(filaEncontrada, 2).setValue(datos.referencia);
+      hoja.getRange(filaEncontrada, 3).setValue(datos.usuario);
+      hoja.getRange(filaEncontrada, 4).setValue(datos.prioridad);
+      hoja.getRange(filaEncontrada, 5).setValue(datos.fechaFin);
+      hoja.getRange(filaEncontrada, 6).setValue(datos.detalle);
+      return true;
+    } else {
+      throw new Error("No se encontró la tarea con el ID especificado.");
+    }
+  } catch (error) {
+    throw new Error("Error al actualizar en la hoja: " + error.message);
+  }
+}
 
