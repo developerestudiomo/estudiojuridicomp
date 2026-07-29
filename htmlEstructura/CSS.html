@@ -151,34 +151,78 @@ body {
 
 /* --- ENLACES DE NAVEGACIÓN DINÁMICOS --- */
 .nav-link-custom {
-    background: white !important;
+    background: linear-gradient(135deg, #FFFFFF 0%, var(--marfil) 100%) !important;
     color: var(--burdeos) !important;
-    border: 1px solid rgba(197, 160, 89, 0.2) !important;
-    border-left: 5px solid var(--oro-linea) !important;
-    border-radius: 14px !important;
-    font-weight: 500 !important;
+    border: 1px solid rgba(141, 28, 74, 0.15) !important;
+    border-left: 6px solid var(--oro-linea) !important;
+    border-radius: 16px !important;
+    font-weight: 600 !important;
     font-size: 0.95rem;
+    letter-spacing: 0.3px;
     display: flex;
     align-items: center;
-    gap: 12px;
-    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    gap: 14px;
+    padding: 0.75rem 1.25rem !important;
+    margin-bottom: 0.6rem;
+    position: relative;
+    overflow: hidden;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9), 
+                0 4px 12px rgba(141, 28, 74, 0.05);
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
 }
 
-.nav-link-custom i {
+.nav-link-custom i,
+.nav-link-custom span i {
     font-size: 1.15rem;
-    transition: transform 0.3s ease;
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    background: var(--beige-rose);
+    border-radius: 10px;
+    color: var(--burdeos);
+    box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.8), 
+                0 2px 5px rgba(141, 28, 74, 0.1);
+}
+
+.nav-link-custom::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+    transition: 0.6s ease;
+}
+
+.nav-link-custom:hover::before {
+    left: 100%;
 }
 
 .nav-link-custom:hover {
-    background: var(--beige-rose) !important;
+    background: linear-gradient(135deg, var(--beige-rose) 0%, var(--lila-nude) 100%) !important;
     color: var(--burdeos) !important;
     border-color: var(--oro-linea) !important;
-    transform: translateX(10px) scale(1.02);
-    box-shadow: 0 6px 15px rgba(141, 28, 74, 0.1);
+    border-left-color: var(--burdeos) !important;
+    transform: translateX(12px) scale(1.03);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.95), 
+                0 10px 25px rgba(141, 28, 74, 0.18) !important;
 }
 
-.nav-link-custom:hover i {
-    transform: scale(1.2);
+.nav-link-custom:hover i,
+.nav-link-custom:hover span i {
+    background: var(--burdeos);
+    color: white;
+    transform: scale(1.15) rotate(8deg);
+    box-shadow: 0 4px 12px rgba(141, 28, 74, 0.3);
+}
+
+.nav-link-custom:active {
+    transform: translateX(8px) scale(0.98);
+    box-shadow: inset 0 2px 5px rgba(141, 28, 74, 0.2);
 }
 
 /* --- TOGGLER ANIMADO --- */
