@@ -8,4 +8,27 @@
     overflow: hidden; 
 }
 
+.card-form-glass {
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    border-radius: 20px;
+    transition: all 0.3s ease;
+    overflow: hidden; 
+}
+
+.task-card-interactive {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    border-radius: 20px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+}
+
+.task-card-interactive:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(142, 68, 173, 0.15) !important;
+    border-color: rgba(142, 68, 173, 0.3);
+}
 </style>
