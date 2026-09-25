@@ -47,12 +47,15 @@
                             <small class="text-uppercase fw-bold text-secondary mb-2" style="font-size: 0.7rem;">SECCIONES</small>   
                             <a class="nav-item-modern" href="/"><i class="bi bi-house-heart"></i> Inicio</a>
                             <a class="nav-item-modern" href="#servicios"><i class="bi bi-shield-check"></i> Especialidades</a>
+                            <a class="nav-item-modern" href="#novedades"><i class="bi bi-newspaper"></i> Novedades</a>
+                            <a class="nav-item-modern" href="#casos"><i class="bi bi-journal-check"></i> Casos del Estudio</a>
+                            <a class="nav-item-modern" href="#comentarios"><i class="bi bi-chat-heart"></i> Comentarios</a>
                             <a class="nav-item-modern" href="#contacto"><i class="bi bi-calendar3"></i> Turnos Online</a>
                         </div>
                         <hr class="my-4 text-secondary opacity-25">
-                
+               
                             <small class="text-uppercase fw-bold text-secondary mb-2" style="font-size: 0.7rem;">Contacto & Redes</small>
-                    
+               
                         <div class="social-footer">
                             <p class="text-overline">Conectemos</p>
                             <div class="social-icons-grid">
@@ -66,7 +69,6 @@
         </div>
     </nav>
 
-
     <section class="hero-section text-center d-flex align-items-center">
         <div class="container">
             <div class="hero-content">
@@ -79,64 +81,276 @@
             </div>
         </div>
     </section>
-        <div class="section-header text-center mb-5">
-            <h2 class="cinzel-title display-5">Últimas Novedades del Estudio</h2>
-            <div class="title-underline-premium"></div>
-        </div>
-    <section id="tarjetas-section" class="py-5">
-        <div class="container-tarjeta">
-                <!--<p class="mt-3 cinzel-title">Sincronizando novedades...</p>-->
-                <div class="tarjeta" id="logoDamaSF"><h3>Logo MP</h3></div>
-                <div class="tarjeta" id="contactos"><h3>Contactos</h3></div>
-                <div class="tarjeta" id="psicreciendo"><h3>Psicreciendo</h3></div>
-                <div class="tarjeta" id="logoPsi"><h3>Logo Psicreciendo</h3></div>
-                <div class="tarjeta" id="materias-estudio"><h3>Servicios</h3></div>
-                <div class="tarjeta" id="tarjetafrente"><h3>Tarjeta Frente</h3></div>
-                <div class="tarjeta" id="tarjedorso"><h3>Tarjeta Dorso</h3></div>
+
+    <div class="section-header text-center mb-5 mt-5">
+        <h2 class="cinzel-title display-5">Nuestra Presentación</h2>
+        <div class="title-underline-premium"></div>
+    </div>
+
+    <section id="tarjetas-section" class="py-4">
+        <div class="container">
+            <div id="sliderTarjetas" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner rounded-4 shadow-sm">
+                    <div class="carousel-item active p-5 text-center bg-white">
+                        <h3 class="cinzel-title mb-3">Logo MP</h3>
+                        <p class="text-muted">Identidad visual y compromiso profesional con la justicia y el bienestar.</p>
+                    </div>
+                    <div class="carousel-item p-5 text-center bg-white">
+                        <h3 class="cinzel-title mb-3">Contactos</h3>
+                        <p class="text-muted">Canales directos de comunicación institucional y asesoramiento legal.</p>
+                    </div>
+                    <div class="carousel-item p-5 text-center bg-white">
+                        <h3 class="cinzel-title mb-3">Psicreciendo</h3>
+                        <p class="text-muted">Enfoque interdisciplinario para el acompañamiento familiar y de la niñez.</p>
+                    </div>
+                    <div class="carousel-item p-5 text-center bg-white">
+                        <h3 class="cinzel-title mb-3">Servicios</h3>
+                        <p class="text-muted">Abordaje integral en derecho de familia, niñez, adolescencia y bienes.</p>
+                    </div>
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#sliderTarjetas" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Anterior</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#sliderTarjetas" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Siguiente</span>
+                </button>
+            </div>
         </div>
     </section>
-<div class="contenedor-legal">
-    <object id="martillo-legal" data="/public/assets/martillo.svg" type="image/svg+xml" width="250">
-        Tu navegador no soporta SVG.
-    </object>
-</div>
+
+    <div class="section-header text-center mb-5 mt-5" id="novedades">
+        <h2 class="cinzel-title display-5">Últimas Novedades del Estudio</h2>
+        <div class="title-underline-premium"></div>
+    </div>
+    <section class="py-4">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="card h-100 shadow-sm border-0 rounded-4 p-3">
+                        <div class="card-body">
+                            <span class="badge bg-primary mb-2">Actualidad</span>
+                            <h5 class="fw-bold mb-3">Nuevos Protocolos en Niñez y Adolescencia</h5>
+                            <p class="text-muted small">Implementación de criterios sistémicos en representación de menores en la Provincia de Buenos Aires.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card h-100 shadow-sm border-0 rounded-4 p-3">
+                        <div class="card-body">
+                            <span class="badge bg-secondary mb-2">Capacitación</span>
+                            <h5 class="fw-bold mb-3">Jornadas de Constelaciones y Derecho</h5>
+                            <p class="text-muted small">Integración de la mirada sistémica en mediaciones y resolución pacífica de conflictos familiares.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card h-100 shadow-sm border-0 rounded-4 p-3">
+                        <div class="card-body">
+                            <span class="badge bg-success mb-2">Institucional</span>
+                            <h5 class="fw-bold mb-3">Ampliación de Asesoría Integral</h5>
+                            <p class="text-muted small">Nuevos canales de atención online y gestión simplificada de turnos para nuestros clientes.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="section-header text-center mb-5 mt-5" id="casos">
+        <h2 class="cinzel-title display-5">Casos del Estudio</h2>
+        <div class="title-underline-premium"></div>
+    </div>
+    <section class="py-4">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="card h-100 shadow-sm border-0 rounded-4 p-4">
+                        <div class="card-body">
+                            <h5 class="fw-bold mb-3 text-secondary">Protección Integral de Derechos</h5>
+                            <p class="text-muted small">Restitución de vínculos familiares y medidas cautelares exitosas en resguardo del interés superior del niño.</p>
+                            <a href="#" class="btn btn-outline-primary btn-sm rounded-pill mt-3" data-bs-toggle="modal" data-bs-target="#modalCaso1">Seguir leyendo</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card h-100 shadow-sm border-0 rounded-4 p-4">
+                        <div class="card-body">
+                            <h5 class="fw-bold mb-3 text-secondary">Acuerdos Sistémicos Familiares</h5>
+                            <p class="text-muted small">Resolución integral de conflictos patrimoniales y alimentos con enfoque holístico y pacífico.</p>
+                            <a href="#" class="btn btn-outline-primary btn-sm rounded-pill mt-3" data-bs-toggle="modal" data-bs-target="#modalCaso2">Seguir leyendo</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card h-100 shadow-sm border-0 rounded-4 p-4">
+                        <div class="card-body">
+                            <h5 class="fw-bold mb-3 text-secondary">Asesoría a Profesionales y Centros</h5>
+                            <p class="text-muted small">Implementación de protocolos legales internos para equipos interdisciplinarios de salud y educación.</p>
+                            <a href="#" class="btn btn-outline-primary btn-sm rounded-pill mt-3" data-bs-toggle="modal" data-bs-target="#modalCaso3">Seguir leyendo</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="section-header text-center mb-5 mt-5" id="comentarios">
+        <h2 class="cinzel-title display-5">Comentarios de Clientes</h2>
+        <div class="title-underline-premium"></div>
+    </div>
+    <section class="py-4">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="card h-100 shadow-sm border-0 rounded-4 p-4 bg-light">
+                        <div class="card-body">
+                            <div class="text-warning mb-2"><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i></div>
+                            <p class="small text-muted fst-italic">"Una calidez humana excepcional combinada con un rigor profesional impecable. Nos acompañaron en todo el proceso."</p>
+                            <h6 class="fw-bold mt-3 mb-0">Mariana G.</h6>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card h-100 shadow-sm border-0 rounded-4 p-4 bg-light">
+                        <div class="card-body">
+                            <div class="text-warning mb-2"><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i></div>
+                            <p class="small text-muted fst-italic">"El enfoque sistémico y legal cambió por completo la resolución de nuestro conflicto familiar. Sumamente agradecido."</p>
+                            <h6 class="fw-bold mt-3 mb-0">Carlos R.</h6>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card h-100 shadow-sm border-0 rounded-4 p-4 bg-light">
+                        <div class="card-body">
+                            <div class="text-warning mb-2"><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i></div>
+                            <p class="small text-muted fst-italic">"Profesionalismo absoluto y contención en los momentos más delicados. Excelente estudio jurídico."</p>
+                            <h6 class="fw-bold mt-3 mb-0">Valeria M.</h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="section-header text-center mb-5 mt-5" id="contacto">
+        <h2 class="cinzel-title display-5">Reserva de Turnos Online</h2>
+        <div class="title-underline-premium"></div>
+    </div>
+    <section class="py-4 mb-5">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <div class="card shadow-sm border-0 rounded-4 p-4">
+                        <div class="card-body">
+                            <form id="formReservaTurno">
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label small fw-bold">Nombre y Apellido</label>
+                                        <input type="text" class="form-control rounded-pill" id="nombreReserva" required>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label small fw-bold">WhatsApp / Teléfono</label>
+                                        <input type="text" class="form-control rounded-pill" id="whatsAppReserva" required>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label small fw-bold">Fecha deseada</label>
+                                        <input type="date" class="form-control rounded-pill" id="fechaReserva" required>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label small fw-bold">Horario</label>
+                                        <input type="time" class="form-control rounded-pill" id="horaReserva" required>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label small fw-bold">Motivo de consulta</label>
+                                    <textarea class="form-control rounded-3" id="motivoReserva" rows="3" placeholder="Detalle breve de su consulta legal..."></textarea>
+                                </div>
+                                <div class="text-center mt-4">
+                                    <button type="submit" class="btn btn-primary-custom rounded-pill px-5">Solicitar Turno Online</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="modal fade" id="modalCaso1" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 rounded-4">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold">Protección Integral de Derechos</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="text-muted">Relato completo del caso de éxito enfocado en la restitución de vínculos y la salvaguarda de los derechos fundamentales de niñas, niños y adolescentes, aplicando marcos normativos nacionales e internacionales con perspectiva sistémica.</p>
+                </div>
+                <div class="modal-footer border-0">
+                    <button type="button" class="btn btn-secondary rounded-pill px-4" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalCaso2" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 rounded-4">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold">Acuerdos Sistémicos Familiares</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="text-muted">Desarrollo de mediaciones complejas y acuerdos extrajudiciales que permitieron sanar vínculos familiares disfuncionales, logrando estabilidad patrimonial y emocional para todos los involucrados.</p>
+                </div>
+                <div class="modal-footer border-0">
+                    <button type="button" class="btn btn-secondary rounded-pill px-4" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalCaso3" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 rounded-4">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold">Asesoría a Profesionales y Centros</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="text-muted">Diseño e implementación de protocolos legales de actuación institucional para gabinetes psicopedagógicos y centros de salud, previniendo conflictos y resguardando la responsabilidad civil y profesional.</p>
+                </div>
+                <div class="modal-footer border-0">
+                    <button type="button" class="btn btn-secondary rounded-pill px-4" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="/public/assets/js/script.js"></script>
     <script>
-    document.addEventListener('DOMContentLoaded', () => {
-    const martilloObject = document.getElementById('martillo-legal');
-    const logoFooter = document.getElementById('logo-footer');
-
-    if (!martilloObject) return;
-
-    const desaparecerLogo = () => {
-      if (logoFooter) {
-        logoFooter.style.transition = "all 0.5s ease-out";
-        logoFooter.style.opacity = "0";
-        logoFooter.style.transform = "translateY(20px) scale(0.9)"; // Efecto de caída/golpe
-        setTimeout(() => {
-          logoFooter.style.display = "none"; // Lo quita del espacio visual
-        }, 500);
-        console.log("Justicia dictada: Logo eliminado.");
-      }
-    };
-    const reiniciarAnimacion = () => {
-      console.log("Reiniciando martillo...");
-      const currentSrc = martilloObject.data;
-      martilloObject.data = ""; // Reset de fuente
-      martilloObject.data = currentSrc; // Recarga
-    };
-
-    martilloObject.addEventListener('load', () => {
-      setTimeout(desaparecerLogo, 2200); 
-      setTimeout(reiniciarAnimacion, 4500); 
-    });
-
-    martilloObject.onclick = reiniciarAnimacion;
-  });
-</script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const form = document.getElementById('formReservaTurno');
+            if (form) {
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    Swal.fire({
+                        title: '¡Turno Solicitado!',
+                        text: 'Nos pondremos en contacto a la brevedad para confirmar su cita.',
+                        icon: 'success',
+                        confirmButtonColor: '#3085d6'
+                    });
+                    form.reset();
+                });
+            }
+        });
+    </script>
 </body>
 </html>
