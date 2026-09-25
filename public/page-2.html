@@ -103,7 +103,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="assets/js/script.js"></script>
+    <script src="/public/assets/js/script.js"></script>
     <script>
     document.addEventListener('DOMContentLoaded', () => {
     const martilloObject = document.getElementById('martillo-legal');
@@ -111,7 +111,6 @@
 
     if (!martilloObject) return;
 
-    // Función 1: Desaparecer el logo en el momento del impacto
     const desaparecerLogo = () => {
       if (logoFooter) {
         logoFooter.style.transition = "all 0.5s ease-out";
@@ -123,8 +122,6 @@
         console.log("Justicia dictada: Logo eliminado.");
       }
     };
-
-    // Función 2: Reiniciar el SVG (para que el martillo vuelva a golpear)
     const reiniciarAnimacion = () => {
       console.log("Reiniciando martillo...");
       const currentSrc = martilloObject.data;
@@ -133,15 +130,10 @@
     };
 
     martilloObject.addEventListener('load', () => {
-      // 1. EL GOLPE: Si el martillo toca la base a los 2.2s de los 3s totales:
-      // Ajusta este 2200 si ves que el logo se va antes o después del ruido/choque.
       setTimeout(desaparecerLogo, 2200); 
-
-      // 2. EL REINICIO: Esperamos a que terminen los 3s + un segundo de pausa (4000ms)
       setTimeout(reiniciarAnimacion, 4500); 
     });
 
-    // Interactividad: Si haces click en el martillo, reinicia el ciclo
     martilloObject.onclick = reiniciarAnimacion;
   });
 </script>
